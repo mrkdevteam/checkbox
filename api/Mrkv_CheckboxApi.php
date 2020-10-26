@@ -82,7 +82,7 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
 
         private function makePostRequest($route,$params = [],$header_params = [])
         {
-            $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
+            $url_host = $this->is_dev ? 'https://api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
             $url = $url_host.$route;
             $curl=curl_init();
 
@@ -114,7 +114,7 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
 
         private function makeGetRequest($route,$params = [],$header_params = [])
         {
-            $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
+            $url_host = $this->is_dev ? 'https://api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
             $url = $url_host.$route;
             $curl=curl_init();
             $header = [];
