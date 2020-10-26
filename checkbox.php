@@ -4,7 +4,8 @@
  * Plugin Name: Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
- * Version: 0.0.1
+ * Version: 0.1.0
+ * Tested up to: 5.5.1
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
  * License: GPL v2 or later
@@ -38,7 +39,7 @@ add_action( 'admin_menu', 'mrkv_checkbox_registerPluginPageInMenu');
 // create menu in order details page
 if ( !function_exists( 'mrkv_checkbox_wc_add_order_meta_box_action' ) ) {
     function mrkv_checkbox_wc_add_order_meta_box_action( $actions ) {
-        $actions['create_bill_action'] = 'Create receipt';
+        $actions['create_bill_action'] = 'Створити чек';
         return $actions;
     }
 }
@@ -69,14 +70,14 @@ function mrkv_checkbox_wc_process_order_meta_box_action($order) {
         // Check current status
         $current_shift = $api->getCurrentCashierShift();
         if (isset($current_shift['status'])&&($current_shift['status']!='OPENED')) {
-            $order->add_order_note( "У вас не открыта смена ", $is_customer_note = 0, $added_by_user = false );
+            $order->add_order_note( "У вас не відкрита зміна ", $is_customer_note = 0, $added_by_user = false );
             return;
         }
 
         $status = mrkv_checkbox_create_reciept($api,$order);
         // save order ID
         if ($status) {
-            $order->add_order_note( "Reciept created", $is_customer_note = 0, $added_by_user = false );
+            $order->add_order_note( "Чек створено", $is_customer_note = 0, $added_by_user = false );
         } else {
             $order->add_order_note( "Error create reciept", $is_customer_note = 0, $added_by_user = false );
         }
@@ -129,7 +130,7 @@ if ( !function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
                 if (isset($shift['status'])&&($shift['status']=='OPENED')){
                     // create receipt
                     if (mrkv_checkbox_create_reciept($api,$order)){
-                    $order->add_order_note( "Error create receipt ", $is_customer_note = 0, $added_by_user = false );
+                    $order->add_order_note( "Помилка створення чеку ", $is_customer_note = 0, $added_by_user = false );
                     }
                 }
             }
@@ -505,7 +506,7 @@ if ( !function_exists( 'mrkv_checkbox_showPluginAdminPage' ) ) {
                     </tr>
 
                     <tr valign="top">
-                        <th scope="row">Auto create receipt</th>
+                        <th scope="row">Створювати чеки автоматично при статусі Виконано</th>
                         <td><input class="table_input" type="checkbox" name="ppo_auto_create"    <?php echo get_option('ppo_auto_create') ? "checked":'';?> /></td>
                     </tr>
 
