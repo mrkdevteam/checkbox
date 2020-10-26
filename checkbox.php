@@ -230,7 +230,7 @@ if ( !function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
             <br>
             <input type="hidden" id="ppo_shift_id" value="<?php echo $shift_id;?>">
             <div id="ppo_proccess" style="display: none" >
-                <img src="/wp-content/plugins/ppo/img/proccess.webp" width="50px" height="50px" alt="proccess imgage" />
+                <img src="plugins_url( 'img/proccess.webp' , __FILE__ )" width="50px" height="50px" alt="proccess imgage" />
             </div>
             <?php if (!$is_connected): ?>
                 <button type="button" id="ppo_button_connect" class="start button button-secondary">Start work day</button>
@@ -286,7 +286,7 @@ if ( !function_exists( 'wporg_init' ) ) {
         $cashbox_key = get_option('ppo_cashbox_key');
 
         if ($login && $password && $cashbox_key) {
-            $shift_id = isset($_POST['shift_id']) ? $_POST['shift_id']:'';
+            $shift_id = isset($_POST['shift_id']) ? sanitize_text_field( $_POST['shift_id'] ):'';
             if ($shift_id) {
                 $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key,true);
                 $response = $api->checkConnection($shift_id);
@@ -485,7 +485,7 @@ if ( !function_exists( 'mrkv_checkbox_showPluginAdminPage' ) ) {
             <h2>PPO settings</h2>
 
             <form method="post" action="options.php">
-                <? settings_fields( 'ppo-settings-group' ); ?>
+                <?php settings_fields( 'ppo-settings-group' ); ?>
 
                 <table class="form-table">
 
@@ -520,6 +520,6 @@ if ( !function_exists( 'mrkv_checkbox_showPluginAdminPage' ) ) {
 
             </form>
         </div>
-        <?
+        <?php
     }
 }
