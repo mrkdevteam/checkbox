@@ -5,7 +5,7 @@
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox
  * Description: WooCommerce Checkbox Integration
  * Version: 0.0.1
- * Author: MORKVA (Neroznak Oleksandr)
+ * Author: MORKVA
  * Author URI: https://morkva.co.ua
  * License: GPL v2 or later
  */
