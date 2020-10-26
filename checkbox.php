@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Checkbox Integration
- * Plugin URI: https://morkva.co.ua/shop-2/checkbox
+ * Plugin URI: https://morkva.co.ua/shop-2/checkbox?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
  * Version: 0.0.1
  * Author: MORKVA
@@ -87,7 +87,7 @@ add_action( 'woocommerce_order_action_create_bill_action', 'mrkv_checkbox_wc_pro
 
 if ( !function_exists( 'mrkv_checkbox_wc_new_order_column' ) ) {
     function mrkv_checkbox_wc_new_order_column( $columns ) {
-        $columns['receipt_column'] = 'Receipt';
+        $columns['receipt_column'] = 'ID Чека';
         return $columns;
     }
 }
@@ -515,7 +515,7 @@ if ( !function_exists( 'mrkv_checkbox_showPluginAdminPage' ) ) {
                 <input type="hidden" name="page_options" value="ppo_login,ppo_password,ppo_cashbox_key,ppo_auto_create" />
 
                 <p class="submit">
-                    <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+                    <input type="submit" class="button-primary" value="<?php _e('Зберегти') ?>" />
                 </p>
 
             </form>
