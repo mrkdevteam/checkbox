@@ -128,7 +128,9 @@ if ( !function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
                 $shift = $api->getCurrentCashierShift();
                 if (isset($shift['status'])&&($shift['status']=='OPENED')){
                     // create receipt
-                    mrkv_checkbox_create_reciept($api,$order);
+                    if (mrkv_checkbox_create_reciept($api,$order)){
+                    $order->add_order_note( "Error create receipt ", $is_customer_note = 0, $added_by_user = false );
+                    }
                 }
             }
         }
