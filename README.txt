@@ -1,12 +1,12 @@
 === Checkbox ===
 Contributors: bandido
-Tags: woocommerce, Checkbox, пРРО
+Tags: woocommerce, Checkbox, РРО
 Requires at least: 4.1
 Tested up to: 5.5.1
 Stable tag: 0.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WooComerce tested up to: 4.6.0
+WooComerce tested up to: 4.6.1
 
 Плагін інтеграції з Checkbox: ручне або автоматичне створення чеків з замовлень і відправка їх у ваш кабінет Checkbox та на email покупця
 
@@ -15,6 +15,10 @@ WooComerce tested up to: 4.6.0
 Плагін дозволяє створювати автоматично (при зміні статусу замовлення на Виконано) або вручну чеки. Чек прийде покупцю на email.
 
 ID чека з'явиться в Custom fields замовлення і ви зможете брати це значення для інших плагінів і CRM.
+
+Для роботи плагіна необхідно мати акаунт на Checkbox (https://checkbox.in.ua)
+Checkbox Terms Of Service: https://docs.google.com/document/d/1TcnFPdHqc6yiel8vRjIvT3YOLOLnhN9-LIj80tQUOhU
+Checkbox Privacy: https://checkbox.in.ua/policy
 
 
 
@@ -51,6 +55,9 @@ ID чека з'явиться в Custom fields замовлення і ви зм
 
 
 == Що нового? ==
+
+= 0.1.0 =
+* незначні правки коду
 
 = 0.0.1 =
 * beta-версія плагіна
