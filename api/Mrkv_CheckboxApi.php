@@ -118,7 +118,7 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
                 'sslverify' => false,
                 'body' => json_encode($fields))
             );
-            return json_decode($responce,true);
+            return $responce,true;
         }
 
         private function makeGetRequest($route,$params = [],$header_params = [])
