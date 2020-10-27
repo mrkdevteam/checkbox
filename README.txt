@@ -3,7 +3,7 @@ Contributors: bandido
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 4.1
 Tested up to: 5.5.1
-Stable tag: 0.0.1
+Stable tag: 0.1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooComerce tested up to: 4.6.1
