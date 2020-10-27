@@ -26,7 +26,6 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         {
             $params = ['login'=>$this->login,'password'=>$this->password];
             $response = $this->makePostRequest('/api/v1/cashier/signin',$params);
-            //ppr($response);
             $this->access_token = $response['access_token'] ?? '';
         }
 
@@ -70,7 +69,6 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         {
             $url = '/api/v1/shifts/'.$shift_id;
             $response = $this->makeGetRequest($url);
-            //ppr($url);
             return $response;
         }
 
@@ -82,9 +80,9 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
 
         private function makePostRequest($route,$params = [],$header_params = [])
         {
-            $url_host = $this->is_dev ? 'https://api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
+            $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
             $url = $url_host.$route;
-            $curl=curl_init();
+            // $curl=curl_init();
 
             $header = [];
 
@@ -97,24 +95,35 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
                 $header[] = 'X-License-Key:'.$header_params['cashbox_key'];
             }
 
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $header );
-            curl_setopt($curl,CURLOPT_URL, $url);
-            curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($curl,CURLOPT_POST,true);
+            // curl_setopt($curl, CURLOPT_HTTPHEADER, $header );
+            // curl_setopt($curl,CURLOPT_URL, $url);
+            // curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+            // curl_setopt($curl,CURLOPT_POST,true);
             if (!empty($params)) {
-                curl_setopt($curl,CURLOPT_POSTFIELDS,json_encode($params));
+                // curl_setopt($curl,CURLOPT_POSTFIELDS,json_encode($params));
+                $fields = $params;
             }
-            curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-            $responce = curl_exec($curl);
-            $headerSent = curl_getinfo($curl, CURLINFO_HEADER_OUT );
-            //ppr($headerSent);
-            curl_close($curl);
+            // curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+            // $responce = curl_exec($curl);
+            // $headerSent = curl_getinfo($curl, CURLINFO_HEADER_OUT );
+            // curl_close($curl);
+
+            $responce = wp_remote_post($url_host, array(
+                'method' => 'POST',
+                'headers' => $header,
+                'timeout'     => 60,
+                'redirection' => 5,
+                'blocking'    => true,
+                'httpversion' => '1.0',
+                'sslverify' => false,
+                'body' => json_encode($fields))
+            );
             return json_decode($responce,true);
         }
 
         private function makeGetRequest($route,$params = [],$header_params = [])
         {
-            $url_host = $this->is_dev ? 'https://api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
+            $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
             $url = $url_host.$route;
             $curl=curl_init();
             $header = [];
@@ -137,7 +146,6 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
             curl_setopt($curl, CURLINFO_HEADER_OUT, true);
             $responce = curl_exec($curl);
             $headerSent = curl_getinfo($curl, CURLINFO_HEADER_OUT );
-            //ppr($headerSent);
             curl_close($curl);
             return json_decode($responce,true);
         }
