@@ -26,6 +26,7 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         {
             $params = ['login'=>$this->login,'password'=>$this->password];
             $response = $this->makePostRequest('/api/v1/cashier/signin',$params);
+            //ppr($response);
             $this->access_token = $response['access_token'] ?? '';
         }
 
@@ -69,6 +70,7 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         {
             $url = '/api/v1/shifts/'.$shift_id;
             $response = $this->makeGetRequest($url);
+            //ppr($url);
             return $response;
         }
 
@@ -82,33 +84,18 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         {
             $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
             $url = $url_host.$route;
-            // $curl=curl_init();
 
-            $header = [];
+            $header = ['Content-type'=>'application/json'];
 
             if ($this->access_token) {
-                $authorization = "Authorization: Bearer ".$this->access_token; // Prepare the authorisation token
-                $header[] = 'Content-Type: application/json';
-                $header[] = $authorization;
+                $header = array_merge($header,['Authorization'=>'Bearer ' .trim($this->access_token)]);
             }
+
             if (isset($header_params['cashbox_key'])) {
-                $header[] = 'X-License-Key:'.$header_params['cashbox_key'];
+                $header = array_merge($header,['X-License-Key'=>$header_params['cashbox_key']]);
             }
 
-            // curl_setopt($curl, CURLOPT_HTTPHEADER, $header );
-            // curl_setopt($curl,CURLOPT_URL, $url);
-            // curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
-            // curl_setopt($curl,CURLOPT_POST,true);
-            if (!empty($params)) {
-                // curl_setopt($curl,CURLOPT_POSTFIELDS,json_encode($params));
-                $fields = $params;
-            }
-            // curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-            // $responce = curl_exec($curl);
-            // $headerSent = curl_getinfo($curl, CURLINFO_HEADER_OUT );
-            // curl_close($curl);
-
-            $responce = wp_remote_post($url_host, array(
+            $responce = wp_remote_post($url, array(
                 'method' => 'POST',
                 'headers' => $header,
                 'timeout'     => 60,
@@ -116,38 +103,44 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
                 'blocking'    => true,
                 'httpversion' => '1.0',
                 'sslverify' => false,
-                'body' => json_encode($fields))
+                'body' => json_encode($params))
             );
-            return $responce;
+
+            return isset($responce['body']) ? (array)json_decode($responce['body']):'';
         }
 
         private function makeGetRequest($route,$params = [],$header_params = [])
         {
             $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
             $url = $url_host.$route;
-            $curl=curl_init();
-            $header = [];
 
+            $header = ['Content-type'=>'application/json'];
             if ($this->access_token) {
-                $authorization = "Authorization: Bearer ".$this->access_token; // Prepare the authorisation token
-                $header[] = 'Content-Type: application/json';
-                $header[] = $authorization;
-            }
-            if (isset($header_params['cashbox_key'])) {
-                $header[] = 'X-License-Key:'.$header_params['cashbox_key'];
+                $header = array_merge($header,['Authorization'=>'Bearer ' .trim($this->access_token)]);
             }
 
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $header );
-            curl_setopt($curl,CURLOPT_URL, $url);
-            curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
-            if (!empty($params)) {
-                curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($params));
+            if (isset($header_params['cashbox_key'])) {
+                $header = array_merge($header,['X-License-Key'=>$header_params['cashbox_key']]);
             }
-            curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-            $responce = curl_exec($curl);
-            $headerSent = curl_getinfo($curl, CURLINFO_HEADER_OUT );
-            curl_close($curl);
-            return json_decode($responce,true);
+
+            if ($params) {
+                $params = http_build_query($params);
+            } else {
+                $params = '';
+            }
+
+            $responce = wp_remote_get($url, array(
+                    'method' => 'GET',
+                    'headers' => $header,
+                    'timeout'     => 60,
+                    'redirection' => 5,
+                    'blocking'    => true,
+                    'httpversion' => '1.0',
+                    'sslverify' => false,
+                    'body' => $params
+            ));
+
+            return isset($responce['body']) ? (array)json_decode($responce['body']):'';
         }
 
     }

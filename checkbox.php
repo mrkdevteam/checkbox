@@ -17,6 +17,26 @@ if ( ! defined('ABSPATH')) {
 
 use Automattic\WooCommerce\Admin\Overrides\Order;
 
+function ppr($var)
+{
+    echo '<pre>';
+    print_r($var);
+    echo '</pre>';
+}
+
+function ppre($var)
+{
+    ppr($var);
+    wp_die();
+}
+
+function pprd($var)
+{
+    echo '<pre>';
+    error_log(print_r($var,true));
+    echo '</pre>';
+}
+
 require_once( 'api/Mrkv_CheckboxApi.php');
 
 if ( !function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
@@ -159,12 +179,12 @@ if ( !function_exists( 'mrkv_checkbox_create_reciept' ) ) {
             $good = [
                 'code'=>$item->get_id().'-'.$item->get_name(),
                 'name'=>$item->get_name(),
-                'price'=>$item->get_total()*1000
+                'price'=>$item->get_total()
             ];
 
             $goods[] = [
                 'good'=>$good,
-                'quantity'=>$item->get_quantity()
+                'quantity'=>$item->get_quantity()*1000
             ];
         }
 
@@ -174,7 +194,7 @@ if ( !function_exists( 'mrkv_checkbox_create_reciept' ) ) {
         $params['delivery'] = ['email'=>$email];
         $params['payments'][] = [
             'type'=>'CASH',
-            'value'=>$order_data['total']*1000
+            'value'=>$order_data['total']
         ];
 
         $reciept = $api->create_receipt($params);
@@ -231,7 +251,7 @@ if ( !function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
             <br>
             <input type="hidden" id="ppo_shift_id" value="<?php echo $shift_id;?>">
             <div id="ppo_proccess" style="display: none" >
-                <img src="plugins_url( 'img/proccess.webp' , __FILE__ )" width="50px" height="50px" alt="proccess imgage" />
+                <img src="<?php echo plugins_url( 'img/proccess.webp' , __FILE__ ) ?>" width="50px" height="50px" alt="proccess imgage" />
             </div>
             <?php if (!$is_connected): ?>
                 <button type="button" id="ppo_button_connect" class="start button button-secondary">Start work day</button>
