@@ -26,7 +26,6 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         {
             $params = ['login'=>$this->login,'password'=>$this->password];
             $response = $this->makePostRequest('/api/v1/cashier/signin',$params);
-            //ppr($response);
             $this->access_token = $response['access_token'] ?? '';
         }
 
@@ -48,7 +47,6 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         {
             $url = '/api/v1/shifts';
             $response = $this->makeGetRequest($url);
-            ppre($response);
         }
 
         public function getCurrentCashierShift()
@@ -63,14 +61,12 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
             $url = '/api/v1/cash-registers/info';
             $header_params = ['cashbox_key'=>$this->cashbox_key];
             $response = $this->makeGetRequest($url,[],$header_params);
-            ppre($response);
         }
 
         public function checkConnection($shift_id)
         {
             $url = '/api/v1/shifts/'.$shift_id;
             $response = $this->makeGetRequest($url);
-            //ppr($url);
             return $response;
         }
 

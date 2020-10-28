@@ -4,7 +4,7 @@
  * Plugin Name: Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
- * Version: 0.1.5
+ * Version: 0.1.6
  * Tested up to: 5.5.1
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
@@ -159,12 +159,12 @@ if ( !function_exists( 'mrkv_checkbox_create_reciept' ) ) {
             $good = [
                 'code'=>$item->get_id().'-'.$item->get_name(),
                 'name'=>$item->get_name(),
-                'price'=>$item->get_total()
+                'price'=>$item->get_total()*1000
             ];
 
             $goods[] = [
                 'good'=>$good,
-                'quantity'=>$item->get_quantity()*1000
+                'quantity'=>$item->get_quantity()
             ];
         }
 
@@ -174,7 +174,7 @@ if ( !function_exists( 'mrkv_checkbox_create_reciept' ) ) {
         $params['delivery'] = ['email'=>$email];
         $params['payments'][] = [
             'type'=>'CASH',
-            'value'=>$order_data['total']
+            'value'=>$order_data['total']*1000
         ];
 
         $reciept = $api->create_receipt($params);
