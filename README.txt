@@ -2,11 +2,11 @@
 Contributors: bandido
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 4.1
-Tested up to: 5.5.1
-Stable tag: 0.1.0
+Tested up to: 5.5
+Stable tag: 0.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WooComerce tested up to: 4.6.1
+WooComerce tested up to: 4.7
 
 Плагін інтеграції з Checkbox: ручне або автоматичне створення чеків з замовлень і відправка їх у ваш кабінет Checkbox та на email покупця
 
@@ -55,6 +55,9 @@ Checkbox Privacy: https://checkbox.in.ua/policy
 
 
 == Що нового? ==
+
+= 0.2.1 =
+* виправлено помилки
 
 = 0.1.0 =
 * незначні правки коду

@@ -4,12 +4,48 @@
  * Plugin Name: Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
- * Version: 0.1.6
- * Tested up to: 5.5.1
+ * Version: 0.2.1
+ * Tested up to: 5.5
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
  * License: GPL v2 or later
  */
+
+if ( ! function_exists( 'mrkv_checkbox_fs' ) ) {
+    // Create a helper function for easy SDK access.
+    function mrkv_checkbox_fs() {
+        global $mrkv_checkbox_fs;
+
+        if ( ! isset( $mrkv_checkbox_fs ) ) {
+            // Include Freemius SDK.
+            require_once dirname(__FILE__) . '/freemius/start.php';
+
+            $mrkv_checkbox_fs = fs_dynamic_init( array(
+                'id'                  => '7363',
+                'slug'                => 'checkbox',
+                'type'                => 'plugin',
+                'public_key'          => 'pk_427357af1906f728486bdb1f5f4a3',
+                'is_premium'          => false,
+                'has_addons'          => false,
+                'has_paid_plans'      => false,
+                'menu'                => array(
+                    'slug'           => 'ppoSettings',
+                    'first-path'     => 'admin.php?page=ppoSettings',
+                    'account'        => false,
+                    'contact'        => false,
+                    'support'        => false,
+                ),
+            ) );
+        }
+
+        return $mrkv_checkbox_fs;
+    }
+
+    // Init Freemius.
+    mrkv_checkbox_fs();
+    // Signal that SDK was initiated.
+    do_action( 'mrkv_checkbox_fs_loaded' );
+}
 
 if ( ! defined('ABSPATH')) {
   exit;
@@ -66,7 +102,7 @@ function mrkv_checkbox_wc_process_order_meta_box_action($order) {
             return;
         }
 
-        $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key,true);
+        $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key);
         // Check current status
         $current_shift = $api->getCurrentCashierShift();
         if (isset($current_shift['status'])&&($current_shift['status']!='OPENED')) {
@@ -79,7 +115,7 @@ function mrkv_checkbox_wc_process_order_meta_box_action($order) {
         if ($status) {
             $order->add_order_note( "Чек створено", $is_customer_note = 0, $added_by_user = false );
         } else {
-            $order->add_order_note( "Error create reciept", $is_customer_note = 0, $added_by_user = false );
+            $order->add_order_note( "Помилка створення чека", $is_customer_note = 0, $added_by_user = false );
         }
 
     }
@@ -125,11 +161,11 @@ if ( !function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
             $cashbox_key = get_option('ppo_cashbox_key');
 
             if ($login&&$password&&$cashbox_key) {
-                $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key,true);
+                $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key);
                 $shift = $api->getCurrentCashierShift();
                 if (isset($shift['status'])&&($shift['status']=='OPENED')){
                     // create receipt
-                    if (mrkv_checkbox_create_reciept($api,$order)){
+                    if (!mrkv_checkbox_create_reciept($api,$order)){
                     $order->add_order_note( "Помилка створення чеку ", $is_customer_note = 0, $added_by_user = false );
                     }
                 }
@@ -214,7 +250,7 @@ if ( !function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
 
         if ($login&&$password&&$cashbox_key)
         {
-            $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key,true);
+            $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key);
             $shift = $api->getCurrentCashierShift();
             if ($shift) {
                 $shift_id = isset($shift['id'])? $shift['id'] : '';
@@ -255,7 +291,7 @@ if ( !function_exists( 'mrkv_checkbox_start_connect' ) ) {
         $cashbox_key = get_option('ppo_cashbox_key');
 
         if ($login&&$password&&$cashbox_key) {
-            $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key,true);
+            $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key);
 
             $shift = $api->connect();
             if (isset($shift['id'])) {
@@ -289,7 +325,7 @@ if ( !function_exists( 'wporg_init' ) ) {
         if ($login && $password && $cashbox_key) {
             $shift_id = isset($_POST['shift_id']) ? sanitize_text_field( $_POST['shift_id'] ):'';
             if ($shift_id) {
-                $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key,true);
+                $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key);
                 $response = $api->checkConnection($shift_id);
                 $status = isset($response['status'])?$response['status']:'';
                 $res['status'] = $status;
@@ -319,7 +355,7 @@ if ( !function_exists( 'mrkv_checkbox_disconnect' ) ) {
         $cashbox_key = get_option('ppo_cashbox_key');
 
         if ($login&&$password&&$cashbox_key) {
-            $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key,true);
+            $api = new Mrkv_CheckboxApi($login,$password,$cashbox_key);
 
             $shift = $api->disconnect();
             if (isset($shift['id'])) {

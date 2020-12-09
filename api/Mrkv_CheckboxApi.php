@@ -25,7 +25,8 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         public function getBearToken()
         {
             $params = ['login'=>$this->login,'password'=>$this->password];
-            $response = $this->makePostRequest('/api/v1/cashier/signin',$params);
+            $header_params = ['X-Client-Name'=>'Morkva'];
+            $response = $this->makePostRequest('/api/v1/cashier/signin',$params, $header_params);
             $this->access_token = $response['access_token'] ?? '';
         }
 
