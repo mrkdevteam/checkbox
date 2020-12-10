@@ -1,11 +1,10 @@
 <?php
-
 /**
  * Plugin Name: Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
- * Version: 0.2.1
- * Tested up to: 5.5
+ * Version: 0.2.3
+ * Tested up to: 5.6
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
  * License: GPL v2 or later
@@ -190,29 +189,37 @@ if ( !function_exists( 'mrkv_checkbox_create_reciept' ) ) {
         $goods_items = $order->get_items();
 
         $goods = [];
+        $totalPrice = 0;
         /* @var WC_Order_Item_Product $item */
         foreach ($goods_items as $item) {
+            
+            $price = ($item->get_total()/$item->get_quantity());
+            
             $good = [
                 'code'=>$item->get_id().'-'.$item->get_name(),
                 'name'=>$item->get_name(),
-                'price'=>$item->get_total()*1000
+                'price'=>$price*100
             ];
+
+            $totalPrice = $totalPrice + $price*100*$item->get_quantity();
 
             $goods[] = [
                 'good'=>$good,
-                'quantity'=>$item->get_quantity()
+                'quantity'=>(int)($item->get_quantity()*1000)
             ];
         }
-
+        
         $params['goods'] = $goods;
         $params['cashier_name'] = $cashier_name;
         $params['departament'] = $departament;
         $params['delivery'] = ['email'=>$email];
         $params['payments'][] = [
             'type'=>'CASH',
-            'value'=>$order_data['total']*1000
+            'value'=>$totalPrice
         ];
 
+        //ppre($params);
+        
         $reciept = $api->create_receipt($params);
         // save order ID
         if (isset($reciept['id'])) {
