@@ -3,7 +3,7 @@
  * Plugin Name: Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
- * Version: 0.2.3
+ * Version: 0.2.4
  * Tested up to: 5.6
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
@@ -534,17 +534,17 @@ if ( !function_exists( 'mrkv_checkbox_showPluginAdminPage' ) ) {
                 <table class="form-table">
 
                     <tr valign="top">
-                        <th scope="row">Login</th>
+                        <th scope="row">Логін касира</th>
                         <td><input class="table_input" type="text" name="ppo_login" value="<?php echo get_option('ppo_login'); ?>" /></td>
                     </tr>
 
                     <tr valign="top">
-                        <th scope="row">Password</th>
+                        <th scope="row">Пароль користувача</th>
                         <td><input class="table_input" type="password" name="ppo_password" value="<?php echo get_option('ppo_password'); ?>" /></td>
                     </tr>
 
                     <tr valign="top">
-                        <th scope="row">Cashbox key</th>
+                        <th scope="row">Ключ каси</th>
                         <td><input class="table_input" type="text" name="ppo_cashbox_key" value="<?php echo get_option('ppo_cashbox_key'); ?>" /></td>
                     </tr>
 
