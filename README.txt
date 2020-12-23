@@ -3,7 +3,7 @@ Contributors: bandido
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 4.1
 Tested up to: 5.6
-Stable tag: 0.2.4
+Stable tag: 0.2.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooComerce tested up to: 4.8
@@ -26,7 +26,7 @@ Checkbox Privacy: https://checkbox.in.ua/policy
 
 1. Встановіть і активуйте плагін.
 
-2. На сторінці налаштувань плагіна, введіть ключ каси, логін касира та пароль користувача (не касира, а саме користувача) та натисність [Зберегти]
+2. На сторінці налаштувань плагіна, введіть ключ каси, логін та пароль касира та натисність [Зберегти]
 
 2.1 Якщо бажаєте створювати чеки автоматично, при зміні статуса замовлення на Виконано - виберіть відповідний чекбокс
 
