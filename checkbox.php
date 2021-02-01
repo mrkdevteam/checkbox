@@ -3,7 +3,7 @@
  * Plugin Name: Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
- * Version: 0.2.5
+ * Version: 0.3.1
  * Tested up to: 5.6
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
@@ -58,8 +58,11 @@ if ( !function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
     function mrkv_checkbox_register_mysettings() {
         register_setting( 'ppo-settings-group', 'ppo_login' );
         register_setting( 'ppo-settings-group', 'ppo_password' );
+        register_setting( 'ppo-settings-group', 'ppo_cashier_name');
+        register_setting( 'ppo-settings-group', 'ppo_cashier_surname');
         register_setting( 'ppo-settings-group', 'ppo_cashbox_key' );
         register_setting( 'ppo-settings-group', 'ppo_auto_create');
+        register_setting( 'ppo-settings-group', 'ppo_payment_type');
     }
 }
 add_action( 'admin_init', 'mrkv_checkbox_register_mysettings' );
@@ -179,22 +182,31 @@ add_action( 'woocommerce_order_status_changed', 'mrkv_checkbox_auto_create_recei
 /* @var Order $order */
 if ( !function_exists( 'mrkv_checkbox_create_reciept' ) ) {
     function mrkv_checkbox_create_reciept($api,$order) {
+
+        $payment_settings = get_option('ppo_payment_type');
         $user = wp_get_current_user();
-        $email = $user->user_email;
-        $cashier_name = $user->first_name.' '.$user->last_name;
+
+        $cashier_name = get_option('ppo_cashier_name').' '.get_option('ppo_cashier_surname');
         $departament = 'store';
 
         $params = [];
         $order_data = $order->get_data();
         $goods_items = $order->get_items();
+        $payment_medthod = $order->get_payment_method();
+
+        $email = isset($order_data['billing']['email']) ? $order_data['billing']['email'] : $user->user_email;
+
+        //ppre($order_data);
+
+        $payment_type = isset($payment_settings[$payment_medthod]) ? mb_strtoupper($payment_settings[$payment_medthod]):'CASHLESS';
 
         $goods = [];
         $totalPrice = 0;
         /* @var WC_Order_Item_Product $item */
         foreach ($goods_items as $item) {
-            
+
             $price = ($item->get_total()/$item->get_quantity());
-            
+
             $good = [
                 'code'=>$item->get_id().'-'.$item->get_name(),
                 'name'=>$item->get_name(),
@@ -208,18 +220,18 @@ if ( !function_exists( 'mrkv_checkbox_create_reciept' ) ) {
                 'quantity'=>(int)($item->get_quantity()*1000)
             ];
         }
-        
+
         $params['goods'] = $goods;
         $params['cashier_name'] = $cashier_name;
         $params['departament'] = $departament;
         $params['delivery'] = ['email'=>$email];
         $params['payments'][] = [
-            'type'=>'CASH',
+            'type'=>$payment_type,
             'value'=>$totalPrice
         ];
 
         //ppre($params);
-        
+
         $reciept = $api->create_receipt($params);
         // save order ID
         if (isset($reciept['id'])) {
@@ -534,17 +546,27 @@ if ( !function_exists( 'mrkv_checkbox_showPluginAdminPage' ) ) {
                 <table class="form-table">
 
                     <tr valign="top">
-                        <th scope="row">Login</th>
+                        <th scope="row">Логін касира</th>
                         <td><input class="table_input" type="text" name="ppo_login" value="<?php echo get_option('ppo_login'); ?>" /></td>
                     </tr>
 
                     <tr valign="top">
-                        <th scope="row">Password</th>
+                        <th scope="row">Пароль користувача</th>
                         <td><input class="table_input" type="password" name="ppo_password" value="<?php echo get_option('ppo_password'); ?>" /></td>
                     </tr>
 
                     <tr valign="top">
-                        <th scope="row">Cashbox key</th>
+                        <th scope="row">Ім'я касира</th>
+                        <td><input class="table_input" type="text" name="ppo_cashier_name" value="<?php echo get_option('ppo_cashier_name'); ?>" /></td>
+                    </tr>
+
+                    <tr valign="top">
+                        <th scope="row">Призвище касира</th>
+                        <td><input class="table_input" type="text" name="ppo_cashier_surname" value="<?php echo get_option('ppo_cashier_surname'); ?>" /></td>
+                    </tr>
+
+                    <tr valign="top">
+                        <th scope="row">Ключ каси</th>
                         <td><input class="table_input" type="text" name="ppo_cashbox_key" value="<?php echo get_option('ppo_cashbox_key'); ?>" /></td>
                     </tr>
 
@@ -552,6 +574,41 @@ if ( !function_exists( 'mrkv_checkbox_showPluginAdminPage' ) ) {
                         <th scope="row">Створювати чеки автоматично при статусі Виконано</th>
                         <td><input class="table_input" type="checkbox" name="ppo_auto_create"    <?php echo get_option('ppo_auto_create') ? "checked":'';?> /></td>
                     </tr>
+
+                    <tr valign="top">
+                        <th scope="row">Налаштування статусу платіжної системи (CASH або CASHLESS)</th>
+                        <td>
+                    <?php
+                    $gateways = WC()->payment_gateways->get_available_payment_gateways();
+                    $ppo_payment_type = get_option('ppo_payment_type');
+                    foreach ($gateways as $gateway) :
+                    if ($gateway->enabled == 'yes'):
+                    ?>
+
+                        <div>
+                            <table>
+                                <td style="width: 60%;">
+                                        <?php echo $gateway->title ?>
+                                </td>
+                                <td>
+                                        <input type="radio" name="ppo_payment_type[<?php echo $gateway->id ?>]"  <?php if (isset($ppo_payment_type[$gateway->id])&&($ppo_payment_type[$gateway->id] == 'cash' )) { echo "checked"; }  ?>  value="cash" ><label>CASH</label>
+                                </td>
+                                <td>
+                                        <input type="radio" name="ppo_payment_type[<?php echo $gateway->id ?>]"  <?php if (isset($ppo_payment_type[$gateway->id])&&($ppo_payment_type[$gateway->id] == 'cashless' )) { echo "checked"; }  ?>  value="cashless" ><label>CASHLESS</label>
+
+                                </td>
+                            </table>
+                        </div>
+
+
+                    <?php
+                        endif;
+                        endforeach;
+                    ?>
+                        </td>
+                    </tr>
+
+
 
                 </table>
 

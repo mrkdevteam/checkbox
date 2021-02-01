@@ -33,47 +33,53 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
         public function connect()
         {
             $cashbox_key = $this->cashbox_key;
-            $header_params = ['cashbox_key'=>$cashbox_key];
-            $response =  $this->makePostRequest('/api/v1/shifts',[],$header_params);
+            $header_params = ['cashbox_key'=>$cashbox_key,'X-Client-Name'=>'Morkva'];
+            $response =  $this->makePostRequest('/api/v1/shifts', [], $header_params);
             return $response;
         }
 
         public function disconnect()
         {
-            $response = $this->makePostRequest('/api/v1/shifts/close');
+            $header_params = ['X-Client-Name'=>'Morkva'];
+            $response = $this->makePostRequest('/api/v1/shifts/close', [], $header_params);
             return $response;
         }
 
         public function getShifts()
         {
+            $header_params = ['X-Client-Name'=>'Morkva'];
             $url = '/api/v1/shifts';
-            $response = $this->makeGetRequest($url);
+            $response = $this->makeGetRequest($url, [], $header_params);
         }
 
         public function getCurrentCashierShift()
         {
+            $header_params = ['X-Client-Name'=>'Morkva'];
             $url = '/api/v1/cashier/shift';
-            $response = $this->makeGetRequest($url);
+            $response = $this->makeGetRequest($url,[], $header_params);
             return $response;
         }
 
         public function getCurrentCashboxInfo()
         {
             $url = '/api/v1/cash-registers/info';
-            $header_params = ['cashbox_key'=>$this->cashbox_key];
+            $header_params = ['X-Client-Name'=>'Morkva','cashbox_key'=>$this->cashbox_key];
             $response = $this->makeGetRequest($url,[],$header_params);
+            return $response;
         }
 
         public function checkConnection($shift_id)
         {
+            $header_params = ['X-Client-Name'=>'Morkva'];
             $url = '/api/v1/shifts/'.$shift_id;
-            $response = $this->makeGetRequest($url);
+            $response = $this->makeGetRequest($url, [], $header_params);
             return $response;
         }
 
         public function create_receipt($params)
         {
-            $response = $this->makePostRequest('/api/v1/receipts/sell',$params);
+            $header_params = ['X-Client-Name'=>'Morkva'];
+            $response = $this->makePostRequest('/api/v1/receipts/sell',$params, $header_params);
             return $response;
         }
 
@@ -90,6 +96,10 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
 
             if (isset($header_params['cashbox_key'])) {
                 $header = array_merge($header,['X-License-Key'=>$header_params['cashbox_key']]);
+            }
+
+            if (isset($header_params['X-Client-Name'])) {
+                $header = array_merge($header,['X-Client-Name'=>$header_params['X-Client-Name']]);
             }
 
             $responce = wp_remote_post($url, array(
@@ -119,6 +129,11 @@ if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
             if (isset($header_params['cashbox_key'])) {
                 $header = array_merge($header,['X-License-Key'=>$header_params['cashbox_key']]);
             }
+
+            if (isset($header_params['X-Client-Name'])) {
+                $header = array_merge($header,['X-Client-Name'=>$header_params['X-Client-Name']]);
+            }
+
 
             if ($params) {
                 $params = http_build_query($params);
