@@ -1,14 +1,12 @@
 === Checkbox ===
 Contributors: bandido
 Tags: woocommerce, Checkbox, РРО
-Requires at least: 4.1
-Tested up to: 5.6
-Stable tag: 0.2.4
+Tested up to: 5.7.2
+Stable tag: 0.3.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WooComerce tested up to: 4.8
 
-Плагін інтеграції з Checkbox: ручне або автоматичне створення чеків з замовлень і відправка їх у ваш кабінет Checkbox та на email покупця
+Плагін інтеграції з пРРО Checkbox: ручне або автоматичне створення чеків з замовлень і відправка їх у ваш кабінет Checkbox та на email покупця
 
 == Description ==
 
@@ -16,9 +14,17 @@ WooComerce tested up to: 4.8
 
 ID чека з'явиться в Custom fields замовлення і ви зможете брати це значення для інших плагінів і CRM.
 
-Для роботи плагіна необхідно мати акаунт на Checkbox (https://checkbox.in.ua)
-Checkbox Terms Of Service: https://docs.google.com/document/d/1TcnFPdHqc6yiel8vRjIvT3YOLOLnhN9-LIj80tQUOhU
-Checkbox Privacy: https://checkbox.in.ua/policy
+Для роботи плагіна необхідно мати акаунт на Checkbox 
+
+https://checkbox.in.ua
+
+Checkbox Terms Of Service: 
+
+https://docs.google.com/document/d/1TcnFPdHqc6yiel8vRjIvT3YOLOLnhN9-LIj80tQUOhU
+
+Checkbox Privacy: 
+
+https://checkbox.in.ua/policy
 
 
 
@@ -31,6 +37,7 @@ Checkbox Privacy: https://checkbox.in.ua/policy
 - логін касира,
 - пароль користувача (не касира, а саме користувача),
 - прізвище та ім'я касира,
+- для способів оплати виберіть відповідне значення готівка чи безготівка (CASH/CASHLESS)
  та натисність [Зберегти]
 
 2.1 Якщо бажаєте створювати чеки автоматично, при зміні статуса замовлення на Виконано - виберіть відповідний чекбокс
@@ -60,6 +67,11 @@ Checkbox Privacy: https://checkbox.in.ua/policy
 
 
 == Що нового? ==
+
+= 0.3.2 =
+* виправили помилку з множником ціни
+* WordPress 5.7 Tested
+* WooCommerce 5.3 Tested
 
 = 0.3.1 =
 * виправили помилку з емейлом покупця
