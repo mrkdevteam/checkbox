@@ -5,8 +5,7 @@
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
  * Version: 0.3.2
- * Tested up to: 5.6
- * Requires at least: 5.2
+ * Tested up to: 5.7
  * Requires PHP: 5.6
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
