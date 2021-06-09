@@ -1,159 +1,162 @@
 <?php
 
-if ( !class_exists( 'Mrkv_CheckboxApi' ) ) {
-    class Mrkv_CheckboxApi
-    {
-        private $login;
+if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
+	class Mrkv_CheckboxApi {
 
-        private $password;
+		private $login;
 
-        private $cashbox_key;
+		private $password;
 
-        private $is_dev;
+		private $cashbox_key;
 
-        private $access_token = '';
+		private $is_dev;
 
-        public function __construct($login,$password,$cashbox_key,$is_dev = false)
-        {
-            $this->login = $login;
-            $this->password = $password;
-            $this->cashbox_key = $cashbox_key;
-            $this->is_dev = $is_dev;
-            $this->getBearToken();
-        }
+		private $access_token = '';
 
-        public function getBearToken()
-        {
-            $params = ['login'=>$this->login,'password'=>$this->password];
-            $header_params = ['X-Client-Name'=>'Morkva'];
-            $response = $this->makePostRequest('/api/v1/cashier/signin',$params, $header_params);
-            $this->access_token = $response['access_token'] ?? '';
-        }
+		public function __construct( $login, $password, $cashbox_key, $is_dev = true ) {
+			$this->login       = $login;
+			$this->password    = $password;
+			$this->cashbox_key = $cashbox_key;
+			$this->is_dev      = $is_dev;
+			$this->getBearToken();
+		}
 
-        public function connect()
-        {
-            $cashbox_key = $this->cashbox_key;
-            $header_params = ['cashbox_key'=>$cashbox_key,'X-Client-Name'=>'Morkva'];
-            $response =  $this->makePostRequest('/api/v1/shifts', [], $header_params);
-            return $response;
-        }
+		public function getBearToken() {
+			$params             = array(
+				'login'    => $this->login,
+				'password' => $this->password,
+			);
+			$header_params      = array( 'X-Client-Name' => 'Morkva' );
+			$response           = $this->makePostRequest( '/api/v1/cashier/signin', $params, $header_params );
+			$this->access_token = $response['access_token'];
+		}
 
-        public function disconnect()
-        {
-            $header_params = ['X-Client-Name'=>'Morkva'];
-            $response = $this->makePostRequest('/api/v1/shifts/close', [], $header_params);
-            return $response;
-        }
+		public function connect() {
+			 $cashbox_key  = $this->cashbox_key;
+			$header_params = array(
+				'cashbox_key'   => $cashbox_key,
+				'X-Client-Name' => 'Morkva',
+			);
+			$response      = $this->makePostRequest( '/api/v1/shifts', array(), $header_params );
+			return $response;
+		}
 
-        public function getShifts()
-        {
-            $header_params = ['X-Client-Name'=>'Morkva'];
-            $url = '/api/v1/shifts';
-            $response = $this->makeGetRequest($url, [], $header_params);
-        }
+		public function disconnect() {
+			$header_params = array( 'X-Client-Name' => 'Morkva' );
+			$response      = $this->makePostRequest( '/api/v1/shifts/close', array(), $header_params );
+			return $response;
+		}
 
-        public function getCurrentCashierShift()
-        {
-            $header_params = ['X-Client-Name'=>'Morkva'];
-            $url = '/api/v1/cashier/shift';
-            $response = $this->makeGetRequest($url,[], $header_params);
-            return $response;
-        }
+		public function getShifts() {
+			$header_params = array( 'X-Client-Name' => 'Morkva' );
+			$url           = '/api/v1/shifts';
+			$response      = $this->makeGetRequest( $url, array(), $header_params );
+		}
 
-        public function getCurrentCashboxInfo()
-        {
-            $url = '/api/v1/cash-registers/info';
-            $header_params = ['X-Client-Name'=>'Morkva','cashbox_key'=>$this->cashbox_key];
-            $response = $this->makeGetRequest($url,[],$header_params);
-            return $response;
-        }
+		public function getCurrentCashierShift() {
+			$header_params = array( 'X-Client-Name' => 'Morkva' );
+			$url           = '/api/v1/cashier/shift';
+			$response      = $this->makeGetRequest( $url, array(), $header_params );
+			return $response;
+		}
 
-        public function checkConnection($shift_id)
-        {
-            $header_params = ['X-Client-Name'=>'Morkva'];
-            $url = '/api/v1/shifts/'.$shift_id;
-            $response = $this->makeGetRequest($url, [], $header_params);
-            return $response;
-        }
+		public function getCurrentCashboxInfo() {
+			$url           = '/api/v1/cash-registers/info';
+			$header_params = array(
+				'X-Client-Name' => 'Morkva',
+				'cashbox_key'   => $this->cashbox_key,
+			);
+			$response      = $this->makeGetRequest( $url, array(), $header_params );
+			return $response;
+		}
 
-        public function create_receipt($params)
-        {
-            $header_params = ['X-Client-Name'=>'Morkva'];
-            $response = $this->makePostRequest('/api/v1/receipts/sell',$params, $header_params);
-            return $response;
-        }
+		public function checkConnection( $shift_id ) {
+			$header_params = array( 'X-Client-Name' => 'Morkva' );
+			$url           = '/api/v1/shifts/' . $shift_id;
+			$response      = $this->makeGetRequest( $url, array(), $header_params );
+			return $response;
+		}
 
-        private function makePostRequest($route,$params = [],$header_params = [])
-        {
-            $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
-            $url = $url_host.$route;
+		public function create_receipt( $params ) {
+			 $header_params = array( 'X-Client-Name' => 'Morkva' );
+			$response       = $this->makePostRequest( '/api/v1/receipts/sell', $params, $header_params );
+			return $response;
+		}
 
-            $header = ['Content-type'=>'application/json'];
+		private function makePostRequest( $route, $params = array(), $header_params = array() ) {
+			$url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
+			$url      = $url_host . $route;
 
-            if ($this->access_token) {
-                $header = array_merge($header,['Authorization'=>'Bearer ' .trim($this->access_token)]);
-            }
+			$header = array( 'Content-type' => 'application/json' );
 
-            if (isset($header_params['cashbox_key'])) {
-                $header = array_merge($header,['X-License-Key'=>$header_params['cashbox_key']]);
-            }
+			if ( $this->access_token ) {
+				$header = array_merge( $header, array( 'Authorization' => 'Bearer ' . trim( $this->access_token ) ) );
+			}
 
-            if (isset($header_params['X-Client-Name'])) {
-                $header = array_merge($header,['X-Client-Name'=>$header_params['X-Client-Name']]);
-            }
+			if ( isset( $header_params['cashbox_key'] ) ) {
+				$header = array_merge( $header, array( 'X-License-Key' => $header_params['cashbox_key'] ) );
+			}
 
-            $responce = wp_remote_post($url, array(
-                'method' => 'POST',
-                'headers' => $header,
-                'timeout'     => 60,
-                'redirection' => 5,
-                'blocking'    => true,
-                'httpversion' => '1.0',
-                'sslverify' => false,
-                'body' => json_encode($params))
-            );
+			if ( isset( $header_params['X-Client-Name'] ) ) {
+				$header = array_merge( $header, array( 'X-Client-Name' => $header_params['X-Client-Name'] ) );
+			}
 
-            return isset($responce['body']) ? (array)json_decode($responce['body']):'';
-        }
+			$responce = wp_remote_post(
+				$url,
+				array(
+					'method'      => 'POST',
+					'headers'     => $header,
+					'timeout'     => 60,
+					'redirection' => 5,
+					'blocking'    => true,
+					'httpversion' => '1.0',
+					'sslverify'   => false,
+					'body'        => json_encode( $params ),
+				)
+			);
 
-        private function makeGetRequest($route,$params = [],$header_params = [])
-        {
-            $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
-            $url = $url_host.$route;
+			return isset( $responce['body'] ) ? (array) json_decode( $responce['body'] ) : '';
+		}
 
-            $header = ['Content-type'=>'application/json'];
-            if ($this->access_token) {
-                $header = array_merge($header,['Authorization'=>'Bearer ' .trim($this->access_token)]);
-            }
+		private function makeGetRequest( $route, $params = array(), $header_params = array() ) {
+			$url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
+			$url      = $url_host . $route;
 
-            if (isset($header_params['cashbox_key'])) {
-                $header = array_merge($header,['X-License-Key'=>$header_params['cashbox_key']]);
-            }
+			$header = array( 'Content-type' => 'application/json' );
+			if ( $this->access_token ) {
+				$header = array_merge( $header, array( 'Authorization' => 'Bearer ' . trim( $this->access_token ) ) );
+			}
 
-            if (isset($header_params['X-Client-Name'])) {
-                $header = array_merge($header,['X-Client-Name'=>$header_params['X-Client-Name']]);
-            }
+			if ( isset( $header_params['cashbox_key'] ) ) {
+				$header = array_merge( $header, array( 'X-License-Key' => $header_params['cashbox_key'] ) );
+			}
 
+			if ( isset( $header_params['X-Client-Name'] ) ) {
+				$header = array_merge( $header, array( 'X-Client-Name' => $header_params['X-Client-Name'] ) );
+			}
 
-            if ($params) {
-                $params = http_build_query($params);
-            } else {
-                $params = '';
-            }
+			if ( $params ) {
+				$params = http_build_query( $params );
+			} else {
+				$params = '';
+			}
 
-            $responce = wp_remote_get($url, array(
-                    'method' => 'GET',
-                    'headers' => $header,
-                    'timeout'     => 60,
-                    'redirection' => 5,
-                    'blocking'    => true,
-                    'httpversion' => '1.0',
-                    'sslverify' => false,
-                    'body' => $params
-            ));
+			$responce = wp_remote_get(
+				$url,
+				array(
+					'method'      => 'GET',
+					'headers'     => $header,
+					'timeout'     => 60,
+					'redirection' => 5,
+					'blocking'    => true,
+					'httpversion' => '1.0',
+					'sslverify'   => false,
+					'body'        => $params,
+				)
+			);
 
-            return isset($responce['body']) ? (array)json_decode($responce['body']):'';
-        }
+			return isset( $responce['body'] ) ? (array) json_decode( $responce['body'] ) : '';
+		}
 
-    }
+	}
 }
