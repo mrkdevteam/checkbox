@@ -13,7 +13,7 @@ if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
 
 		private $access_token = '';
 
-		public function __construct( $login, $password, $cashbox_key, $is_dev = true ) {
+		public function __construct( $login, $password, $cashbox_key, $is_dev = false ) {
 			$this->login       = $login;
 			$this->password    = $password;
 			$this->cashbox_key = $cashbox_key;
