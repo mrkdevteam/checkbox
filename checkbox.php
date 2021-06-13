@@ -123,7 +123,6 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_create_bill_order_meta_box_act
 
 	/**
 	 * Process create bill, order metabox action
-	 *
 	 * @param WC_Order $order order item
 	 */
 	function mrkv_checkbox_wc_process_create_bill_order_meta_box_action( $order ) {
@@ -172,7 +171,6 @@ if ( ! function_exists( 'mrkv_checkbox_wc_new_order_column' ) ) {
 
 	/**
 	 * Add order admin column
-	 *
 	 * @param array $columns order columns
 	 * @return array $columns with new order column
 	 */
@@ -187,7 +185,6 @@ if ( ! function_exists( 'mrkv_checkbox_wc_cogs_add_order_receipt_column_content'
 
 	/**
 	 * Fill ID Receipt column
-	 *
 	 * @param string $column
 	 */
 	function mrkv_checkbox_wc_cogs_add_order_receipt_column_content( $column ) {
@@ -209,7 +206,6 @@ add_action( 'woocommerce_order_status_changed', 'mrkv_checkbox_auto_create_recei
 if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 	/**
 	 * Automatic receipt creation
-	 *
 	 * @param integer $order_id Order ID
 	 * @param string  $old_status Old order status
 	 * @param string  $new_status New order status
@@ -255,7 +251,6 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 	/**
 	 * Receipt creation
-	 *
 	 * @param Mrkv_CheckboxAPI $api Checkbox API
 	 * @param WC_Order         $order Order Item
 	 */
@@ -286,7 +281,9 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 		$goods       = array();
 		$total_price = 0;
 
-		/* @let WC_Order_Item_Product $item */
+		/**
+		 * @param WC_Order_Item_Product $item
+		 */
 		foreach ( $goods_items as $item ) {
 
 			$price = ( $item->get_total() / $item->get_quantity() );
@@ -317,9 +314,13 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 		$result  = array();
 		$receipt = $api->create_receipt( $params );
 
-		/** Save order ID */
+		/**
+		 * Save order ID
+		 */
 		if ( isset( $receipt['id'] ) ) {
-			/** Save receipt ID in meta */
+			/**
+			 * Save receipt ID in meta
+			 */
 			update_post_meta( $order->get_id(), 'reciept_id', sanitize_text_field( $receipt['id'] ) );
 			$result['success'] = true;
 		} else {
