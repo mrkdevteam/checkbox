@@ -2,11 +2,11 @@
 Contributors: bandido
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 4.1
-Tested up to: 5.6
-Stable tag: 0.2.4
+Tested up to: 5.7.2
+Stable tag: 0.3.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WooComerce tested up to: 4.8
+WooComerce tested up to: 5.3
 
 Плагін інтеграції WooCommerce з Checkbox, сервісом програмної реєстрації розрахункових операцій.
 

@@ -6,7 +6,7 @@
  * Version: 0.4.0
  * Tested up to: 5.7.2
  * Requires at least: 5.2
- * Requires PHP: 7.1
+ * Requires PHP: 5.6
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
  * Text Domain: checkbox
