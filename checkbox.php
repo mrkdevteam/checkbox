@@ -396,7 +396,7 @@ if ( ! function_exists( 'mrkv_checkbox_check_connection' ) ) {
 			if ( $shift_id ) {
 				$api            = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
 				$response       = $api->checkConnection( $shift_id );
-				$status         = isset( $response['status'] ) ? $response['status'] : '';
+				$status         = $response['status'] ?? '';
 				$res['status']  = $status;
 				$res['message'] = '';
 
