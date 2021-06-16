@@ -13,9 +13,6 @@
  * Domain Path: /languages
  * WC requires at least: 3.0.0
  * WC tested up to: 5.3.0
- *
- * @package Freemius
- * @package Checkbox API
  */
 
 
@@ -66,7 +63,7 @@ if ( ! function_exists( 'mrkv_checkbox_fs' ) ) {
 /**
  * INCLUDE CHECKBOX API LIBRARY
  */
-require_once 'api/Mrkv_CheckboxAPI.php';
+require_once 'api/Mrkv_CheckboxApi.php';
 
 // -----------------------------------------------------------------------//
 // --------------------------------SETUP----------------------------------//
@@ -75,9 +72,7 @@ require_once 'api/Mrkv_CheckboxAPI.php';
 add_action( 'admin_init', 'mrkv_checkbox_register_mysettings' );
 if ( ! function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
 
-	/**
-	 * Register plugin options
-	 */
+	/** Register plugin options */
 	function mrkv_checkbox_register_mysettings() {
 		register_setting( 'ppo-settings-group', 'ppo_login' );
 		register_setting( 'ppo-settings-group', 'ppo_password' );
@@ -94,11 +89,9 @@ if ( ! function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
 add_action( 'admin_menu', 'mrkv_checkbox_register_plugin_page_in_name' );
 if ( ! function_exists( 'mrkv_checkbox_register_plugin_page_in_name' ) ) {
 
-	/**
-	 * Register plugin page in admin menu
-	 */
+	/** Register plugin page in admin menu */
 	function mrkv_checkbox_register_plugin_page_in_name() {
-		add_menu_page( 'PPO', __( 'PPO Checkbox', 'checkbox' ), 'manage_woocommerce', 'ppo_settings', 'mrkv_checkbox_show_plugin_admin_page' );
+		add_menu_page( 'PPO', esc_html_e( 'PPO Checkbox', 'checkbox' ), 'manage_woocommerce', 'ppo_settings', 'mrkv_checkbox_show_plugin_admin_page' );
 	}
 }
 
@@ -112,59 +105,55 @@ add_action( 'end_work_day', 'mrkv_checkbox_disconnect' );
 add_action( 'woocommerce_order_actions', 'mrkv_checkbox_wc_add_order_meta_box_action' );
 if ( ! function_exists( 'mrkv_checkbox_wc_add_order_meta_box_action' ) ) {
 
-	/**
-	 * Add order metabox action
-	 */
+	/** Add order metabox action */
 	function mrkv_checkbox_wc_add_order_meta_box_action( $actions ) {
-		$actions['create_bill'] = __( 'Створити чек', 'checkbox' );
+		$actions['create_bill_action'] = esc_html_e( 'Створити чек', 'checkbox' );
 		return $actions;
 	}
 }
 
-add_action( 'woocommerce_order_action_create_bill', 'mrkv_checkbox_wc_process_create_bill_order_meta_box_action' );
-if ( ! function_exists( 'mrkv_checkbox_wc_process_create_bill_order_meta_box_action' ) ) {
+add_action( 'woocommerce_order_action_create_bill_action', 'mrkv_checkbox_wc_process_order_meta_box_action' );
+if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
 
-	/**
-	 * Process create bill, order metabox action
-	 * @param WC_Order $order order item
-	 */
-	function mrkv_checkbox_wc_process_create_bill_order_meta_box_action( $order ) {
+	/** Process order metabox action */
+	function mrkv_checkbox_wc_process_order_meta_box_action( $order ) {
 		$login       = get_option( 'ppo_login' );
 		$password    = get_option( 'ppo_password' );
 		$cashbox_key = get_option( 'ppo_cashbox_key' );
 
 		if ( ! $login ) {
-			$order->add_order_note( __( 'Вкажіть логін в налаштуваннях РРО Checkbox', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+			$order->add_order_note( esc_html_e( 'Вкажіть логін в налаштуваннях РРО Checkbox', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
 			return;
 		}
 		if ( ! $password ) {
-			$order->add_order_note( __( 'Вкажіть пароль в налаштуваннях РРО Checkbox', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+			$order->add_order_note( esc_html_e( 'Вкажіть пароль в налаштуваннях РРО Checkbox', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
 			return;
 		}
 		if ( ! $cashbox_key ) {
-			$order->add_order_note( __( 'Вкажіть ліцензійний ключ віртуального касового апарату в налаштуваннях РРО Checkbox', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+			$order->add_order_note( esc_html_e( 'Вкажіть ліцензійний ключ віртуального касового апарату в налаштуваннях РРО Checkbox', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
 			return;
 		}
 
-		$api = new Mrkv_CheckboxAPI( $login, $password, $cashbox_key );
+		$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
 
-		/**
-		 * Check current shift status
-		 */
+		/** Check current shift status */
 		$current_shift = $api->getCurrentCashierShift();
 		if ( ! isset( $current_shift['status'] ) && ( 'OPENED' !== $current_shift['status'] ) ) {
-			$order->add_order_note( __( 'Зміна не відкрита', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+			$order->add_order_note( esc_html_e( 'Зміна не відкрита', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
 			return;
 		}
 
-		$status = mrkv_checkbox_create_receipt( $api, $order );
-		/**
-		 * Save order ID
-		 */
-		if ( $status['success'] ) {
-			$order->add_order_note( __( 'Чек створено', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+		$result = mrkv_checkbox_create_receipt( $api, $order );
+
+		if( 0 === $result ) {
+			$order->add_order_note( esc_html_e( 'Чек вже створено', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+			return;
+		}
+
+		if ( $result['success'] ) {
+			$order->add_order_note( esc_html_e( 'Чек створено', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
 		} else {
-			$order->add_order_note( __( 'Виникла помилка під час створення чека', 'checkbox' ) . '.' . __( 'Повідомлення:', 'checkbox' ) . ' ' . $status['message'], $is_customer_note = 0, $added_by_user = false );
+			$order->add_order_note( esc_html_e( 'Виникла помилка під час створення чека', 'checkbox' ) . '.' . esc_html_e( 'Повідомлення:', 'checkbox' ) . ' ' . $status['message'], $is_customer_note = 0, $added_by_user = false );
 		}
 	}
 }
@@ -172,11 +161,7 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_create_bill_order_meta_box_act
 add_filter( 'manage_edit-shop_order_columns', 'mrkv_checkbox_wc_new_order_column' );
 if ( ! function_exists( 'mrkv_checkbox_wc_new_order_column' ) ) {
 
-	/**
-	 * Add order admin column
-	 * @param array $columns order columns
-	 * @return array $columns with new order column
-	 */
+	/** Add order admin column */
 	function mrkv_checkbox_wc_new_order_column( $columns ) {
 		$columns['receipt_column'] = 'ID Чека';
 		return $columns;
@@ -186,17 +171,13 @@ if ( ! function_exists( 'mrkv_checkbox_wc_new_order_column' ) ) {
 add_action( 'manage_shop_order_posts_custom_column', 'mrkv_checkbox_wc_cogs_add_order_receipt_column_content' );
 if ( ! function_exists( 'mrkv_checkbox_wc_cogs_add_order_receipt_column_content' ) ) {
 
-	/**
-	 * Fill ID Receipt column
-	 * @param string $column
-	 */
+	/** Fill ID Receipt column */
 	function mrkv_checkbox_wc_cogs_add_order_receipt_column_content( $column ) {
-		global $post;
+		global $the_order;
 
 		if ( 'receipt_column' === $column ) {
-			$order      = wc_get_order( $post->ID );
-			$receipt_id = get_post_meta( $order->get_id(), 'reciept_id' );
-			echo isset( $receipt_id[0] ) ? esc_html( $receipt_id[0] ) : '';
+			$receipt_id = get_post_meta( $the_order->get_id(), 'receipt_id', true );
+			echo esc_html( $receipt_id ) ?? '';
 		}
 	}
 }
@@ -207,12 +188,7 @@ if ( ! function_exists( 'mrkv_checkbox_wc_cogs_add_order_receipt_column_content'
 
 add_action( 'woocommerce_order_status_changed', 'mrkv_checkbox_auto_create_receipt', 99, 3 );
 if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
-	/**
-	 * Automatic receipt creation
-	 * @param integer $order_id Order ID
-	 * @param string  $old_status Old order status
-	 * @param string  $new_status New order status
-	 */
+	/** Function for automatic receipt creation */
 	function mrkv_checkbox_auto_create_receipt( $order_id, $old_status, $new_status ) {
 
 		if ( 'completed' === $new_status && 1 == get_option( 'ppo_auto_create' ) ) {
@@ -225,26 +201,31 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 
 			if ( $login && $password && $cashbox_key ) {
 
-				$api = new Mrkv_CheckboxAPI( $login, $password, $cashbox_key );
+				$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
 
 				$shift = $api->getCurrentCashierShift();
 
+				// if shift is opened
 				if ( isset( $shift['status'] ) && ( 'OPENED' === $shift['status'] ) ) {
 
-					if ( ! mrkv_checkbox_create_receipt( $api, $order ) ) {
+					$result = mrkv_checkbox_create_receipt( $api, $order );
 
-						$order->add_order_note( __( 'Помилка створення чеку', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
-
-					} else {
-
-						$order->add_order_note( __( 'Чек створено', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
-
+					if( 0 === $result ) {
+						$order->add_order_note( esc_html_e( 'Чек вже створено', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
 					}
+
+					if ( $result ) {
+						$order->add_order_note( esc_html_e( 'Чек створено', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+					} else {
+						$order->add_order_note( esc_html_e( 'Помилка створення чеку', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+					}
+
 				} else {
 
-					$order->add_order_note( __( 'Зміна не відкрита', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+					$order->add_order_note( esc_html_e( 'Зміна не відкрита', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
 
 				}
+
 			}
 		}
 
@@ -252,18 +233,17 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 }
 
 if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
-	/**
-	 * Receipt creation
-	 * @param Mrkv_CheckboxAPI $api Checkbox API
-	 * @param WC_Order         $order Order Item
-	 */
+	/** Function for creting receipt */
 	function mrkv_checkbox_create_receipt( $api, $order ) {
 
+		/** check if receipt is already created */
+		if( ! empty( get_post_meta( $order->get_id(), 'receipt_id', true ) ) ) {
+			return 0;
+		}
+
 		if ( 1 == get_option( 'ppo_autoopen_shift' ) && 0 == get_option( 'ppo_connected' ) ) {
-
 			mrkv_checkbox_connect();
-			sleep( 5 ); // wait 5 sec while shift is opening
-
+			sleep( 5 ); // wait for 5 sec while shift is opening
 		}
 
 		$payment_settings = get_option( 'ppo_payment_type' );
@@ -275,18 +255,17 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 		$params          = array();
 		$order_data      = $order->get_data();
 		$goods_items     = $order->get_items();
-		$payment_medthod = $order->get_payment_method();
+		$payment_method = $order->get_payment_method();
 
 		$email = isset( $order_data['billing']['email'] ) ? $order_data['billing']['email'] : $user->user_email;
 
-		$payment_type = isset( $payment_settings[ $payment_medthod ] ) ? mb_strtoupper( $payment_settings[ $payment_medthod ] ) : 'CASHLESS';
+		// ppre($order_data);
+
+		$payment_type = isset( $payment_settings[ $payment_method ] ) ? mb_strtoupper( $payment_settings[ $payment_method ] ) : 'CASHLESS';
 
 		$goods       = array();
 		$total_price = 0;
-
-		/**
-		 * @param WC_Order_Item_Product $item
-		 */
+		/* @let WC_Order_Item_Product $item */
 		foreach ( $goods_items as $item ) {
 
 			$price = ( $item->get_total() / $item->get_quantity() );
@@ -314,17 +293,15 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 			'value' => ceil( $total_price ),
 		);
 
+		// ppre($params);
+
 		$result  = array();
 		$receipt = $api->create_receipt( $params );
 
-		/**
-		 * Save order ID
-		 */
+		/** Save order ID */
 		if ( isset( $receipt['id'] ) ) {
-			/**
-			 * Save receipt ID in meta
-			 */
-			update_post_meta( $order->get_id(), 'reciept_id', sanitize_text_field( $receipt['id'] ) );
+			/** Save receipt ID in meta */
+			update_post_meta( $order->get_id(), 'receipt_id', sanitize_text_field( $receipt['id'] ) );
 			$result['success'] = true;
 		} else {
 			$result['success'] = false;
@@ -341,32 +318,28 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 
 add_action( 'wp_dashboard_setup', 'mrkv_checkbox_ppo_status_dashboard_widget' );
 if ( ! function_exists( 'mrkv_checkbox_ppo_status_dashboard_widget' ) ) {
-	/**
-	 * Register plugin dashboard widget only for admin role
-	 */
+	/** Register plugin dashboard widget only for admin role */
 	function mrkv_checkbox_ppo_status_dashboard_widget() {
 		if ( current_user_can( 'activate_plugins' ) ) {
-			wp_add_dashboard_widget( 'status_widget', __( 'PPO Статус', 'checkbox' ), 'mrkv_checkbox_status_widget_form' );
+			wp_add_dashboard_widget( 'status_widget', esc_html_e( 'PPO Checkbox', 'checkbox' ), 'mrkv_checkbox_status_widget_form' );
 		}
 	}
 }
 
 if ( ! function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
-	/**
-	 * Plugin dashboard widget for controlling shift status
-	 * */
+	/** Plugin dashboard widget functionality */
 	function mrkv_checkbox_status_widget_form() {
 		$shift        = '';
 		$shift_id     = '';
 		$is_connected = false;
-		$status       = __( 'Закрито', 'checkbox' );
+		$status       = esc_html_e( 'Закрито', 'checkbox' );
 
 		$login       = get_option( 'ppo_login' );
 		$password    = get_option( 'ppo_password' );
 		$cashbox_key = get_option( 'ppo_cashbox_key' );
 
 		if ( $login && $password && $cashbox_key ) {
-			$api   = new Mrkv_CheckboxAPI( $login, $password, $cashbox_key );
+			$api   = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
 			$shift = $api->getCurrentCashierShift();
 
 			if ( $shift ) {
@@ -374,7 +347,7 @@ if ( ! function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
 
 				if ( 'OPENED' === $shift['status'] ) {
 					$is_connected = true;
-					$status       = __( 'Відкрито', 'checkbox' );
+					$status       = esc_html_e( 'Відкрито', 'checkbox' );
 				}
 			}
 		}
@@ -405,9 +378,7 @@ if ( ! function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
 
 add_action( 'wp_ajax_mrkv_checkbox_check_connection', 'mrkv_checkbox_check_connection' );
 if ( ! function_exists( 'mrkv_checkbox_check_connection' ) ) {
-	/**
-	 * Connection checking
-	 */
+	/** Function for checking connection */
 	function mrkv_checkbox_check_connection() {
 
 		check_ajax_referer( 'ppo_checkconnect' );
@@ -423,7 +394,7 @@ if ( ! function_exists( 'mrkv_checkbox_check_connection' ) ) {
 			$shift_id = isset( $_POST['shift_id'] ) ? sanitize_text_field( wp_unslash( $_POST['shift_id'] ) ) : '';
 
 			if ( $shift_id ) {
-				$api            = new Mrkv_CheckboxAPI( $login, $password, $cashbox_key );
+				$api            = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
 				$response       = $api->checkConnection( $shift_id );
 				$status         = isset( $response['status'] ) ? $response['status'] : '';
 				$res['status']  = $status;
@@ -433,10 +404,9 @@ if ( ! function_exists( 'mrkv_checkbox_check_connection' ) ) {
 
 				return true;
 			} else {
-
 				wp_send_json_error(
 					array(
-						'message' => __( 'Відсутній ID зміни', 'checkbox' ),
+						'message' => esc_html_e( 'Відсутній ID зміни', 'checkbox' ),
 					)
 				);
 			}
@@ -444,7 +414,7 @@ if ( ! function_exists( 'mrkv_checkbox_check_connection' ) ) {
 
 			wp_send_json_error(
 				array(
-					'message' => __( "Будь ласка, заповніть обов'язкові поля в налаштуваннях плагіну PPO Checkbox", 'checkbox' ),
+					'message' => esc_html_e( "Будь ласка, заповніть обов'язкові поля в налаштуваннях плагіну PPO Checkbox", 'checkbox' ),
 				)
 			);
 
@@ -455,10 +425,7 @@ if ( ! function_exists( 'mrkv_checkbox_check_connection' ) ) {
 
 add_action( 'wp_ajax_mrkv_checkbox_connect', 'mrkv_checkbox_connect' );
 if ( ! function_exists( 'mrkv_checkbox_connect' ) ) {
-	/**
-	 * Shift opening
-	 * !is used directly and by AJAX
-	 */
+	/** Function for shift opening */
 	function mrkv_checkbox_connect() {
 		if ( wp_doing_ajax() ) {
 			check_ajax_referer( 'ppo_connect' );
@@ -472,14 +439,14 @@ if ( ! function_exists( 'mrkv_checkbox_connect' ) ) {
 
 		if ( $login && $password && $cashbox_key ) {
 
-			$api = new Mrkv_CheckboxAPI( $login, $password, $cashbox_key );
+			$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
 
 			$shift = $api->connect();
 
 			if ( isset( $shift['id'] ) ) {
 
 				$res['shift_id'] = $shift['id'];
-				$res['status']   = ( 'CREATED' === $shift['status'] ) ? __( 'Відкрито', 'checkbox' ) : $shift['status'];
+				$res['status']   = ( 'CREATED' === $shift['status'] ) ? esc_html_e( 'Відкрито', 'checkbox' ) : $shift['status'];
 				$res['message']  = '';
 
 				update_option( 'ppo_connected', 1 );
@@ -487,26 +454,29 @@ if ( ! function_exists( 'mrkv_checkbox_connect' ) ) {
 				if ( wp_doing_ajax() ) {
 					wp_send_json_success( $res );
 				}
+
 			} else {
 
 				$res['shift_id'] = '';
 
-				if ( 'Not authenticated' === $shift['message'] ) {
-					$res['message'] = __( 'Невірний логін або пароль. Будь ласка, перевірте дані доступу до особистого кабінету касира на сервісі Checkbox.', 'checkbox' );
+				if( 'Not authenticated' === $shift['message'] ) {
+					$res['message']  = esc_html_e( 'Невірний логін або пароль. Будь ласка, перевірте дані доступу до особистого кабінету касира на сервісі Checkbox.', 'checkbox');
 				} else {
-					$res['message'] = $shift['message'];
+					$res['message']  = $shift['message'];
 				}
 
 				if ( wp_doing_ajax() ) {
 					wp_send_json_error( $res );
 				}
+
 			}
+
 		} else {
 
 			if ( wp_doing_ajax() ) {
 				wp_send_json_error(
 					array(
-						'message' => __( "Будь ласка, заповніть обов'язкові поля в налаштуваннях плагіну PPO Checkbox", 'checkbox' ),
+						'message' => esc_html_e( "Будь ласка, заповніть обов'язкові поля в налаштуваннях плагіну PPO Checkbox", 'checkbox' ),
 					)
 				);
 			}
@@ -516,10 +486,7 @@ if ( ! function_exists( 'mrkv_checkbox_connect' ) ) {
 
 add_action( 'wp_ajax_mrkv_checkbox_disconnect', 'mrkv_checkbox_disconnect' );
 if ( ! function_exists( 'mrkv_checkbox_disconnect' ) ) {
-	/**
-	 * Shift closing
-	 * !is used directly and by AJAX
-	 */
+	// this function is used by cron and wp ajax
 	function mrkv_checkbox_disconnect() {
 
 		if ( wp_doing_ajax() ) {
@@ -534,14 +501,14 @@ if ( ! function_exists( 'mrkv_checkbox_disconnect' ) ) {
 
 		if ( $login && $password && $cashbox_key ) {
 
-			$api = new Mrkv_CheckboxAPI( $login, $password, $cashbox_key );
+			$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
 
 			$shift = $api->disconnect();
 
 			if ( isset( $shift['id'] ) ) {
 
 				$res['shift_id'] = $shift['id'];
-				$res['status']   = ( 'CLOSING' === $shift['status'] ) ? __( 'Закрито', 'checkbox' ) : $shift['status'];
+				$res['status']   = ( 'CLOSING' === $shift['status'] ) ? esc_html_e( 'Закрито', 'checkbox' ) : $shift['status'];
 				$res['message']  = '';
 
 				update_option( 'ppo_connected', 0 );
@@ -563,7 +530,7 @@ if ( ! function_exists( 'mrkv_checkbox_disconnect' ) ) {
 			if ( wp_doing_ajax() ) {
 				wp_send_json_error(
 					array(
-						'message' => __( "Будь ласка, заповніть обов'язкові поля в налаштуваннях плагіну PPO Checkbox", 'checkbox' ),
+						'message' => esc_html_e( "Будь ласка, заповніть обов'язкові поля в налаштуваннях плагіну PPO Checkbox", 'checkbox' ),
 					)
 				);
 			}
@@ -573,9 +540,6 @@ if ( ! function_exists( 'mrkv_checkbox_disconnect' ) ) {
 
 add_action( 'admin_print_scripts', 'mrkv_checkbox_ppo_connect_script', 999 );
 if ( ! function_exists( 'mrkv_checkbox_ppo_connect_script' ) ) {
-	/**
-	 * Script for plugin dashboard widget
-	 */
 	function mrkv_checkbox_ppo_connect_script() {
 
 		if ( 'dashboard' !== get_current_screen()->base ) {
@@ -602,7 +566,7 @@ if ( ! function_exists( 'mrkv_checkbox_ppo_connect_script' ) ) {
 						error: function(response) {
 							$('.ppo_connect-group img#ppo_process').hide();
 
-							alert( __('Виникла помилка. Спробуйте ще раз.', 'checkbox') );
+							alert( esc_html_e('Виникла помилка. Спробуйте ще раз.', 'checkbox') );
 						},
 						success: function(response) {
 							$('.ppo_connect-group img#ppo_process').hide();
@@ -638,7 +602,7 @@ if ( ! function_exists( 'mrkv_checkbox_ppo_connect_script' ) ) {
 						error: function() {
 							$('.ppo_disconnect-group img#ppo_process').hide();
 
-							alert( __('Виникла помилка. Спробуйте ще раз.', 'checkbox') );
+							alert( esc_html_e('Виникла помилка. Спробуйте ще раз.', 'checkbox') );
 						},
 						success: function(response) {
 							$('.ppo_disconnect-group img#ppo_process').hide();
@@ -678,9 +642,7 @@ if ( ! function_exists( 'mrkv_checkbox_ppo_connect_script' ) ) {
 }
 
 if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
-	/**
-	 * Plugin settings page
-	 */
+	/** Plugin admin page content */
 	function mrkv_checkbox_show_plugin_admin_page() {
 		?>
 		<style>
@@ -783,7 +745,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 				<input type="hidden" name="action" value="update" />
 				<input type="hidden" name="page_options" value="ppo_login, ppo_password, ppo_cashbox_key, ppo_auto_create" />
 
-				<?php echo submit_button( __( 'Зберегти', 'checkbox' ) ); ?>
+				<?php echo submit_button( esc_html_e( 'Зберегти', 'checkbox' ) ); ?>
 
 			</form>
 		</div>
