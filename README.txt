@@ -1,9 +1,10 @@
 === Checkbox ===
 Contributors: bandido
 Tags: woocommerce, Checkbox, РРО
-Requires at least: 4.1
+Requires at least: 5.0
 Tested up to: 5.7.2
 Stable tag: 0.3.1
+Requires PHP: 7.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooComerce tested up to: 5.3
@@ -30,7 +31,7 @@ Privacy — https://checkbox.in.ua/policy
 - ліцензійний ключ віртуального касового апарату ( приклад: 27e1d40eedc2dc59d5952a )
 - натисність "Зберегти"
 
-3. Відкрийте зміну касира за допомогою віджету "РРО Статус" в адмін-панелі. Зміна не відкриється, якщо не запущений агент підпису. Детально: https://youtu.be/E0ko9tr9ujg
+3. Відкрийте зміну касира за допомогою віджета "Checkbox" в адмін-панелі. Зміна не відкриється, якщо не запущений агент підпису. Детально: https://youtu.be/E0ko9tr9ujg
 
 4. На сторінці замовлення, зверху в правій боковій панелі у випадаючому меню, виберіть опцію "Створити чек" та натисніть ">"
 
