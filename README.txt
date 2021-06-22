@@ -1,5 +1,5 @@
 === Checkbox ===
-Contributors: bandido
+Contributors: bandido, shtirliz
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.0
 Tested up to: 5.7.2
