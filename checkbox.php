@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Checkbox Integration
+ * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
  * Version: 0.4.0
