@@ -9,7 +9,7 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooComerce tested up to: 5.3
 
-Плагін інтеграції WooCommerce з Checkbox, сервісом програмної реєстрації розрахункових операцій.
+Плагін інтеграції WooCommerce з Checkbox.in.ua, сервісом програмної реєстрації розрахункових операцій (пРРО).
 
 == Description ==
 
@@ -45,7 +45,7 @@ Privacy — https://checkbox.in.ua/policy
 
 == Підтримка ==
 
-Якщо виникла помилка при встановленні або використанні плагіна - пишіть на support@morkva.co.ua або в Facebook Messenger https://m.me/morkvasite
+Якщо виникла помилка при встановленні або використанні плагіна - пишіть на support@morkva.co.ua
 Робочі години з 10:00 до 19:00 ПН-ПТ. Ми відповімо вам протягом доби в робочий час. Всі звернення опрацьовуються по черзі.
 
 == Screenshots ==
