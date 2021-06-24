@@ -67,7 +67,7 @@ if ( ! function_exists( 'mrkv_checkbox_fs' ) ) {
 /**
  * INCLUDE CHECKBOX API LIBRARY
  */
-require_once 'api/Mrkv_CheckboxAPI.php';
+require_once 'api/Mrkv_CheckboxApi.php';
 
 // -----------------------------------------------------------------------//
 // --------------------------------SETUP----------------------------------//
