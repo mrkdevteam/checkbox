@@ -859,7 +859,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
+						<th class="label" scope="row"><?php esc_html_e( 'Налаштування платіжної системи', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
 						<td>
 							<?php
 							$gateways = WC()->payment_gateways->get_available_payment_gateways();
