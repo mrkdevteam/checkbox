@@ -14,7 +14,8 @@ $options = array(
     'ppo_auto_create',
     'ppo_payment_type',
     'ppo_connected',
-    'ppo_autoopen_shift'
+    'ppo_autoopen_shift',
+    'ppo_skip_receipt_creation'
 );
 
 foreach ( $options as $option ) {
