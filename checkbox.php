@@ -3,8 +3,8 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: WooCommerce Checkbox Integration
- * Version: 0.5
- * Tested up to: 5.8
+ * Version: 0.4.1
+ * Tested up to: 5.7.2
  * Requires at least: 5.0
  * Requires PHP: 7.1
  * Author: MORKVA
@@ -12,7 +12,7 @@
  * Text Domain: checkbox
  * Domain Path: /languages
  * WC requires at least: 3.9.0
- * WC tested up to: 5.5.1
+ * WC tested up to: 5.3.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -859,7 +859,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Налаштування платіжної системи', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
+						<th class="label" scope="row"><?php esc_html_e( 'Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
 						<td>
 							<?php
 							$gateways = WC()->payment_gateways->get_available_payment_gateways();
@@ -873,7 +873,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 										<tr>
 											<th><?php esc_html_e( 'Спосіб оплати', 'checkbox' ); ?></th>
 											<th><?php esc_html_e( 'Тип', 'checkbox' ); ?></th>
-											<th><?php esc_html_e( 'Пропускати створення чека?', 'checkbox' ); ?></th>
+											<th class="skip-receipt-creation" style="<?= ( 1 !== (int) get_option( 'ppo_auto_create' ) ) ? 'display:none;' : '' ; ?>"><?php esc_html_e( 'Пропускати створення чека?', 'checkbox' ); ?></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -902,7 +902,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 												value="cashless">
 												<label for="ppo_payment_type_cashless[<?php echo esc_html( $gateway->id ); ?>]">CASHLESS</label>
 											</td>
-											<td>
+											<td class="skip-receipt-creation" style="<?= ( 1 !== (int) get_option( 'ppo_auto_create' ) ) ? 'display:none;' : '' ; ?>">
 												<input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html( $gateway->id ); ?>]" id="ppo_skip_receipt_creation_yes[<?php echo esc_html( $gateway->id ); ?>]" value="yes"
 																											<?php
 																												if ( isset( $ppo_skip_receipt_creation[ $gateway->id ] ) ) {
@@ -945,7 +945,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 // -----------------------------------------------------------------------//
 
 /**
- * Custom plugin style
+ * Custom plugin style and script
  */
 add_action( 'admin_head', 'mrkv_checkbox_custom_style' );
 if ( ! function_exists( 'mrkv_checkbox_custom_style' ) ) {
@@ -978,6 +978,30 @@ if ( ! function_exists( 'mrkv_checkbox_custom_style' ) ) {
 
 		</style>
 	<?}
+
+}
+
+add_action( 'admin_footer', 'mrkv_checkbox_custom_script' );
+if( ! function_exists( 'mrkv_checkbox_custom_script' ) ) {
+
+	function mrkv_checkbox_custom_script() {
+		$screen = get_current_screen();
+		if( 'toplevel_page_checkbox_settings' === $screen->base ):
+		?>
+			<script>
+				jQuery( function ($) {
+					$('input[name=ppo_auto_create]').on('change', function (e) {
+						if( $(this).is(":checked") ) {
+							$('.skip-receipt-creation').show();
+						} else {
+							$('.skip-receipt-creation').hide();
+							$('td.skip-receipt-creation input[type=radio]').val('');
+						}
+					});
+				});
+			</script>
+	<?	endif;
+	}
 
 }
 
@@ -1019,5 +1043,3 @@ function mrkv_checkbox_deactivation_cb() {
 	}
 
 }
-
-
