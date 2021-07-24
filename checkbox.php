@@ -165,6 +165,12 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
 			return;
 		}
 
+		/** Check if Autoopen shift feature is activated */
+		if ( 1 === (int) get_option( 'ppo_autoopen_shift' ) && 0 === (int) get_option( 'ppo_connected' ) ) {
+			mrkv_checkbox_connect();
+			sleep( 8 ); // wait for 8 sec while shift is opening
+		}
+
 		/** Check current shift status */
 		$current_shift = $api->getCurrentCashierShift();
 		if ( ! isset( $current_shift['status'] ) && ( 'OPENED' !== $current_shift['status'] ) ) {
@@ -230,7 +236,7 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 	 */
 	function mrkv_checkbox_auto_create_receipt( $order_id, $old_status, $new_status ) {
 
-		if ( 'completed' === $new_status && 1 == get_option( 'ppo_auto_create' ) ) {
+		if ( 'completed' === $new_status && 1 == (int) get_option( 'ppo_auto_create' ) ) {
 
 			$order = wc_get_order( $order_id );
 
@@ -247,7 +253,8 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 				return;
 			}
 
-			if ( 1 == get_option( 'ppo_autoopen_shift' ) && 0 == get_option( 'ppo_connected' ) ) {
+			/** Check if Autoopen shift feature is activated */
+			if ( 1 === (int) get_option( 'ppo_autoopen_shift' ) && 0 === (int) get_option( 'ppo_connected' ) ) {
 				mrkv_checkbox_connect();
 				sleep( 8 ); // wait for 8 sec while shift is opening
 			}
@@ -289,12 +296,6 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 	 * @param WC_Order         $order Order
 	 */
 	function mrkv_checkbox_create_receipt( $api, $order ) {
-
-		/** Check if Autoopen shift feature is activated */
-		if ( 1 == get_option( 'ppo_autoopen_shift' ) && 0 == get_option( 'ppo_connected' ) ) {
-			mrkv_checkbox_connect();
-			sleep( 5 ); // wait for 5 sec while shift is opening
-		}
 
 		$payment_settings = get_option( 'ppo_payment_type' );
 		$user             = wp_get_current_user();
@@ -796,7 +797,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 
 			<form method="post" action="options.php">
 				<?php settings_fields( 'ppo-settings-group' ); ?>
-
+				<?= get_option('ppo_connected'); ?>
 				<table class="form-table">
 
 					<tr valign="top">
