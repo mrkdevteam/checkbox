@@ -1,10 +1,10 @@
-﻿<?php
+<?php
 /**
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox-woocommerce?utm_source=checkbox-plugin
- * Description: WooCommerce Checkbox Integration
- * Version: 0.5
- * Tested up to: 5.8
+ * Description: Інтеграція WooCommerce з пРРО Checkbox
+ * Version: 0.5.1
+ * Tested up to: 5.8.1
  * Requires at least: 5.0
  * Requires PHP: 7.1
  * Author: MORKVA
@@ -12,7 +12,7 @@
  * Text Domain: checkbox
  * Domain Path: /languages
  * WC requires at least: 3.9.0
- * WC tested up to: 5.5.1
+ * WC tested up to: 5.6.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -165,17 +165,17 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
 			return;
 		}
 
-		/** Check if Autoopen shift feature is activated */
-		if ( 1 === (int) get_option( 'ppo_autoopen_shift' ) && 0 === (int) get_option( 'ppo_connected' ) ) {
-			mrkv_checkbox_connect();
-			sleep( 8 ); // wait for 8 sec while shift is opening
-		}
-
 		/** Check current shift status */
 		$current_shift = $api->getCurrentCashierShift();
 		if ( ! isset( $current_shift['status'] ) && ( 'OPENED' !== $current_shift['status'] ) ) {
-			$order->add_order_note( __( 'Зміна не відкрита', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
-			return;
+			/** Check if Autoopen shift feature is activated */
+			if ( 1 === (int) get_option( 'ppo_autoopen_shift' ) ) {
+				mrkv_checkbox_connect();
+				sleep( 8 ); // wait for 8 sec while shift is opening
+			} else {
+				$order->add_order_note( __( 'Зміна не відкрита', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
+				return;	
+			}
 		}
 
 		$result = mrkv_checkbox_create_receipt( $api, $order );
@@ -1031,6 +1031,7 @@ function mrkv_checkbox_activation_cb() {
 	}
 
 }
+
 
 register_deactivation_hook( __FILE__, 'mrkv_checkbox_deactivation_cb' );
 function mrkv_checkbox_deactivation_cb() {
