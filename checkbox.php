@@ -12,7 +12,7 @@
  * Text Domain: checkbox
  * Domain Path: /languages
  * WC requires at least: 3.9.0
- * WC tested up to: 5.6.0
+ * WC tested up to: 5.7.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
