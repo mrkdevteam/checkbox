@@ -797,7 +797,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 
 			<form method="post" action="options.php">
 				<?php settings_fields( 'ppo-settings-group' ); ?>
-				<?= get_option('ppo_connected'); ?>
+
 				<table class="form-table">
 
 					<tr valign="top">
