@@ -51,7 +51,7 @@ if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
 			$header_params = array( 'X-Client-Name' => 'Morkva' );
 			$url           = '/api/v1/shifts';
 			$response      = $this->makeGetRequest( $url, array(), $header_params );
-			return $responseö
+			return $response;
 		}
 
 		public function getCurrentCashierShift() {
