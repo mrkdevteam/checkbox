@@ -3,11 +3,19 @@ Contributors: bandido, shtirliz
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.0
 Tested up to: 5.8.1
+<<<<<<< HEAD
 Stable tag: 0.5.1
 Requires PHP: 7.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooComerce tested up to: 5.7.1
+=======
+Stable tag: 0.4.1
+Requires PHP: 7.1
+License: GPLv2
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+WooComerce tested up to: 5.6
+>>>>>>> 23c37e178d5438cae430bd3c09a0e3d1de466a67
 
 Плагін інтеграції WooCommerce з Checkbox.in.ua, сервісом програмної реєстрації розрахункових операцій (пРРО).
 
@@ -61,11 +69,14 @@ Privacy — https://checkbox.in.ua/policy
 
 == Що нового? ==
 
+<<<<<<< HEAD
 = 0.5.2 =
 * додано підказки до опцій на сторінці налаштувань
 * додано можливіть ввімкнення тестового режиму
 * виправлено незначні баги
 
+=======
+>>>>>>> 23c37e178d5438cae430bd3c09a0e3d1de466a67
 = 0.5.1 =
 * налаштована сумісність з WordPress 5.8.1 і WooCommerce 5.7.1
 * виправлено незначні баги
