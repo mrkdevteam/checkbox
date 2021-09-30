@@ -13,7 +13,7 @@ if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
 
 		private $access_token = '';
 
-		public function __construct( $login, $password, $cashbox_key, $is_dev = false ) {
+		public function __construct( $login, $password, $cashbox_key, $is_dev ) {
 			$this->login       = $login;
 			$this->password    = $password;
 			$this->cashbox_key = $cashbox_key;
@@ -51,6 +51,7 @@ if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
 			$header_params = array( 'X-Client-Name' => 'Morkva' );
 			$url           = '/api/v1/shifts';
 			$response      = $this->makeGetRequest( $url, array(), $header_params );
+			return $responseö
 		}
 
 		public function getCurrentCashierShift() {
@@ -101,7 +102,7 @@ if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
 				$header = array_merge( $header, array( 'X-Client-Name' => $header_params['X-Client-Name'] ) );
 			}
 
-			$responce = wp_remote_post(
+			$response = wp_remote_post(
 				$url,
 				array(
 					'method'      => 'POST',
@@ -115,7 +116,7 @@ if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
 				)
 			);
 
-			return isset( $responce['body'] ) ? (array) json_decode( $responce['body'] ) : '';
+			return isset( $response['body'] ) ? (array) json_decode( $response['body'] ) : '';
 		}
 
 		private function makeGetRequest( $route, $params = array(), $header_params = array() ) {
@@ -141,7 +142,7 @@ if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
 				$params = '';
 			}
 
-			$responce = wp_remote_get(
+			$response = wp_remote_get(
 				$url,
 				array(
 					'method'      => 'GET',
@@ -155,8 +156,7 @@ if ( ! class_exists( 'Mrkv_CheckboxApi' ) ) {
 				)
 			);
 
-			return isset( $responce['body'] ) ? (array) json_decode( $responce['body'] ) : '';
+			return isset( $response['body'] ) ? (array) json_decode( $response['body'] ) : '';
 		}
-
 	}
 }
