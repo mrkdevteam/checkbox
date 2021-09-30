@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 0.5.1
+ * Version: 0.5.2
  * Tested up to: 5.8.1
  * Requires at least: 5.0
  * Requires PHP: 7.1
@@ -12,7 +12,7 @@
  * Text Domain: checkbox
  * Domain Path: /languages
  * WC requires at least: 3.9.0
- * WC tested up to: 5.6.0
+ * WC tested up to: 5.7.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -88,6 +88,7 @@ if ( ! function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
 		register_setting( 'ppo-settings-group', 'ppo_autoopen_shift' );
 		register_setting( 'ppo-settings-group', 'ppo_sign_method' );
 		register_setting( 'ppo-settings-group', 'ppo_skip_receipt_creation' );
+		register_setting( 'ppo-settings-group', 'ppo_is_dev_mode' );
 	}
 }
 
@@ -150,7 +151,8 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
 			return;
 		}
 
-		$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
+		$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
+		$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 		/** Check whether to skip receipt creation or not */
 		$ppo_skip_receipt_creation = get_option( 'ppo_skip_receipt_creation' );
@@ -265,7 +267,8 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 
 			if ( $login && $password && $cashbox_key ) {
 
-				$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
+				$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
+				$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 				$shift = $api->getCurrentCashierShift();
 
@@ -392,7 +395,8 @@ if ( ! function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
 		$cashbox_key = get_option( 'ppo_cashbox_key' );
 
 		if ( $login && $password && $cashbox_key ) {
-			$api   = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
+			$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
+			$api   = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
 			$shift = $api->getCurrentCashierShift();
 
 			if ( isset( $shift['status'] ) ) {
@@ -456,7 +460,8 @@ if ( ! function_exists( 'mrkv_checkbox_check_connection' ) ) {
 			$shift_id = isset( $_POST['shift_id'] ) ? sanitize_text_field( wp_unslash( $_POST['shift_id'] ) ) : '';
 
 			if ( $shift_id ) {
-				$api            = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
+				$is_dev 		= boolval( get_option( 'ppo_is_dev_mode' ) );
+				$api            = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
 				$response       = $api->checkConnection( $shift_id );
 				$status         = $response['status'] ?? '';
 				$res['status']  = $status;
@@ -505,7 +510,8 @@ if ( ! function_exists( 'mrkv_checkbox_connect' ) ) {
 
 		if ( $login && $password && $cashbox_key ) {
 
-			$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
+			$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
+			$api 	= new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 			$shift = $api->connect();
 
@@ -568,7 +574,8 @@ if ( ! function_exists( 'mrkv_checkbox_disconnect' ) ) {
 
 		if ( $login && $password && $cashbox_key ) {
 
-			$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key );
+			$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
+			$api 	= new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 			$shift = $api->disconnect();
 
@@ -797,7 +804,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 
 			<form method="post" action="options.php">
 				<?php settings_fields( 'ppo-settings-group' ); ?>
-				<?= get_option('ppo_connected'); ?>
+
 				<table class="form-table">
 
 					<tr valign="top">
@@ -826,7 +833,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Спосіб підпису', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
+						<th class="label" scope="row"><?php esc_html_e( 'Спосіб підпису', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
 						<td>
 							<?php
 								$ppo_sign_method = get_option( 'ppo_sign_method' );
@@ -850,17 +857,17 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Автоматичне відкриття зміни', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Зміна автоматично відкриватиметься при першому створенні чека.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
+						<th class="label" scope="row"><?php esc_html_e( 'Автоматичне відкриття зміни', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Зміна автоматично відкриватиметься при першому створенні чека.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
 						<td><input class="table_input" type="checkbox" name="ppo_autoopen_shift" value="1" <?php checked( get_option( 'ppo_autoopen_shift' ), 1 ); ?> /></td>
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( "Автоматично створювати чеки при статусі 'Виконано'", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Чек створюватиметься автоматично при зміні статусу замовлення на Виконано', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
+						<th class="label" scope="row"><?php esc_html_e( "Автоматично створювати чеки при статусі 'Виконано'", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Чек створюватиметься автоматично при зміні статусу замовлення на Виконано. При ввімкненому стані в табличці "Налаштування способів оплати" з\'явиться колонка "Пропускати чек?", в якій ви можете для кожного способу оплати дозволити або заборонити автоматичне створення чеку при зміні статусу.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
 						<td><input class="table_input" type="checkbox" name="ppo_auto_create" value="1" <?php checked( get_option( 'ppo_auto_create' ), 1 ); ?> /></td>
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
+						<th class="label" scope="row"><?php esc_html_e( 'Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
 						<td>
 							<?php
 							$gateways = WC()->payment_gateways->get_available_payment_gateways();
@@ -931,6 +938,11 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 						</td>
 					</tr>
 
+					
+					<tr valign="top">
+						<th class="label" scope="row"><?php esc_html_e( "Тестовий режим", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'При ввімкненому тестовому режимі, всі запити будуть спрямованими до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
+						<td><input class="table_input" type="checkbox" name="ppo_is_dev_mode" value="1" <?php checked( get_option( 'ppo_is_dev_mode' ), 1 ); ?> /></td>
+					</tr>
 				</table>
 
 				<?php echo submit_button( __( 'Зберегти', 'checkbox' ) ); ?>
@@ -965,13 +977,19 @@ if ( ! function_exists( 'mrkv_checkbox_custom_style' ) ) {
 				display: flex;
 				align-items: center;
 			}
-			.tooltip {
+			span.tooltip {
 				display: inline-block;
 				width: 15px;
 				height: 15px;
 				min-width: 15px;
 				background: url(http://checkbox.morkva.co.ua/wp-content/plugins/checkbox/assets/img/tooltip-icon.svg) no-repeat center / cover;
 				margin: 0 10px;
+				cursor: pointer;
+			}
+			span.tooltip::after {
+				width: 300px;
+				white-space: normal !important;
+				height: auto;
 			}
 			<?php
 				endif;
@@ -1013,7 +1031,7 @@ if ( ! function_exists( 'mrkv_checkbox_styles_and_scripts' ) ) {
 		if ( 'toplevel_page_checkbox_settings' != $hook ) {
 			return;
 		}
-		wp_enqueue_style( 'checkbox-microtip', plugin_dir_url( __FILE__ ) . 'assets/css/microtip.css' );
+		wp_enqueue_style( 'checkbox-microtip', plugin_dir_url( __FILE__ ) . 'assets/css/microtip.min.css' );
 	}
 
 }
