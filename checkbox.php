@@ -82,7 +82,8 @@ if ( ! function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
 		register_setting( 'ppo-settings-group', 'ppo_cashier_name' );
 		register_setting( 'ppo-settings-group', 'ppo_cashier_surname' );
 		register_setting( 'ppo-settings-group', 'ppo_cashbox_key' );
-		register_setting( 'ppo-settings-group', 'ppo_auto_create' );
+		register_setting( 'ppo-settings-group', 'ppo_autocreate' );
+		register_setting( 'ppo-settings-group', 'ppo_autocreate_receipt_order_statuses' );
 		register_setting( 'ppo-settings-group', 'ppo_payment_type' );
 		register_setting( 'ppo-settings-group', 'ppo_connected' );
 		register_setting( 'ppo-settings-group', 'ppo_autoopen_shift' );
@@ -153,13 +154,6 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
 
 		$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
 		$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
-
-		/** Check whether to skip receipt creation or not */
-		$ppo_skip_receipt_creation = get_option( 'ppo_skip_receipt_creation' );
-		if ( 'yes' === $ppo_skip_receipt_creation[ $order->get_payment_method() ] ) {
-			$order->add_order_note( __( 'Чек не створено згідно правила', 'checkbox' ), $is_customer_note = 0, $added_by_user = false );
-			return;
-		}
 
 		/** Check if receipt is already created */
 		if ( ! empty( get_post_meta( $order->get_id(), 'receipt_id', true ) ) ) {
@@ -238,9 +232,15 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 	 */
 	function mrkv_checkbox_auto_create_receipt( $order_id, $old_status, $new_status ) {
 
-		if ( 'completed' === $new_status && 1 == (int) get_option( 'ppo_auto_create' ) ) {
+		if ( 1 !== (int) get_option( 'ppo_autocreate' ) ) {
+			return;
+		}
 
-			$order = wc_get_order( $order_id );
+		$order = wc_get_order( $order_id );
+
+		$order_statuses = (array) get_option('ppo_autocreate_receipt_order_statuses');
+
+		if ( in_array( $new_status, $order_statuses ) ) {
 
 			/** Check whether to create receipt or not */
 			$ppo_skip_receipt_creation = get_option( 'ppo_skip_receipt_creation' );
@@ -272,9 +272,7 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 
 				$shift = $api->getCurrentCashierShift();
 
-				// if shift is opened
 				if ( isset( $shift['status'] ) && ( 'OPENED' === $shift['status'] ) ) {
-
 					$result = mrkv_checkbox_create_receipt( $api, $order );
 
 					if ( $result ) {
@@ -862,8 +860,33 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( "Автоматично створювати чеки при статусі 'Виконано'", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Чек створюватиметься автоматично при зміні статусу замовлення на Виконано. При ввімкненому стані в табличці "Налаштування способів оплати" з\'явиться колонка "Пропускати чек?", в якій ви можете для кожного способу оплати дозволити або заборонити автоматичне створення чеку при зміні статусу.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
-						<td><input class="table_input" type="checkbox" name="ppo_auto_create" value="1" <?php checked( get_option( 'ppo_auto_create' ), 1 ); ?> /></td>
+						<th class="label" scope="row"><?php esc_html_e( "Автоматично створювати чеки при зміні статуса замовлення", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Чек створюватиметься автоматично при зміні статусу замовлення. При ввімкненому стані в табличці "Налаштування способів оплати" з\'явиться колонка "Пропускати чек?", в якій ви можете для кожного способу оплати дозволити або заборонити автоматичне створення чеку при зміні статусу.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
+						<td>
+							<input class="table_input" type="checkbox" name="ppo_autocreate" value="1" <?php checked( get_option( 'ppo_autocreate' ), 1 ); ?> />
+						</td>
+					</tr>
+
+					<tr class="order-statuses" valign="top" style="<?= ( 1 == get_option( 'ppo_autocreate' ) ) ? '' : 'display: none;'; ?>">
+						<th class="label" scope="row"><?php esc_html_e( "Статуси замовлення", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Виберіть статуси замовлення, при зміні на які буде створюватися чек.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></th>
+						<td>
+							<? 
+								$all_order_statuses = wc_get_order_statuses(); 
+								$autocreate_receipt_statuses = (array) get_option( 'ppo_autocreate_receipt_order_statuses' );
+							?>
+							<select class="chosen order-statuses" name="ppo_autocreate_receipt_order_statuses[]" data-placeholder="<? _e('Виберіть статуси замовлення', 'checkbox') ?>" multiple>
+								<? 
+								if ( ! empty( $all_order_statuses ) ) : 
+									foreach ( $all_order_statuses as $k => $v ) : $k = str_replace( 'wc-', '', $k );
+								?>
+									<option value="<?= $k; ?>" <?= ( in_array( $k, $autocreate_receipt_statuses ) ) ? 'selected' : ''; ?>><?= $v; ?></option>
+								<?
+									endforeach;
+								else:
+									printf('<option value="">%s</option>', __('None'));
+								endif;
+								?>
+							</select>	
+						</td>
 					</tr>
 
 					<tr valign="top">
@@ -881,7 +904,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 										<tr>
 											<th><?php esc_html_e( 'Спосіб оплати', 'checkbox' ); ?></th>
 											<th><?php esc_html_e( 'Тип', 'checkbox' ); ?></th>
-											<th class="skip-receipt-creation" style="<?= ( 1 !== (int) get_option( 'ppo_auto_create' ) ) ? 'display:none;' : '' ; ?>"><?php esc_html_e( 'Пропускати створення чека?', 'checkbox' ); ?></th>
+											<th class="skip-receipt-creation" style="<?= ( 1 !== (int) get_option( 'ppo_autocreate' ) ) ? 'display:none;' : '' ; ?>"><?php esc_html_e( 'Пропускати створення чека?', 'checkbox' ); ?></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -910,7 +933,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 												value="cashless">
 												<label for="ppo_payment_type_cashless[<?php echo esc_html( $gateway->id ); ?>]">CASHLESS</label>
 											</td>
-											<td class="skip-receipt-creation" style="<?= ( 1 !== (int) get_option( 'ppo_auto_create' ) ) ? 'display:none;' : '' ; ?>">
+											<td class="skip-receipt-creation" style="<?= ( 1 !== (int) get_option( 'ppo_autocreate' ) ) ? 'display:none;' : '' ; ?>">
 												<input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html( $gateway->id ); ?>]" id="ppo_skip_receipt_creation_yes[<?php echo esc_html( $gateway->id ); ?>]" value="yes"
 																											<?php
 																												if ( isset( $ppo_skip_receipt_creation[ $gateway->id ] ) ) {
@@ -990,6 +1013,7 @@ if ( ! function_exists( 'mrkv_checkbox_custom_style' ) ) {
 				width: 300px;
 				white-space: normal !important;
 				height: auto;
+				-webkit-font-smoothing: subpixel-antialiased;
 			}
 			<?php
 				endif;
@@ -1009,15 +1033,28 @@ if( ! function_exists( 'mrkv_checkbox_custom_script' ) ) {
 		?>
 			<script>
 				jQuery( function ($) {
-					$('input[name=ppo_auto_create]').on('change', function (e) {
+					$('input[name=ppo_autocreate]').on('change', function (e) {
 						if( $(this).is(":checked") ) {
-							$('.skip-receipt-creation').show();
+							$('.skip-receipt-creation').show()
+							$('tr.order-statuses').show()
+							$('tr.order-statuses select.chosen').chosen({
+								width: '300px',
+							})
 						} else {
-							$('.skip-receipt-creation').hide();
-							$('td.skip-receipt-creation input[type=radio]').val('');
+							$('tr.order-statuses').hide()
+							$('tr.order-statuses select.chosen').chosen('destroy')
+							$('tr.order-statuses select.chosen').val('')
+
+							$('.skip-receipt-creation').hide()
+							$('td.skip-receipt-creation input[type=radio]').val('')
 						}
-					});
-				});
+					})
+					if($('input[name=ppo_autocreate]').is(':checked')) {
+						$('tr.order-statuses select.chosen').chosen({
+							width: '300px',
+						})
+					}
+				})
 			</script>
 	<?	endif;
 	}
@@ -1031,7 +1068,11 @@ if ( ! function_exists( 'mrkv_checkbox_styles_and_scripts' ) ) {
 		if ( 'toplevel_page_checkbox_settings' != $hook ) {
 			return;
 		}
+		// microtip
 		wp_enqueue_style( 'checkbox-microtip', plugin_dir_url( __FILE__ ) . 'assets/css/microtip.min.css' );
+		// chosen
+		wp_enqueue_style( 'checkbox-chosen', plugin_dir_url( __FILE__ ) . 'assets/css/chosen.min.css', array(), '1.8.7' );
+		wp_enqueue_script( 'checkbox-chosen', plugin_dir_url( __FILE__ ) . 'assets/js/chosen.jquery.min.js', array('jquery'), '1.8.7', true );
 	}
 
 }
@@ -1063,3 +1104,45 @@ function mrkv_checkbox_deactivation_cb() {
 	}
 
 }
+
+// TEST
+
+function register_awaiting_shipment_order_status() {
+    register_post_status( 'wc-awaiting-shipment', array(
+        'label'                     => 'Awaiting shipment',
+        'public'                    => true,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop( 'Awaiting shipment (%s)', 'Awaiting shipment (%s)' )
+    ) );
+    register_post_status( 'wc-form-waybill', array(
+        'label'                     => 'Forming Waybill',
+        'public'                    => true,
+        'exclude_from_search'       => false,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop( 'Forming Waybill (%s)', 'Forming Waybill (%s)' )
+    ) );
+}
+add_action( 'init', 'register_awaiting_shipment_order_status' );
+
+// Add to list of WC Order statuses
+function add_awaiting_shipment_to_order_statuses( $order_statuses ) {
+ 
+    $new_order_statuses = array();
+ 
+    // add new order status after processing
+    foreach ( $order_statuses as $key => $status ) {
+ 
+        $new_order_statuses[ $key ] = $status;
+ 
+        if ( 'wc-processing' === $key ) {
+            $new_order_statuses['wc-awaiting-shipment'] = 'Awaiting shipment';
+            $new_order_statuses['wc-form-waybill'] = 'Forming Waybill';
+        }
+    }
+ 
+    return $new_order_statuses;
+}
+add_filter( 'wc_order_statuses', 'add_awaiting_shipment_to_order_statuses' );
