@@ -3,19 +3,11 @@ Contributors: bandido, shtirliz
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.0
 Tested up to: 5.8.1
-<<<<<<< HEAD
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 Requires PHP: 7.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooComerce tested up to: 5.7.1
-=======
-Stable tag: 0.4.1
-Requires PHP: 7.1
-License: GPLv2
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WooComerce tested up to: 5.6
->>>>>>> 23c37e178d5438cae430bd3c09a0e3d1de466a67
 
 Плагін інтеграції WooCommerce з Checkbox.in.ua, сервісом програмної реєстрації розрахункових операцій (пРРО).
 
@@ -68,6 +60,9 @@ Privacy — https://checkbox.in.ua/policy
 3. Створення чека вручну на сторінці замовлення
 
 == Що нового? ==
+
+= 0.6.0 =
+* додана можливіть вибору статусів замовлення при зміні на які автоматично створюватиметься чек
 
 = 0.5.2 =
 * додано підказки до опцій на сторінці налаштувань
