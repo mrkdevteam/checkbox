@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 0.6
+ * Version: 0.6.1
  * Tested up to: 5.8.1
  * Requires at least: 5.0
  * Requires PHP: 7.1
@@ -12,7 +12,7 @@
  * Text Domain: checkbox
  * Domain Path: /languages
  * WC requires at least: 3.9.0
- * WC tested up to: 5.7.1
+ * WC tested up to: 5.8.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
