@@ -163,7 +163,10 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
 
 		/** Check current shift status */
 		$current_shift = $api->getCurrentCashierShift();
-		if ( ! isset( $current_shift['status'] ) && ( 'OPENED' !== $current_shift['status'] ) ) {
+		if ( 
+			empty( $current_shift ) ||
+			isset( $current_shift['status'] ) && ( 'OPENED' !== $current_shift['status'] ) 
+		) {
 			/** Check if Autoopen shift feature is activated */
 			if ( 1 === (int) get_option( 'ppo_autoopen_shift' ) ) {
 				mrkv_checkbox_connect();
