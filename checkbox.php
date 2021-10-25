@@ -85,7 +85,6 @@ if ( ! function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
 		register_setting( 'ppo-settings-group', 'ppo_autocreate' );
 		register_setting( 'ppo-settings-group', 'ppo_autocreate_receipt_order_statuses' );
 		register_setting( 'ppo-settings-group', 'ppo_payment_type' );
-		register_setting( 'ppo-settings-group', 'ppo_connected' );
 		register_setting( 'ppo-settings-group', 'ppo_autoopen_shift' );
 		register_setting( 'ppo-settings-group', 'ppo_sign_method' );
 		register_setting( 'ppo-settings-group', 'ppo_skip_receipt_creation' );
@@ -258,12 +257,6 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 				return;
 			}
 
-			/** Check if Autoopen shift feature is activated */
-			if ( 1 === (int) get_option( 'ppo_autoopen_shift' ) && 0 === (int) get_option( 'ppo_connected' ) ) {
-				mrkv_checkbox_connect();
-				sleep( 8 ); // wait for 8 sec while shift is opening
-			}
-
 			$login       = get_option( 'ppo_login' );
 			$password    = get_option( 'ppo_password' );
 			$cashbox_key = get_option( 'ppo_cashbox_key' );
@@ -274,6 +267,15 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 				$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 				$shift = $api->getCurrentCashierShift();
+
+				/** Check if current shift isn't opened and autoopen shift feature is activated */
+				if ( empty($shift) && 1 === (int) get_option( 'ppo_autoopen_shift' ) ) {
+					mrkv_checkbox_connect();
+					sleep( 8 ); // wait for 8 sec while shift is opening
+
+					// check cashier shift again
+					$shift = $api->getCurrentCashierShift();
+				}
 
 				if ( isset( $shift['status'] ) && ( 'OPENED' === $shift['status'] ) ) {
 					$result = mrkv_checkbox_create_receipt( $api, $order );
@@ -406,14 +408,6 @@ if ( ! function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
 				if ( 'OPENED' === $shift['status'] ) {
 					$is_connected = true;
 					$status       = __( 'Відкрито', 'checkbox' );
-
-					if( (int) get_option('ppo_connected') !== 1 ) {
-						update_option('ppo_connected', 1);
-					}
-				} else {
-					if( (int) get_option('ppo_connected') !== 0 ) {
-						update_option('ppo_connected', 0);
-					}
 				}
 			}
 		}
@@ -517,12 +511,9 @@ if ( ! function_exists( 'mrkv_checkbox_connect' ) ) {
 			$shift = $api->connect();
 
 			if ( isset( $shift['id'] ) ) {
-
 				$res['shift_id'] = $shift['id'];
 				$res['status']   = ( 'CREATED' === $shift['status'] ) ? __( 'Відкрито', 'checkbox' ) : $shift['status'];
 				$res['message']  = '';
-
-				update_option( 'ppo_connected', 1 );
 
 				if ( wp_doing_ajax() ) {
 					wp_send_json_success( $res );
@@ -585,8 +576,6 @@ if ( ! function_exists( 'mrkv_checkbox_disconnect' ) ) {
 				$res['shift_id'] = $shift['id'];
 				$res['status']   = ( 'CLOSING' === $shift['status'] ) ? __( 'Закрито', 'checkbox' ) : $shift['status'];
 				$res['message']  = '';
-
-				update_option( 'ppo_connected', 0 );
 
 				if ( wp_doing_ajax() ) {
 					wp_send_json_success( $res );
@@ -1098,54 +1087,8 @@ function mrkv_checkbox_activation_cb() {
 register_deactivation_hook( __FILE__, 'mrkv_checkbox_deactivation_cb' );
 function mrkv_checkbox_deactivation_cb() {
 
-	if ( get_option( 'ppo_connected' ) ) {
-		mrkv_checkbox_disconnect();
-	}
-
 	if ( wp_next_scheduled( 'checkbox_close_shift' ) ) {
 		wp_clear_scheduled_hook( 'checkbox_close_shift' );
 	}
 
 }
-
-// TEST
-
-function register_awaiting_shipment_order_status() {
-    register_post_status( 'wc-awaiting-shipment', array(
-        'label'                     => 'Awaiting shipment',
-        'public'                    => true,
-        'exclude_from_search'       => false,
-        'show_in_admin_all_list'    => true,
-        'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop( 'Awaiting shipment (%s)', 'Awaiting shipment (%s)' )
-    ) );
-    register_post_status( 'wc-form-waybill', array(
-        'label'                     => 'Forming Waybill',
-        'public'                    => true,
-        'exclude_from_search'       => false,
-        'show_in_admin_all_list'    => true,
-        'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop( 'Forming Waybill (%s)', 'Forming Waybill (%s)' )
-    ) );
-}
-add_action( 'init', 'register_awaiting_shipment_order_status' );
-
-// Add to list of WC Order statuses
-function add_awaiting_shipment_to_order_statuses( $order_statuses ) {
- 
-    $new_order_statuses = array();
- 
-    // add new order status after processing
-    foreach ( $order_statuses as $key => $status ) {
- 
-        $new_order_statuses[ $key ] = $status;
- 
-        if ( 'wc-processing' === $key ) {
-            $new_order_statuses['wc-awaiting-shipment'] = 'Awaiting shipment';
-            $new_order_statuses['wc-form-waybill'] = 'Forming Waybill';
-        }
-    }
- 
-    return $new_order_statuses;
-}
-add_filter( 'wc_order_statuses', 'add_awaiting_shipment_to_order_statuses' );
