@@ -997,7 +997,7 @@ if ( ! function_exists( 'mrkv_checkbox_custom_style' ) ) {
 				width: 15px;
 				height: 15px;
 				min-width: 15px;
-				background: url(http://checkbox.morkva.co.ua/wp-content/plugins/checkbox/assets/img/tooltip-icon.svg) no-repeat center / cover;
+				background: url('<?= plugin_dir_url( __FILE__ ) ?>assets/img/tooltip-icon.svg') no-repeat center / cover;
 				margin: 0 10px;
 				cursor: pointer;
 			}
