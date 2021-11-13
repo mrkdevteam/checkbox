@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 0.6.1
+ * Version: 0.6.2
  * Tested up to: 5.8.1
  * Requires at least: 5.0
  * Requires PHP: 7.1
@@ -12,14 +12,14 @@
  * Text Domain: checkbox
  * Domain Path: /languages
  * WC requires at least: 3.9.0
- * WC tested up to: 5.8.0
+ * WC tested up to: 5.7.1
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Automattic\WooCommerce\Admin\Overrides\Order;
+define( 'CHECKBOX_VERSION', '0.6.2' );
 
 if ( ! function_exists( 'mrkv_checkbox_fs' ) ) {
 	/**
@@ -85,6 +85,7 @@ if ( ! function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
 		register_setting( 'ppo-settings-group', 'ppo_autocreate' );
 		register_setting( 'ppo-settings-group', 'ppo_autocreate_receipt_order_statuses' );
 		register_setting( 'ppo-settings-group', 'ppo_payment_type' );
+		register_setting( 'ppo-settings-group', 'ppo_connected' );
 		register_setting( 'ppo-settings-group', 'ppo_autoopen_shift' );
 		register_setting( 'ppo-settings-group', 'ppo_sign_method' );
 		register_setting( 'ppo-settings-group', 'ppo_skip_receipt_creation' );
@@ -127,7 +128,6 @@ if ( ! function_exists( 'mrkv_checkbox_wc_add_order_meta_box_action' ) ) {
 
 add_action( 'woocommerce_order_action_create_bill_action', 'mrkv_checkbox_wc_process_order_meta_box_action' );
 if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
-
 	/**
 	 * Process order metabox action
 	 *
@@ -162,10 +162,7 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
 
 		/** Check current shift status */
 		$current_shift = $api->getCurrentCashierShift();
-		if ( 
-			empty( $current_shift ) ||
-			isset( $current_shift['status'] ) && ( 'OPENED' !== $current_shift['status'] ) 
-		) {
+		if ( ! isset( $current_shift['status'] ) && ( 'OPENED' !== $current_shift['status'] ) ) {
 			/** Check if Autoopen shift feature is activated */
 			if ( 1 === (int) get_option( 'ppo_autoopen_shift' ) ) {
 				mrkv_checkbox_connect();
@@ -257,6 +254,12 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 				return;
 			}
 
+			/** Check if Autoopen shift feature is activated */
+			if ( 1 === (int) get_option( 'ppo_autoopen_shift' ) && 0 === (int) get_option( 'ppo_connected' ) ) {
+				mrkv_checkbox_connect();
+				sleep( 8 ); // wait for 8 sec while shift is opening
+			}
+
 			$login       = get_option( 'ppo_login' );
 			$password    = get_option( 'ppo_password' );
 			$cashbox_key = get_option( 'ppo_cashbox_key' );
@@ -267,15 +270,6 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 				$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 				$shift = $api->getCurrentCashierShift();
-
-				/** Check if current shift isn't opened and autoopen shift feature is activated */
-				if ( empty($shift) && 1 === (int) get_option( 'ppo_autoopen_shift' ) ) {
-					mrkv_checkbox_connect();
-					sleep( 8 ); // wait for 8 sec while shift is opening
-
-					// check cashier shift again
-					$shift = $api->getCurrentCashierShift();
-				}
 
 				if ( isset( $shift['status'] ) && ( 'OPENED' === $shift['status'] ) ) {
 					$result = mrkv_checkbox_create_receipt( $api, $order );
@@ -408,6 +402,14 @@ if ( ! function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
 				if ( 'OPENED' === $shift['status'] ) {
 					$is_connected = true;
 					$status       = __( 'Відкрито', 'checkbox' );
+
+					if( (int) get_option('ppo_connected') !== 1 ) {
+						update_option('ppo_connected', 1);
+					}
+				} else {
+					if( (int) get_option('ppo_connected') !== 0 ) {
+						update_option('ppo_connected', 0);
+					}
 				}
 			}
 		}
@@ -511,9 +513,12 @@ if ( ! function_exists( 'mrkv_checkbox_connect' ) ) {
 			$shift = $api->connect();
 
 			if ( isset( $shift['id'] ) ) {
+
 				$res['shift_id'] = $shift['id'];
 				$res['status']   = ( 'CREATED' === $shift['status'] ) ? __( 'Відкрито', 'checkbox' ) : $shift['status'];
 				$res['message']  = '';
+
+				update_option( 'ppo_connected', 1 );
 
 				if ( wp_doing_ajax() ) {
 					wp_send_json_success( $res );
@@ -576,6 +581,8 @@ if ( ! function_exists( 'mrkv_checkbox_disconnect' ) ) {
 				$res['shift_id'] = $shift['id'];
 				$res['status']   = ( 'CLOSING' === $shift['status'] ) ? __( 'Закрито', 'checkbox' ) : $shift['status'];
 				$res['message']  = '';
+
+				update_option( 'ppo_connected', 0 );
 
 				if ( wp_doing_ajax() ) {
 					wp_send_json_success( $res );
@@ -955,7 +962,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 
 					
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( "Тестовий режим", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'При ввімкненому тестовому режимі, всі запити будуть спрямованими до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
+						<th class="label" scope="row"><?php esc_html_e( "Тестовий режим", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
 						<td><input class="table_input" type="checkbox" name="ppo_is_dev_mode" value="1" <?php checked( get_option( 'ppo_is_dev_mode' ), 1 ); ?> /></td>
 					</tr>
 				</table>
@@ -1081,11 +1088,34 @@ function mrkv_checkbox_activation_cb() {
 		wp_schedule_event( strtotime( '23:57:00 Europe/Kiev' ), 'daily', 'checkbox_close_shift' );
 	}
 
-}
+	if ( in_array('curl', get_loaded_extensions()) ) {
+		$data = [
+			'product' => 'checkbox',
+			'version' => CHECKBOX_VERSION,
+			'site'    => get_home_url()
+		];
 
+        $ch = curl_init('http://api.morkva.co.ua/' . http_build_query($data));
+
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+
+		curl_exec($ch);
+		if ( curl_error($ch) ) {
+			return;
+		}
+
+		curl_close($ch);
+    }
+
+}
 
 register_deactivation_hook( __FILE__, 'mrkv_checkbox_deactivation_cb' );
 function mrkv_checkbox_deactivation_cb() {
+
+	if ( get_option( 'ppo_connected' ) ) {
+		mrkv_checkbox_disconnect();
+	}
 
 	if ( wp_next_scheduled( 'checkbox_close_shift' ) ) {
 		wp_clear_scheduled_hook( 'checkbox_close_shift' );
