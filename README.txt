@@ -3,7 +3,7 @@ Contributors: bandido, shtirliz
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.0
 Tested up to: 5.8.2
-Stable tag: 0.6.2
+Stable tag: 0.6.3
 Requires PHP: 7.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -61,8 +61,12 @@ Privacy — https://checkbox.in.ua/policy
 
 == Що нового? ==
 
+= 0.6.3 =
+* виправлено незначні баги
+* вдосконалено механізм моніторингу стабільності плагіна
+
 = 0.6.2 =
-* додано механізм моніторингу стабільності плагіна
+* додали механізм моніторингу стабільності плагіна
 * налаштована сумісність з WooCommerce 5.9.0
 
 = 0.6.1 =
