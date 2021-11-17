@@ -1081,13 +1081,7 @@ if ( ! function_exists( 'mrkv_checkbox_styles_and_scripts' ) ) {
 // ------------------ACTIVATION AND DEACTIVATION HOOKS--------------------//
 // -----------------------------------------------------------------------//
 
-register_activation_hook( __FILE__, 'mrkv_checkbox_activation_cb' );
-function mrkv_checkbox_activation_cb() {
-
-	if ( ! wp_next_scheduled( 'checkbox_close_shift' ) ) {
-		wp_schedule_event( strtotime( '23:57:00 Europe/Kiev' ), 'daily', 'checkbox_close_shift' );
-	}
-
+function mrkv_checkbox_send_request() {
 	if ( in_array('curl', get_loaded_extensions()) ) {
 		$data = [
 			'product' => 'checkbox',
@@ -1095,7 +1089,7 @@ function mrkv_checkbox_activation_cb() {
 			'site'    => get_home_url()
 		];
 
-        $ch = curl_init('http://api.morkva.co.ua/' . http_build_query($data));
+		$ch = curl_init('http://api.morkva.co.ua/' . http_build_query($data));
 
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
@@ -1106,13 +1100,33 @@ function mrkv_checkbox_activation_cb() {
 		}
 
 		curl_close($ch);
-    }
+	}
+}
 
+add_action( 'upgrader_process_complete', 'mrkv_checkbox_upgrade', 10, 2 );
+function mrkv_checkbox_upgrade( $upgrader_object, $options ) {
+    $current_plugin_path_name = plugin_basename( __FILE__ );
+ 
+    if ($options['action'] == 'update' && $options['type'] == 'plugin' ) {
+       foreach($options['plugins'] as $each_plugin) {
+          if ($each_plugin == $current_plugin_path_name) {
+			mrkv_checkbox_send_request();
+          }
+       }
+    }
+}
+
+register_activation_hook( __FILE__, 'mrkv_checkbox_activation_cb' );
+function mrkv_checkbox_activation_cb() {
+	if ( ! wp_next_scheduled( 'checkbox_close_shift' ) ) {
+		wp_schedule_event( strtotime( '23:57:00 Europe/Kiev' ), 'daily', 'checkbox_close_shift' );
+	}
+
+	mrkv_checkbox_send_request();
 }
 
 register_deactivation_hook( __FILE__, 'mrkv_checkbox_deactivation_cb' );
 function mrkv_checkbox_deactivation_cb() {
-
 	if ( get_option( 'ppo_connected' ) ) {
 		mrkv_checkbox_disconnect();
 	}
@@ -1120,5 +1134,4 @@ function mrkv_checkbox_deactivation_cb() {
 	if ( wp_next_scheduled( 'checkbox_close_shift' ) ) {
 		wp_clear_scheduled_hook( 'checkbox_close_shift' );
 	}
-
 }
