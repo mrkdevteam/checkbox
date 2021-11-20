@@ -318,6 +318,9 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 		 * @let WC_Order_Item_Product $item
 		*/
 		foreach ( $goods_items as $item ) {
+			if ($item->get_total() == 0) {
+				continue;
+			}
 
 			$price = ( $item->get_total() / $item->get_quantity() );
 
