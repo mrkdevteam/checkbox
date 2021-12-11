@@ -904,77 +904,73 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
-						<td>
-							<?php
-							$gateways = WC()->payment_gateways->get_available_payment_gateways();
+                        <th class="label" scope="row"><?php esc_html_e('Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></sp>
+                        </th>
+                        <td>
+                            <?php
+                            $enabled_gateways = array_filter(WC()->payment_gateways->payment_gateways(), function ($gateway) {
+                                return 'yes' === $gateway->enabled;
+                            });
 
-							$ppo_payment_type          = get_option( 'ppo_payment_type' );
-							$ppo_skip_receipt_creation = get_option( 'ppo_skip_receipt_creation' );
-							?>
-							<div class="gateway-settings__wrapper">
-								<table class="gateway-settings">
-									<thead>
-										<tr>
-											<th><?php esc_html_e( 'Спосіб оплати', 'checkbox' ); ?></th>
-											<th><?php esc_html_e( 'Тип', 'checkbox' ); ?></th>
-											<th class="skip-receipt-creation" style="<?= ( 1 !== (int) get_option( 'ppo_autocreate' ) ) ? 'display:none;' : '' ; ?>"><?php esc_html_e( 'Пропускати створення чека?', 'checkbox' ); ?></th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php
-										foreach ( $gateways as $gateway ) :
-											if ( 'yes' === $gateway->enabled ) :
-												?>
-										<tr>
-											<td class="gateway-title" title="<?php echo esc_html( $gateway->title ); ?>">
-												<p><?php echo esc_html( $gateway->title ); ?></p>
-											</td>
-											<td>
-												<input type="radio" name="ppo_payment_type[<?php echo esc_html( $gateway->id ); ?>]" id="ppo_payment_type_cash[<?php echo esc_html( $gateway->id ); ?>]"
-																									<?php
-																									if ( isset( $ppo_payment_type[ $gateway->id ] ) ) {
-																										checked( $ppo_payment_type[ $gateway->id ], 'cash' ); }
-																									?>
-												value="cash">
-												<label for="ppo_payment_type_cash[<?php echo esc_html( $gateway->id ); ?>]">CASH</label>
+                            $ppo_payment_type          = get_option('ppo_payment_type');
+                            $ppo_skip_receipt_creation = get_option('ppo_skip_receipt_creation');
+                            ?>
+                            <div class="gateway-settings__wrapper">
+                                <table class="gateway-settings">
+                                    <thead>
+                                        <tr>
+                                            <th><?php esc_html_e('Спосіб оплати', 'checkbox'); ?></th>
+                                            <th><?php esc_html_e('Тип', 'checkbox'); ?></th>
+                                            <th class="skip-receipt-creation" style="<?= (1 !== (int) get_option('ppo_autocreate')) ? 'display:none;' : ''; ?>"><?php esc_html_e('Пропускати створення чека?', 'checkbox'); ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($enabled_gateways as $gateway) :
+                                            ?>
+                                            <tr>
+                                                <td class="gateway-title" title="<?php echo esc_html($gateway->title); ?>">
+                                                    <p><?php echo esc_html($gateway->title); ?></p>
+                                                </td>
+                                                <td>
+                                                    <input type="radio" name="ppo_payment_type[<?php echo esc_html($gateway->id); ?>]" id="ppo_payment_type_cash[<?php echo esc_html($gateway->id); ?>]" <?php
+                                                    if (isset($ppo_payment_type[$gateway->id])) {
+                                                        checked($ppo_payment_type[$gateway->id], 'cash');
+                                                    }
+                                                    ?> value="cash">
+                                                    <label for="ppo_payment_type_cash[<?php echo esc_html($gateway->id); ?>]">CASH</label>
 
-												<input type="radio" name="ppo_payment_type[<?php echo esc_html( $gateway->id ); ?>]" id="ppo_payment_type_cashless[<?php echo esc_html( $gateway->id ); ?>]"
-																									<?php
-																									if ( isset( $ppo_payment_type[ $gateway->id ] ) ) {
-																										checked( $ppo_payment_type[ $gateway->id ], 'cashless' ); }
-																									?>
-												value="cashless">
-												<label for="ppo_payment_type_cashless[<?php echo esc_html( $gateway->id ); ?>]">CASHLESS</label>
-											</td>
-											<td class="skip-receipt-creation" style="<?= ( 1 !== (int) get_option( 'ppo_autocreate' ) ) ? 'display:none;' : '' ; ?>">
-												<input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html( $gateway->id ); ?>]" id="ppo_skip_receipt_creation_yes[<?php echo esc_html( $gateway->id ); ?>]" value="yes"
-																											<?php
-																												if ( isset( $ppo_skip_receipt_creation[ $gateway->id ] ) ) {
-																													checked( $ppo_skip_receipt_creation[ $gateway->id ], 'yes' ); }
-																												?>
-																										>
-												<label for="ppo_skip_receipt_creation_yes[<?php echo esc_html( $gateway->id ); ?>]"><?php esc_html_e( 'Так', 'checkbox' ); ?></label>
+                                                    <input type="radio" name="ppo_payment_type[<?php echo esc_html($gateway->id); ?>]" id="ppo_payment_type_cashless[<?php echo esc_html($gateway->id); ?>]" <?php
+                                                    if (isset($ppo_payment_type[$gateway->id])) {
+                                                        checked($ppo_payment_type[$gateway->id], 'cashless');
+                                                    }
+                                                    ?> value="cashless">
+                                                    <label for="ppo_payment_type_cashless[<?php echo esc_html($gateway->id); ?>]">CASHLESS</label>
+                                                </td>
+                                                <td class="skip-receipt-creation" style="<?= (1 !== (int) get_option('ppo_autocreate')) ? 'display:none;' : ''; ?>">
+                                                    <input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html($gateway->id); ?>]" id="ppo_skip_receipt_creation_yes[<?php echo esc_html($gateway->id); ?>]" value="yes" <?php
+                                                    if (isset($ppo_skip_receipt_creation[$gateway->id])) {
+                                                        checked($ppo_skip_receipt_creation[$gateway->id], 'yes');
+                                                    }
+                                                    ?>>
+                                                    <label for="ppo_skip_receipt_creation_yes[<?php echo esc_html($gateway->id); ?>]"><?php esc_html_e('Так', 'checkbox'); ?></label>
 
-												<input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html( $gateway->id ); ?>]" id="ppo_skip_receipt_creation_no[<?php echo esc_html( $gateway->id ); ?>]" value="no"
-																											<?php
-																												if ( isset( $ppo_skip_receipt_creation[ $gateway->id ] ) ) {
-																													checked( $ppo_skip_receipt_creation[ $gateway->id ], 'no' ); }
-																												?>
-																										>
-												<label for="ppo_skip_receipt_creation_no[<?php echo esc_html( $gateway->id ); ?>]"><?php esc_html_e( 'Ні', 'checkbox' ); ?></label>
-											</td>
-										</tr>
-												<?php
-											endif;
-										endforeach;
-										?>
-									</tbody>
-								</table>
-							</div>
-						</td>
-					</tr>
-
+                                                    <input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html($gateway->id); ?>]" id="ppo_skip_receipt_creation_no[<?php echo esc_html($gateway->id); ?>]" value="no" <?php
+                                                    if (isset($ppo_skip_receipt_creation[$gateway->id])) {
+                                                        checked($ppo_skip_receipt_creation[$gateway->id], 'no');
+                                                    }
+                                                    ?>>
+                                                    <label for="ppo_skip_receipt_creation_no[<?php echo esc_html($gateway->id); ?>]"><?php esc_html_e('Ні', 'checkbox'); ?></label>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        endforeach;
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
 					
 					<tr valign="top">
 						<th class="label" scope="row"><?php esc_html_e( "Тестовий режим", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
