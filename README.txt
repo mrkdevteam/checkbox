@@ -3,7 +3,7 @@ Contributors: bandido, shtirliz
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.0
 Tested up to: 5.8.2
-Stable tag: 0.6.3
+Stable tag: 0.7.0
 Requires PHP: 7.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -60,6 +60,13 @@ Privacy — https://checkbox.in.ua/policy
 3. Створення чека вручну на сторінці замовлення
 
 == Що нового? ==
+
+= 0.7.0 =
+* додано можливість прикріпляти податковий номер до кожного товару з замовлення
+* виправлено незначні баги
+
+= 0.6.4 =
+* виправлено баг пов'язаний отримання увімкнених платіжних шлюзів
 
 = 0.6.3 =
 * виправлено незначні баги
@@ -120,9 +127,3 @@ Privacy — https://checkbox.in.ua/policy
 
 = 0.0.1 =
 * beta-версія плагіна
-
-
-
-
-
-
