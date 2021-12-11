@@ -1,8 +1,8 @@
 <?php
 
 // if uninstall.php is not called by WordPress, die
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	die;
+if (! defined('WP_UNINSTALL_PLUGIN')) {
+    die;
 }
 
 // delete plugin options
@@ -12,6 +12,7 @@ $options = array(
     'ppo_cashier_name',
     'ppo_cashier_surname',
     'ppo_cashbox_key',
+    'ppo_tax_code',
     'ppo_autocreate',
     'ppo_payment_type',
     'ppo_connected',
@@ -21,6 +22,6 @@ $options = array(
     'ppo_autocreate_receipt_order_statuses',
 );
 
-foreach ( $options as $option ) {
-	delete_option( $option );
+foreach ($options as $option) {
+    delete_option($option);
 }
