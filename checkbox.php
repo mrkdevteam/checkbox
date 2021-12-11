@@ -77,19 +77,25 @@ if ( ! function_exists( 'mrkv_checkbox_register_mysettings' ) ) {
 
 	/** Register plugin options */
 	function mrkv_checkbox_register_mysettings() {
-		register_setting( 'ppo-settings-group', 'ppo_login' );
-		register_setting( 'ppo-settings-group', 'ppo_password' );
-		register_setting( 'ppo-settings-group', 'ppo_cashier_name' );
-		register_setting( 'ppo-settings-group', 'ppo_cashier_surname' );
-		register_setting( 'ppo-settings-group', 'ppo_cashbox_key' );
-		register_setting( 'ppo-settings-group', 'ppo_autocreate' );
-		register_setting( 'ppo-settings-group', 'ppo_autocreate_receipt_order_statuses' );
-		register_setting( 'ppo-settings-group', 'ppo_payment_type' );
-		register_setting( 'ppo-settings-group', 'ppo_connected' );
-		register_setting( 'ppo-settings-group', 'ppo_autoopen_shift' );
-		register_setting( 'ppo-settings-group', 'ppo_sign_method' );
-		register_setting( 'ppo-settings-group', 'ppo_skip_receipt_creation' );
-		register_setting( 'ppo-settings-group', 'ppo_is_dev_mode' );
+		$options = array(
+            'ppo_login',
+            'ppo_password',
+            'ppo_cashier_name',
+            'ppo_cashier_surname',
+            'ppo_cashbox_key',
+            'ppo_tax_code',
+            'ppo_autocreate',
+            'ppo_autocreate_receipt_order_statuses',
+            'ppo_payment_type',
+            'ppo_connected',
+            'ppo_autoopen_shift',
+            'ppo_sign_method',
+            'ppo_skip_receipt_creation',
+            'ppo_is_dev_mode'
+        );
+        foreach ($options as $option) {
+            register_setting('ppo-settings-group', $option);
+        }
 	}
 }
 
@@ -314,29 +320,30 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 
 		$goods       = array();
 		$total_price = 0;
-		/**
-		 * @let WC_Order_Item_Product $item
-		*/
-		foreach ( $goods_items as $item ) {
-			if ($item->get_total() == 0) {
-				continue;
-			}
+		$tax = get_option('ppo_tax_code');
+        /**
+         * @let WC_Order_Item_Product $item
+         */
+        foreach ($goods_items as $item) {
+            $price = ($item->get_total() / $item->get_quantity());
 
-			$price = ( $item->get_total() / $item->get_quantity() );
+            $good = array(
+                'code'  => $item->get_id() . '-' . $item->get_name(),
+                'name'  => $item->get_name(),
+                'price' => $price * 100,
+            );
 
-			$good = array(
-				'code'  => $item->get_id() . '-' . $item->get_name(),
-				'name'  => $item->get_name(),
-				'price' => $price * 100,
-			);
+            if (!empty($tax)) {
+                $goods['tax'] = array($tax);
+            }
 
-			$total_price += $price * $item->get_quantity() * 100;
+            $total_price += $price * $item->get_quantity() * 100;
 
-			$goods[] = array(
-				'good'     => $good,
-				'quantity' => (int) ( $item->get_quantity() * 1000 ),
-			);
-		}
+            $goods[] = array(
+                'good'     => $good,
+                'quantity' => (int) ($item->get_quantity() * 1000),
+            );
+        }
 
 		$params['goods']        = $goods;
 		$params['cashier_name'] = $cashier_name;
@@ -831,6 +838,11 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 						<th class="label" scope="row"><?php esc_html_e( 'Ліцензійний ключ віртуального касового апарату', 'checkbox' ); ?></th>
 						<td><input class="table_input" type="text" name="ppo_cashbox_key" value="<?php echo esc_html( get_option( 'ppo_cashbox_key' ) ); ?>" /></td>
 					</tr>
+
+					<tr valign="top">
+                        <th class="label" scope="row"><?php esc_html_e('Податковий номер', 'checkbox'); ?></th>
+                        <td><input class="table_input" type="text" name="ppo_tax_code" value="<?php echo esc_html(get_option('ppo_tax_code')); ?>" /></td>
+                    </tr>
 
 					<tr valign="top">
 						<th class="label" scope="row"><?php esc_html_e( 'Спосіб підпису', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
