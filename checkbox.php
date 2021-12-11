@@ -845,7 +845,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
                     </tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Спосіб підпису', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
+						<th class="label" scope="row"><?php esc_html_e( 'Спосіб підпису', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
 						<td>
 							<?php
 								$ppo_sign_method = get_option( 'ppo_sign_method' );
@@ -869,7 +869,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Автоматичне відкриття зміни', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Зміна автоматично відкриватиметься при першому створенні чека.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
+						<th class="label" scope="row"><?php esc_html_e( 'Автоматичне відкриття зміни', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Зміна автоматично відкриватиметься при першому створенні чека.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
 						<td><input class="table_input" type="checkbox" name="ppo_autoopen_shift" value="1" <?php checked( get_option( 'ppo_autoopen_shift' ), 1 ); ?> /></td>
 					</tr>
 
@@ -904,7 +904,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( 'Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
+						<th class="label" scope="row"><?php esc_html_e( 'Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
 						<td>
 							<?php
 							$gateways = WC()->payment_gateways->get_available_payment_gateways();
@@ -977,7 +977,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 
 					
 					<tr valign="top">
-						<th class="label" scope="row"><?php esc_html_e( "Тестовий режим", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></sp></th>
+						<th class="label" scope="row"><?php esc_html_e( "Тестовий режим", 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
 						<td><input class="table_input" type="checkbox" name="ppo_is_dev_mode" value="1" <?php checked( get_option( 'ppo_is_dev_mode' ), 1 ); ?> /></td>
 					</tr>
 				</table>
