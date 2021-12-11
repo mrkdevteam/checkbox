@@ -334,7 +334,7 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
             );
 
             if (!empty($tax)) {
-                $goods['tax'] = array($tax);
+                $good['tax'] = array($tax);
             }
 
             $total_price += $price * $item->get_quantity() * 100;
