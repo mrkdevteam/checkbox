@@ -158,7 +158,7 @@ if ( ! function_exists( 'mrkv_checkbox_wc_process_order_meta_box_action' ) ) {
 		}
 
 		$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
-		$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
+		$api = new MrkvCheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 		/** Check if receipt is already created */
 		if ( ! empty( get_post_meta( $order->get_id(), 'receipt_id', true ) ) ) {
@@ -273,7 +273,7 @@ if ( ! function_exists( 'mrkv_checkbox_auto_create_receipt' ) ) {
 			if ( $login && $password && $cashbox_key ) {
 
 				$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
-				$api = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
+				$api = new MrkvCheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 				$shift = $api->getCurrentCashierShift();
 
@@ -298,7 +298,7 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 	/**
 	 * Receipt creation
 	 *
-	 * @param Mrkv_CheckboxApi $api Checkbox API
+	 * @param MrkvCheckboxApi $api Checkbox API
 	 * @param WC_Order         $order Order
 	 */
 	function mrkv_checkbox_create_receipt( $api, $order ) {
@@ -403,7 +403,7 @@ if ( ! function_exists( 'mrkv_checkbox_status_widget_form' ) ) {
 
 		if ( $login && $password && $cashbox_key ) {
 			$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
-			$api   = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
+			$api   = new MrkvCheckboxApi( $login, $password, $cashbox_key, $is_dev );
 			$shift = $api->getCurrentCashierShift();
 
 			if ( isset( $shift['status'] ) ) {
@@ -468,7 +468,7 @@ if ( ! function_exists( 'mrkv_checkbox_check_connection' ) ) {
 
 			if ( $shift_id ) {
 				$is_dev 		= boolval( get_option( 'ppo_is_dev_mode' ) );
-				$api            = new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
+				$api            = new MrkvCheckboxApi( $login, $password, $cashbox_key, $is_dev );
 				$response       = $api->checkConnection( $shift_id );
 				$status         = $response['status'] ?? '';
 				$res['status']  = $status;
@@ -518,7 +518,7 @@ if ( ! function_exists( 'mrkv_checkbox_connect' ) ) {
 		if ( $login && $password && $cashbox_key ) {
 
 			$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
-			$api 	= new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
+			$api 	= new MrkvCheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 			$shift = $api->connect();
 
@@ -582,7 +582,7 @@ if ( ! function_exists( 'mrkv_checkbox_disconnect' ) ) {
 		if ( $login && $password && $cashbox_key ) {
 
 			$is_dev = boolval( get_option( 'ppo_is_dev_mode' ) );
-			$api 	= new Mrkv_CheckboxApi( $login, $password, $cashbox_key, $is_dev );
+			$api 	= new MrkvCheckboxApi( $login, $password, $cashbox_key, $is_dev );
 
 			$shift = $api->disconnect();
 
