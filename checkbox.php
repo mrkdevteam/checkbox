@@ -845,10 +845,10 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Код податку', 'checkbox'); ?></th>
+                        <th class="label" scope="row"><?php esc_html_e('Код податку', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Код податку можна переглянути на порталі my.checkbox.in.ua, в розділі податкові ставки.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
                         <td><input class="table_input" type="text" name="ppo_tax_code" value="<?php echo esc_html(get_option('ppo_tax_code')); ?>" /></td>
                     </tr>
-
+					
 					<tr valign="top">
 						<th class="label" scope="row"><?php esc_html_e( 'Спосіб підпису', 'checkbox' ); ?> <span class="tooltip" aria-label="<?php echo esc_html( 'Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox' ); ?>" data-microtip-position="right" role="tooltip"></span></th>
 						<td>
