@@ -365,6 +365,11 @@ if ( ! function_exists( 'mrkv_checkbox_create_receipt' ) ) {
 		} else {
 			$result['success'] = false;
 			$result['message'] = $receipt['message'];
+			if (isset($receipt['detail'])) {
+				if (property_exists($receipt['detail'][0], 'msg')) {
+					$result['message'] .= '.' . __( 'Деталі:', 'checkbox' ) . ' ' . $receipt['detail'][0]->msg;
+				}
+			}
 		}
 
 		return $result;
