@@ -845,7 +845,7 @@ if ( ! function_exists( 'mrkv_checkbox_show_plugin_admin_page' ) ) {
 					</tr>
 
 					<tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Податковий номер', 'checkbox'); ?></th>
+                        <th class="label" scope="row"><?php esc_html_e('Код податку', 'checkbox'); ?></th>
                         <td><input class="table_input" type="text" name="ppo_tax_code" value="<?php echo esc_html(get_option('ppo_tax_code')); ?>" /></td>
                     </tr>
 
