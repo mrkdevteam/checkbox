@@ -1,0 +1,17 @@
+{
+    "name": "morkva/checkbox",
+    "require": {
+        "katzgrau/klogger": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Morkva\\Checkbox\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SavelievMiron",
+            "email": "savelevmiron@gmail.com"
+        }
+    ]
+}
