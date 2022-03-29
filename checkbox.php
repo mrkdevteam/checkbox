@@ -4,7 +4,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop-2/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 0.8.2
+ * Version: 0.8.3
  * Tested up to: 5.8.3
  * Requires at least: 5.0
  * Requires PHP: 7.1
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CHECKBOX_VERSION', '0.8.2');
+define('CHECKBOX_VERSION', '0.8.3');
 
 if (! function_exists('mrkv_checkbox_fs')) {
     /**
@@ -367,7 +367,7 @@ if (! function_exists('mrkv_checkbox_create_receipt')) {
         $user             = wp_get_current_user();
 
         $cashier_name = get_option('ppo_cashier_name') . ' ' . get_option('ppo_cashier_surname');
-        $departament  = 'store';
+        // $departament  = 'store';
 
         $params         = array();
         $order_data     = $order->get_data();
@@ -407,7 +407,7 @@ if (! function_exists('mrkv_checkbox_create_receipt')) {
 
         $params['goods']        = $goods;
         $params['cashier_name'] = $cashier_name;
-        $params['departament']  = $departament;
+        // $params['departament']  = $departament;
 
         if (!empty($email)) {
             $params['delivery'] = array( 'email' => $email );
@@ -970,7 +970,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                     </tr>
 
                     <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e("Автоматично створювати чеки при зміні статуса замовлення", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Чек створюватиметься автоматично при зміні статусу замовлення. При ввімкненому стані в табличці "Налаштування способів оплати" з\'явиться колонка "Пропускати чек?", в якій ви можете для кожного способу оплати дозволити або заборонити автоматичне створення чеку при зміні статусу.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
+                        <th class="label" scope="row"><?php esc_html_e("Автоматично створювати чеки", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Чек створюватиметься автоматично при зміні статусу замовлення. При ввімкненому стані в табличці "Налаштування способів оплати" з\'явиться колонка "Ігнорувати чек?", в якій ви можете для кожного способу оплати дозволити або заборонити автоматичне створення чеку при зміні статусу.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
                         <td>
                             <input class="table_input" type="checkbox" name="ppo_autocreate" value="1" <?php checked(get_option('ppo_autocreate'), 1); ?> />
                         </td>
@@ -1009,7 +1009,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                     </tr>
 
                     <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Налаштування статусу платіжної системи (CASH або CASHLESS)', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></sp>
+                        <th class="label" scope="row"><?php esc_html_e('Правила автоматичного формування чеків', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></sp>
                         </th>
                         <td>
                             <?php
@@ -1028,56 +1028,56 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                                         <tr>
                                             <th><?php esc_html_e('Спосіб оплати', 'checkbox'); ?></th>
                                             <th><?php esc_html_e('Тип', 'checkbox'); ?></th>
-                                            <th class="skip-receipt-creation" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Пропускати створення чека?', 'checkbox'); ?></th>
+                                            <th class="skip-receipt-creation" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Ігнорувати створення чека?', 'checkbox'); ?></th>
                                             <th class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Статуси замовлення', 'checkbox'); ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        foreach ($enabled_gateways as $gateway) :
+                                        foreach ($enabled_gateways as $id => $gateway) :
                                             ?>
                                             <tr>
-                                                <td class="gateway-title" title="<?php echo esc_html($gateway->title); ?>">
-                                                    <p><?php echo esc_html($gateway->title); ?></p>
+                                                <td class="gateway-title" title="<?php echo esc_html($gateway->get_title()); ?>">
+                                                    <p><?php echo esc_html($gateway->get_title()); ?></p>
                                                 </td>
                                                 <td>
-                                                    <input type="radio" name="ppo_payment_type[<?php echo esc_html($gateway->id); ?>]" id="ppo_payment_type_cash[<?php echo esc_html($gateway->id); ?>]" <?php
-                                                    if (isset($ppo_payment_type[$gateway->id])) {
-                                                        checked($ppo_payment_type[$gateway->id], 'cash');
+                                                    <input type="radio" name="ppo_payment_type[<?php echo esc_html($id); ?>]" id="ppo_payment_type_cash[<?php echo esc_html($id); ?>]" <?php
+                                                    if (isset($ppo_payment_type[$id])) {
+                                                        checked($ppo_payment_type[$id], 'cash');
                                                     }
                                                     ?> value="cash">
-                                                    <label for="ppo_payment_type_cash[<?php echo esc_html($gateway->id); ?>]">CASH</label>
+                                                    <label for="ppo_payment_type_cash[<?php echo esc_html($id); ?>]">CASH</label>
 
-                                                    <input type="radio" name="ppo_payment_type[<?php echo esc_html($gateway->id); ?>]" id="ppo_payment_type_cashless[<?php echo esc_html($gateway->id); ?>]" <?php
-                                                    if (isset($ppo_payment_type[$gateway->id])) {
-                                                        checked($ppo_payment_type[$gateway->id], 'cashless');
+                                                    <input type="radio" name="ppo_payment_type[<?php echo esc_html($id); ?>]" id="ppo_payment_type_cashless[<?php echo esc_html($id); ?>]" <?php
+                                                    if (isset($ppo_payment_type[$id])) {
+                                                        checked($ppo_payment_type[$id], 'cashless');
                                                     }
                                                     ?> value="cashless">
-                                                    <label for="ppo_payment_type_cashless[<?php echo esc_html($gateway->id); ?>]">CASHLESS</label>
+                                                    <label for="ppo_payment_type_cashless[<?php echo esc_html($id); ?>]">CASHLESS</label>
                                                 </td>
                                                 <td class="skip-receipt-creation" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>">
-                                                    <input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html($gateway->id); ?>]" id="ppo_skip_receipt_creation_yes[<?php echo esc_html($gateway->id); ?>]" value="yes" <?php
-                                                    if (isset($ppo_skip_receipt_creation[$gateway->id])) {
-                                                        checked($ppo_skip_receipt_creation[$gateway->id], 'yes');
+                                                    <input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html($id); ?>]" id="ppo_skip_receipt_creation_yes[<?php echo esc_html($id); ?>]" value="yes" <?php
+                                                    if (isset($ppo_skip_receipt_creation[$id])) {
+                                                        checked($ppo_skip_receipt_creation[$id], 'yes');
                                                     }
                                                     ?>>
-                                                    <label for="ppo_skip_receipt_creation_yes[<?php echo esc_html($gateway->id); ?>]"><?php esc_html_e('Так', 'checkbox'); ?></label>
+                                                    <label for="ppo_skip_receipt_creation_yes[<?php echo esc_html($id); ?>]"><?php esc_html_e('Так', 'checkbox'); ?></label>
 
-                                                    <input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html($gateway->id); ?>]" id="ppo_skip_receipt_creation_no[<?php echo esc_html($gateway->id); ?>]" value="no" <?php
-                                                    if (isset($ppo_skip_receipt_creation[$gateway->id])) {
-                                                        checked($ppo_skip_receipt_creation[$gateway->id], 'no');
+                                                    <input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html($id); ?>]" id="ppo_skip_receipt_creation_no[<?php echo esc_html($id); ?>]" value="no" <?php
+                                                    if (isset($ppo_skip_receipt_creation[$id])) {
+                                                        checked($ppo_skip_receipt_creation[$id], 'no');
                                                     }
                                                     ?>>
-                                                    <label for="ppo_skip_receipt_creation_no[<?php echo esc_html($gateway->id); ?>]"><?php esc_html_e('Ні', 'checkbox'); ?></label>
+                                                    <label for="ppo_skip_receipt_creation_no[<?php echo esc_html($id); ?>]"><?php esc_html_e('Ні', 'checkbox'); ?></label>
                                                 </td>
                                                 <td class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>">
-                                                    <select class="chosen order-statuses" name="ppo_autocreate_payment_order_statuses[<?php echo esc_html($gateway->id); ?>][]" data-placeholder="<?php _e('Виберіть статуси замовлення', 'checkbox') ?>" multiple>
+                                                    <select class="chosen order-statuses" name="ppo_autocreate_payment_order_statuses[<?php echo esc_html($id); ?>][]" data-placeholder="<?php _e('Виберіть статуси замовлення', 'checkbox') ?>" multiple>
                                                         <?php
                                                         if (! empty($all_order_statuses)) :
                                                             foreach ($all_order_statuses as $k => $v) :
                                                                 $k = str_replace('wc-', '', $k);
                                                                 ?>
-                                                            <option value="<?php echo $k; ?>" <?php echo ( isset($ppo_autocreate_payment_order_statuses[$gateway->id]) && in_array($k, $ppo_autocreate_payment_order_statuses[$gateway->id]) ) ? 'selected' : ''; ?>><?php echo $v; ?></option>
+                                                            <option value="<?php echo $k; ?>" <?php echo ( isset($ppo_autocreate_payment_order_statuses[$id]) && in_array($k, $ppo_autocreate_payment_order_statuses[$id]) ) ? 'selected' : ''; ?>><?php echo $v; ?></option>
                                                                 <?php
                                                             endforeach;
                                                         else :
@@ -1108,7 +1108,11 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                     <tr valign="top">
                         <th class="label" scope="row"><?php esc_html_e("Тестовий режим", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span> 
                         <span class="tooltip" aria-label="<?php echo esc_html('При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
-                        <td><input class="table_input" type="checkbox" name="ppo_is_dev_mode" value="1" <?php checked(get_option('ppo_is_dev_mode'), 1); ?> /></td>
+                        <td>
+                            <input class="table_input" type="checkbox" name="ppo_is_dev_mode" value="1" <?php checked(get_option('ppo_is_dev_mode'), 1); ?> />
+                            <br>
+                            <span style="color: grey;">Тестовий режим не використовується, якщо ключ каси починається на "test".</span>
+                        </td>                    
                     </tr>
 
                     <tr valign="top">
@@ -1126,10 +1130,6 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
         if (empty(get_option('ppo_autoopen_shift'))) {
             if (wp_next_scheduled('checkbox_open_shift')) {
                 wp_clear_scheduled_hook('checkbox_open_shift');
-            }
-        } else {
-            if (!wp_next_scheduled('checkbox_open_shift')) {
-                wp_schedule_event(strtotime('00:01:00 Europe/Kiev'), 'daily', 'checkbox_open_shift');
             }
         }
     }
