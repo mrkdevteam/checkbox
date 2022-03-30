@@ -2,10 +2,10 @@
 
 /**
  * Plugin Name: WooCommerce Checkbox Integration
- * Plugin URI: https://morkva.co.ua/shop-2/checkbox-woocommerce?utm_source=checkbox-plugin
+ * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 0.8.3
- * Tested up to: 5.8.3
+ * Version: 0.8.4
+ * Tested up to: 5.9
  * Requires at least: 5.0
  * Requires PHP: 7.1
  * Author: MORKVA
@@ -21,49 +21,6 @@ if (! defined('ABSPATH')) {
 }
 
 define('CHECKBOX_VERSION', '0.8.3');
-
-if (! function_exists('mrkv_checkbox_fs')) {
-    /**
-     * Create a helper function for easy SDK access.
-     */
-    function mrkv_checkbox_fs()
-    {
-        global $mrkv_checkbox_fs;
-
-        if (! isset($mrkv_checkbox_fs)) {
-            /**
-             *  Include Freemius SDK.
-             */
-            require_once dirname(__FILE__) . '/freemius/start.php';
-
-            $mrkv_checkbox_fs = fs_dynamic_init(
-                array(
-                    'id'             => '7363',
-                    'slug'           => 'checkbox',
-                    'type'           => 'plugin',
-                    'public_key'     => 'pk_427357af1906f728486bdb1f5f4a3',
-                    'is_premium'     => false,
-                    'has_addons'     => false,
-                    'has_paid_plans' => false,
-                    'menu'           => array(
-                        'slug'       => 'checkbox_settings',
-                        'first-path' => 'admin.php?page=checkbox_settings',
-                        'account'    => false,
-                        'contact'    => false,
-                        'support'    => false,
-                    ),
-                )
-            );
-        }
-
-        return $mrkv_checkbox_fs;
-    }
-
-    // Init Freemius.
-    mrkv_checkbox_fs();
-    // Signal that SDK was initiated.
-    do_action('mrkv_checkbox_fs_loaded');
-}
 
 require_once 'vendor/autoload.php';
 
@@ -978,7 +935,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
 
                     <tr class="order-statuses" valign="top" style="<?php echo ( 1 == get_option('ppo_autocreate') ) ? '' : 'display: none;'; ?>">
                         <th class="label" scope="row">
-                            <?php esc_html_e("Статуси замовлення", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span> 
+                            <?php esc_html_e("Статуси замовлення", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span>
                             <span class="tooltip" aria-label="<?php echo esc_html('Виберіть статуси замовлення, при зміні на які буде створюватися чек.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></th>
                         <td>
                             <?php
@@ -1004,7 +961,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                                     printf('<option value="">%s</option>', __('None'));
                                 endif;
                                 ?>
-                            </select>   
+                            </select>
                         </td>
                     </tr>
 
@@ -1084,7 +1041,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                                                             printf('<option value="">%s</option>', __('None'));
                                                         endif;
                                                         ?>
-                                                    </select>   
+                                                    </select>
                                                 </td>
                                             </tr>
                                             <?php
@@ -1106,13 +1063,13 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                     </tr>
 
                     <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e("Тестовий режим", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span> 
+                        <th class="label" scope="row"><?php esc_html_e("Тестовий режим", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span>
                         <span class="tooltip" aria-label="<?php echo esc_html('При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
                         <td>
                             <input class="table_input" type="checkbox" name="ppo_is_dev_mode" value="1" <?php checked(get_option('ppo_is_dev_mode'), 1); ?> />
                             <br>
                             <span style="color: grey;">Тестовий режим не використовується, якщо ключ каси починається на "test".</span>
-                        </td>                    
+                        </td>
                     </tr>
 
                     <tr valign="top">
