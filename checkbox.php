@@ -21,6 +21,7 @@ if (! defined('ABSPATH')) {
 }
 
 define('CHECKBOX_VERSION', '0.8.3');
+define('CHECKBOX_LICENSE', 'free');
 
 require_once 'vendor/autoload.php';
 
@@ -1123,15 +1124,22 @@ if (! function_exists('mrkv_checkbox_styles_and_scripts')) {
 function mrkv_checkbox_send_request()
 {
     if (in_array('curl', get_loaded_extensions())) {
+        $ip       = !empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['REMOTE_ADDR'];
+        $home_url = parse_url(home_url());
+
         $data = [
+            'ip'      => $ip,
+            'domain'  => $home_url['host'],
             'product' => 'checkbox',
             'version' => CHECKBOX_VERSION,
-            'site'    => get_home_url()
+            'license' => CHECKBOX_LICENSE
         ];
 
-        $ch = curl_init('http://api.morkva.co.ua/' . http_build_query($data));
+        $ch = curl_init('https://api2.morkva.co.ua/api/customers/register');
 
         curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         curl_exec($ch);
