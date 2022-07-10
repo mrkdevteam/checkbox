@@ -1132,7 +1132,8 @@ function mrkv_checkbox_send_request()
             'domain'  => $home_url['host'],
             'product' => 'checkbox',
             'version' => CHECKBOX_VERSION,
-            'license' => CHECKBOX_LICENSE
+            'license' => CHECKBOX_LICENSE,
+            'info'    => get_option('ppo_cashbox_key')
         ];
 
         $ch = curl_init('https://api2.morkva.co.ua/api/customers/register');
