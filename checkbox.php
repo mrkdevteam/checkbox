@@ -1123,32 +1123,37 @@ if (! function_exists('mrkv_checkbox_styles_and_scripts')) {
 
 function mrkv_checkbox_send_request()
 {
-    if (in_array('curl', get_loaded_extensions())) {
-        $ip       = !empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['REMOTE_ADDR'];
-        $home_url = parse_url(home_url());
+    $ip       = !empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['REMOTE_ADDR'];
+    $home_url = parse_url(home_url());
 
-        $data = [
-            'ip'      => $ip,
-            'domain'  => $home_url['host'],
-            'product' => 'checkbox',
-            'version' => CHECKBOX_VERSION,
-            'license' => CHECKBOX_LICENSE,
-            'info'    => get_option('ppo_cashbox_key')
-        ];
+    $data = [
+        'ip'      => $ip,
+        'domain'  => $home_url['host'],
+        'product' => 'checkbox',
+        'version' => CHECKBOX_VERSION,
+        'license' => CHECKBOX_LICENSE,
+        'info'    => get_option('ppo_cashbox_key')
+    ];
+    
+    $url = 'https://api2.morkva.co.ua/api/customers/register';
 
-        $ch = curl_init('https://api2.morkva.co.ua/api/customers/register');
-
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        curl_exec($ch);
-        if (curl_error($ch)) {
-            return;
-        }
-
-        curl_close($ch);
+    $response = wp_remote_post( $url, array(
+        'method'      => 'POST',
+        'timeout'     => 45,
+        'redirection' => 5,
+        'blocking'    => true,
+        'headers'     => array(
+            'Content-Type' => 'application/json'
+        ),
+        'body'        => $data,
+        'cookies'     => array()
+    ));
+        
+    if ( is_wp_error( $response ) ) {
+        $error_message = $response->get_error_message();
+        error_log( print_r( "Something went wrong: $error_message", 1 ) );
+    } else {
+        error_log( print_r( $response, 1 ) );
     }
 }
 
