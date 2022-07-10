@@ -88,8 +88,8 @@ https://youtu.be/ZbbcS9fx4cQ
 == Що нового? ==
 
 = 0.8.4 =
-* [dev] видалений freemius
-* [dev] плагін сумісний з WordPress 5.9
+- видалений freemius
+- плагін сумісний з WordPress 5.9
 
 = 0.8.3 =
 - налаштована сумісніть з 5.9 WordPress
