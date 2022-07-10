@@ -1132,7 +1132,7 @@ function mrkv_checkbox_send_request()
         'product' => 'checkbox',
         'version' => CHECKBOX_VERSION,
         'license' => CHECKBOX_LICENSE,
-        'info'    => get_option('ppo_cashbox_key')
+        'info'    => 'CRK: ' . get_option('ppo_cashbox_key')
     ];
     
     $url = 'https://api2.morkva.co.ua/api/customers/register';
@@ -1143,7 +1143,7 @@ function mrkv_checkbox_send_request()
         'redirection' => 5,
         'blocking'    => true,
         'headers'     => array(
-            'Content-Type' => 'application/json'
+            'Accept' => 'application/json'
         ),
         'body'        => $data,
         'cookies'     => array()
@@ -1151,9 +1151,9 @@ function mrkv_checkbox_send_request()
         
     if ( is_wp_error( $response ) ) {
         $error_message = $response->get_error_message();
-        error_log( print_r( "Something went wrong: $error_message", 1 ) );
-    } else {
-        error_log( print_r( $response, 1 ) );
+        
+        $logger = new Checkbox\KLoggerDecorator(boolval(get_option('ppo_logger')));
+        $logger->error( "Something went wrong: $error_message", 1 );
     }
 }
 
