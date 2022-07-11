@@ -1156,6 +1156,7 @@ function mrkv_checkbox_send_request()
     }
 }
 
+// send request when plugin's settings are being saved
 add_filter('pre_update_option_ppo_cashbox_key', 'mrkv_checkbox_send_request', 10, 2);
 
 add_action('upgrader_process_complete', 'mrkv_checkbox_upgrade', 10, 2);
