@@ -1084,8 +1084,6 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
             </form>
         </div>
         <?php
-        mrkv_checkbox_send_request();
-
         if (empty(get_option('ppo_autoopen_shift'))) {
             if (wp_next_scheduled('checkbox_open_shift')) {
                 wp_clear_scheduled_hook('checkbox_open_shift');
@@ -1157,6 +1155,8 @@ function mrkv_checkbox_send_request()
         $logger->error( "Something went wrong: $error_message", 1 );
     }
 }
+
+add_filter('pre_update_option_ppo_cashbox_key', 'mrkv_checkbox_send_request', 10, 2);
 
 add_action('upgrader_process_complete', 'mrkv_checkbox_upgrade', 10, 2);
 function mrkv_checkbox_upgrade($upgrader_object, $options)
