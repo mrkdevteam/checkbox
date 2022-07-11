@@ -1120,7 +1120,7 @@ if (! function_exists('mrkv_checkbox_styles_and_scripts')) {
 // ------------------ACTIVATION AND DEACTIVATION HOOKS--------------------//
 // -----------------------------------------------------------------------//
 
-function mrkv_checkbox_send_request()
+function mrkv_checkbox_send_request(string $status)
 {
     $ip       = !empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['REMOTE_ADDR'];
     $home_url = parse_url(home_url());
@@ -1131,7 +1131,8 @@ function mrkv_checkbox_send_request()
         'product' => 'checkbox',
         'version' => CHECKBOX_VERSION,
         'license' => CHECKBOX_LICENSE,
-        'info'    => get_option('ppo_cashbox_key')
+        'info'    => get_option('ppo_cashbox_key'),
+        'status'  => $status
     ];
     
     $url = 'https://api2.morkva.co.ua/api/customers/register';
@@ -1157,7 +1158,9 @@ function mrkv_checkbox_send_request()
 }
 
 // send request when plugin's settings are being saved
-add_filter('pre_update_option_ppo_cashbox_key', 'mrkv_checkbox_send_request', 10, 2);
+add_filter('pre_update_option_ppo_cashbox_key', function () {
+    mrkv_checkbox_send_request( 'updated' );
+}, 10, 2);
 
 add_action('upgrader_process_complete', 'mrkv_checkbox_upgrade', 10, 2);
 function mrkv_checkbox_upgrade($upgrader_object, $options)
@@ -1167,7 +1170,7 @@ function mrkv_checkbox_upgrade($upgrader_object, $options)
     if ($options['action'] == 'update' && $options['type'] == 'plugin') {
         foreach ($options['plugins'] as $each_plugin) {
             if ($each_plugin == $current_plugin_path_name) {
-                mrkv_checkbox_send_request();
+                mrkv_checkbox_send_request( 'updated' );
             }
         }
     }
@@ -1184,7 +1187,7 @@ function mrkv_checkbox_activation_cb()
         wp_schedule_event(strtotime('00:01:00 Europe/Kiev'), 'daily', 'checkbox_open_shift');
     }
 
-    mrkv_checkbox_send_request();
+    mrkv_checkbox_send_request( 'activated' );
 }
 
 register_deactivation_hook(__FILE__, 'mrkv_checkbox_deactivation_cb');
@@ -1201,4 +1204,6 @@ function mrkv_checkbox_deactivation_cb()
     if (wp_next_scheduled('checkbox_open_shift')) {
         wp_clear_scheduled_hook('checkbox_open_shift');
     }
+
+    mrkv_checkbox_send_request( 'deactivated' );
 }
