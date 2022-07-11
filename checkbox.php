@@ -4,8 +4,8 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 0.8.4
- * Tested up to: 5.9
+ * Version: 0.8.5
+ * Tested up to: 6.0
  * Requires at least: 5.0
  * Requires PHP: 7.1
  * Author: MORKVA
@@ -13,14 +13,14 @@
  * Text Domain: checkbox
  * Domain Path: /languages
  * WC requires at least: 3.9.0
- * WC tested up to: 6.1.0
+ * WC tested up to: 6.6.1
  */
 
 if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CHECKBOX_VERSION', '0.8.3');
+define('CHECKBOX_VERSION', '0.8.5');
 define('CHECKBOX_LICENSE', 'free');
 
 require_once 'vendor/autoload.php';
@@ -1084,6 +1084,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
             </form>
         </div>
         <?php
+        mrkv_checkbox_send_request();
 
         if (empty(get_option('ppo_autoopen_shift'))) {
             if (wp_next_scheduled('checkbox_open_shift')) {
@@ -1132,7 +1133,7 @@ function mrkv_checkbox_send_request()
         'product' => 'checkbox',
         'version' => CHECKBOX_VERSION,
         'license' => CHECKBOX_LICENSE,
-        'info'    => 'CRK: ' . get_option('ppo_cashbox_key')
+        'info'    => get_option('ppo_cashbox_key')
     ];
     
     $url = 'https://api2.morkva.co.ua/api/customers/register';
