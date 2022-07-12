@@ -1158,9 +1158,11 @@ function mrkv_checkbox_send_request(string $status)
 }
 
 // send request when plugin's settings are being saved
-add_filter('pre_update_option_ppo_cashbox_key', function () {
+add_filter('pre_update_option_ppo_cashbox_key', function ( $value, $old_value, $option ) {
     mrkv_checkbox_send_request( 'updated' );
-}, 10, 2);
+
+    return $value;
+}, 10, 3);
 
 add_action('upgrader_process_complete', 'mrkv_checkbox_upgrade', 10, 2);
 function mrkv_checkbox_upgrade($upgrader_object, $options)
