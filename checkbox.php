@@ -6,14 +6,14 @@
  * Description: Інтеграція WooCommerce з пРРО Checkbox
  * Version: 0.8.5
  * Tested up to: 6.0
- * Requires at least: 5.0
+ * Requires at least: 5.2
  * Requires PHP: 7.1
  * Author: MORKVA
  * Author URI: https://morkva.co.ua
  * Text Domain: checkbox
  * Domain Path: /languages
- * WC requires at least: 3.9.0
- * WC tested up to: 6.6.1
+ * WC requires at least: 5.4.0
+ * WC tested up to: 6.7.0
  */
 
 if (! defined('ABSPATH')) {
