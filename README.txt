@@ -7,7 +7,7 @@ Requires PHP: 7.1
 Stable tag: 0.8.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WooCommerce tested up to: 6.6.1
+WooCommerce tested up to: 6.7.0
 
 Плагін інтеграції WooCommerce з Checkbox.ua, сервісом програмної реєстрації розрахункових операцій (пРРО).
 
