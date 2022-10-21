@@ -4,7 +4,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 0.8.5
+ * Version: 0.9.0
  * Tested up to: 6.0
  * Requires at least: 5.2
  * Requires PHP: 7.1
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CHECKBOX_VERSION', '0.8.5');
+define('CHECKBOX_VERSION', '0.9.0');
 define('CHECKBOX_LICENSE', 'free');
 
 require_once 'vendor/autoload.php';
@@ -72,6 +72,7 @@ if (! function_exists('mrkv_checkbox_register_mysettings')) {
         foreach ($options as $option) {
             register_setting('ppo-settings-group', $option);
         }
+        update_option( 'ppo_autoopen_shift', 1 );
     }
 }
 
@@ -153,6 +154,9 @@ if (! function_exists('mrkv_checkbox_wc_process_order_meta_box_action')) {
         $current_shift = $api->getCurrentCashierShift();
         if (! isset($current_shift['status']) && ( 'OPENED' !== $current_shift['status'] )) {
             /** Check if Autoopen shift feature is activated */
+            if(is_null(get_option('ppo_autoopen_shift'))){
+                update_option( 'ppo_autoopen_shift', 1 );
+            }
             if (1 === (int) get_option('ppo_autoopen_shift')) {
                 mrkv_checkbox_connect();
                 sleep(8); // wait for 8 sec while shift is opening
@@ -265,6 +269,9 @@ if (! function_exists('mrkv_checkbox_auto_create_receipt')) {
             }
 
             /** Check if Autoopen shift feature is activated */
+            if(is_null(get_option('ppo_autoopen_shift'))){
+                update_option( 'ppo_autoopen_shift', 1 );
+            }
             if (1 === (int) get_option('ppo_autoopen_shift') && 0 === (int) get_option('ppo_connected')) {
                 mrkv_checkbox_connect();
                 sleep(8); // wait for 8 sec while shift is opening
@@ -923,7 +930,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                     </tr>
 
                     <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Автоматичне відкриття зміни', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Зміна автоматично відкриватиметься при першому створенні чека або в 00:01 по Києву.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
+                        <th class="label" scope="row"><?php esc_html_e('Автоматичне відкриття зміни', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Зміна відкриватиметься автоматично при створенні чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
                         <td><input class="table_input" type="checkbox" name="ppo_autoopen_shift" value="1" <?php checked(get_option('ppo_autoopen_shift'), 1); ?> /></td>
                     </tr>
 

@@ -4,7 +4,7 @@ Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
 Tested up to: 6.0
 Requires PHP: 7.1
-Stable tag: 0.8.5
+Stable tag: 0.9.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooCommerce tested up to: 6.7.0
@@ -86,6 +86,10 @@ https://youtu.be/ZbbcS9fx4cQ
 5. Код податку в налаштуваннях повинен співпадати з кодом податку зі сторінки Податкові ставки
 
 == Що нового? ==
+
+= 0.9.0 =
+* [fixed] виправили помилку з автоматичним відкриттям зміни на деяких сайтах
+* [dev] перевірили сумістість з WooComerce 7.0
 
 = 0.8.5 =
 * перевірено сумісність з WordPress 6.0
