@@ -4,7 +4,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 0.9.0
+ * Version: 1.0.0
  * Tested up to: 6.0
  * Requires at least: 5.2
  * Requires PHP: 7.1
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CHECKBOX_VERSION', '0.9.0');
+define('CHECKBOX_VERSION', '1.0.0');
 define('CHECKBOX_LICENSE', 'free');
 
 require_once 'vendor/autoload.php';
@@ -350,7 +350,8 @@ if (! function_exists('mrkv_checkbox_create_receipt')) {
          * @let WC_Order_Item_Product $item
          */
         foreach ($goods_items as $item) {
-            $price = ($item->get_total() / $item->get_quantity());
+            $product = $item->get_product();
+            $price = $product->get_price(); 
 
             $good = array(
                 'code'  => $item->get_id() . '-' . $item->get_name(),
@@ -376,6 +377,35 @@ if (! function_exists('mrkv_checkbox_create_receipt')) {
 
         if (!empty($email)) {
             $params['delivery'] = array( 'email' => $email );
+        }
+
+        if( count( $order->get_coupon_codes() ) > 0 ) {
+            $discount_type = '';
+            $coupon_amount = '';
+
+            foreach( $order->get_coupon_codes() as $coupon_code ) {
+                // Get the WC_Coupon object
+                $coupon = new WC_Coupon($coupon_code);
+
+                $discount_type = $coupon->get_discount_type(); // Get coupon discount type
+                $coupon_amount = $coupon->get_amount(); // Get coupon amount
+            }
+
+            if($discount_type == 'fixed_cart'){
+                $mode = 'VALUE';
+                $coupon_amount = $coupon_amount * 100;
+            }
+            else{
+                $mode = 'PERCENT';
+            }
+
+            $params['discounts'][] = array(
+                'type' => 'DISCOUNT',
+                'mode' => $mode,
+                'value' => $coupon_amount,
+                'name' => 'Купон'
+            );
+            $total_price = $order->get_total() * 100;
         }
 
         $params['payments'][]   = array(
