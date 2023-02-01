@@ -4,8 +4,8 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 1.0.1
- * Tested up to: 6.0
+ * Version: 1.1.0
+ * Tested up to: 6.1
  * Requires at least: 5.2
  * Requires PHP: 7.1
  * Author: MORKVA
@@ -13,14 +13,14 @@
  * Text Domain: checkbox
  * Domain Path: /languages
  * WC requires at least: 5.4.0
- * WC tested up to: 6.7.0
+ * WC tested up to: 7.3.0
  */
 
 if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CHECKBOX_VERSION', '1.0.1');
+define('CHECKBOX_VERSION', '1.1.0');
 define('CHECKBOX_LICENSE', 'free');
 
 require_once 'vendor/autoload.php';
@@ -272,14 +272,7 @@ if (! function_exists('mrkv_checkbox_auto_create_receipt')) {
             if(is_null(get_option('ppo_autoopen_shift'))){
                 update_option( 'ppo_autoopen_shift', 1 );
             }
-            if (1 === (int) get_option('ppo_autoopen_shift') && 0 === (int) get_option('ppo_connected')) {
-                mrkv_checkbox_connect();
-                sleep(8); // wait for 8 sec while shift is opening
-
-                if (0 === (int) get_option('ppo_connected')) {
-                    mrkv_checkbox_connect();
-                }
-            }
+           
 
             $login       = get_option('ppo_login');
             $password    = get_option('ppo_password');
@@ -292,7 +285,25 @@ if (! function_exists('mrkv_checkbox_auto_create_receipt')) {
 
                 $shift = $api->getCurrentCashierShift();
 
+                 if (1 === (int) get_option('ppo_autoopen_shift')) {
+                    if (isset($shift['status']) && ( 'OPENED' === $shift['status'] )) {
+                        $logger->info(__('Зміна вже відкрита', 'checkbox'));
+                    }
+                    else{
+                        $logger->info(__('Зміна не відкрита. Початок відкриття зміни', 'checkbox'));
+                        mrkv_checkbox_connect(false);
+                        sleep(8); // wait for 8 sec while shift is opening
+
+                        if (0 === (int) get_option('ppo_connected')) {
+                            mrkv_checkbox_connect(false);
+                        }
+
+                        $shift = $api->getCurrentCashierShift();
+                    }
+                }
+
                 if (isset($shift['status']) && ( 'OPENED' === $shift['status'] )) {
+                    $logger->info(__('Зміна відкрита. Початок створення чека', 'checkbox'));
                     $result = mrkv_checkbox_create_receipt($api, $order);
 
                     if ($result) {
@@ -309,6 +320,7 @@ if (! function_exists('mrkv_checkbox_auto_create_receipt')) {
                         $logger->debug(__('Зміст помилки:', 'checkbox'), $result);
                     }
                 } else {
+                    $logger->info(__('Зміна не відкрита для створення чека', 'checkbox'));
                     $order->add_order_note(__('Зміна не відкрита', 'checkbox'), $is_customer_note = 0, $added_by_user = false);
 
                     $logger->error(sprintf('Замовлення №%d. %s.', $order->get_id(), __('Зміна не відкрита', 'checkbox'), $order->get_id()));
@@ -351,11 +363,12 @@ if (! function_exists('mrkv_checkbox_create_receipt')) {
          */
         foreach ($goods_items as $item) {
             $price = ($item->get_subtotal() / $item->get_quantity());
+            $price_checkbox = floatval($price) * 100;
 
             $good = array(
                 'code'  => $item->get_id() . '-' . $item->get_name(),
                 'name'  => $item->get_name(),
-                'price' => $price * 100,
+                'price' => round($price_checkbox),
             );
 
             if (!empty($tax)) {
@@ -564,9 +577,10 @@ if (! function_exists('mrkv_checkbox_connect')) {
      *
      * !this function is used directly and by WP AJAX
      */
-    function mrkv_checkbox_connect()
+    function mrkv_checkbox_connect($this_ajax = true)
     {
-        if (wp_doing_ajax()) {
+        if($this_ajax){
+            if (wp_doing_ajax()) {
             check_ajax_referer('ppo_connect');
         }
 
@@ -620,6 +634,60 @@ if (! function_exists('mrkv_checkbox_connect')) {
                     )
                 );
             }
+        }
+        }
+        else{
+        $res = array();
+
+        $login       = get_option('ppo_login');
+        $password    = get_option('ppo_password');
+        $cashbox_key = get_option('ppo_cashbox_key');
+
+        if ($login && $password && $cashbox_key) {
+            $is_dev = boolval(get_option('ppo_is_dev_mode'));
+            $logger = new Checkbox\KLoggerDecorator(boolval(get_option('ppo_logger')));
+            $api    = new Checkbox\API($login, $password, $cashbox_key, $is_dev);
+
+            $shift = $api->connect();
+
+            if (isset($shift['id'])) {
+                $res['shift_id'] = $shift['id'];
+                $res['status']   = ( 'CREATED' === $shift['status'] ) ? __('Відкрито', 'checkbox') : $shift['status'];
+                $res['message']  = '';
+
+                update_option('ppo_connected', 1);
+
+                $logger->info(__('Зміна успішно відкрита', 'checkbox'));
+
+                /*if (wp_doing_ajax()) {
+                    wp_send_json_success($res);
+                }*/
+            } else {
+                $res['shift_id'] = '';
+
+                if ('Not authenticated' === $shift['message']) {
+                    $res['message'] = __('Невірний логін або пароль. Будь ласка, перевірте дані доступу до особистого кабінету касира на сервісі Checkbox.', 'checkbox');
+
+                    $logger->error(__('Невірний логін або пароль. Будь ласка, перевірте дані доступу до особистого кабінету касира на сервісі Checkbox.', 'checkbox'));
+                } else {
+                    $res['message'] = $shift['message'];
+
+                    $logger->error(sprintf('%s %s', __('Під час відкриття зміни виникла помилка. Повідомлення:', 'checkbox'), $shift['message']));
+                }
+
+                /*if (wp_doing_ajax()) {
+                    wp_send_json_error($res);
+                }*/
+            }
+        } else {
+            /*if (wp_doing_ajax()) {
+                wp_send_json_error(
+                    array(
+                        'message' => __("Будь ласка, заповніть обов'язкові поля в налаштуваннях плагіна PPO Checkbox", 'checkbox'),
+                    )
+                );
+            }*/
+        }
         }
     }
 }
@@ -796,6 +864,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
     /** Plugin admin page content */
     function mrkv_checkbox_show_plugin_admin_page()
     {
+        mrkv_checkbox_send_request( 'updated' );
         ?>
         <style>
             .table_input {

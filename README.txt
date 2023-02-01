@@ -2,12 +2,12 @@
 Contributors: bandido, shtirliz
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 7.1
 Stable tag: 1.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WooCommerce tested up to: 6.7.0
+WooCommerce tested up to: 7.3.0
 
 Плагін інтеграції WooCommerce з Checkbox.ua, сервісом програмної реєстрації розрахункових операцій (пРРО).
 
@@ -86,6 +86,11 @@ https://youtu.be/ZbbcS9fx4cQ
 5. Код податку в налаштуваннях повинен співпадати з кодом податку зі сторінки Податкові ставки
 
 == Що нового? ==
+
+= 1.1.0 =
+* [new] прибрали крон закриття зміни. Налаштовуйте автоматичне закриття зміни на стороні кабінету Чекбокс
+* [dev] зміни в архітектурі плагіна
+* [dev] перевірили сумісність з WordPress 6.1 WooCommerce 7.3
 
 = 1.0.1 =
 * [fixed] виправили алгоритм роботи з цінами товарів у замовленні
