@@ -4,7 +4,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 1.1.0
+ * Version: 1.2.0
  * Tested up to: 6.1
  * Requires at least: 5.2
  * Requires PHP: 7.1
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CHECKBOX_VERSION', '1.1.0');
+define('CHECKBOX_VERSION', '1.2.0');
 define('CHECKBOX_LICENSE', 'free');
 
 require_once 'vendor/autoload.php';
@@ -72,7 +72,6 @@ if (! function_exists('mrkv_checkbox_register_mysettings')) {
         foreach ($options as $option) {
             register_setting('ppo-settings-group', $option);
         }
-        update_option( 'ppo_autoopen_shift', 1 );
     }
 }
 
@@ -1176,11 +1175,6 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
             </form>
         </div>
         <?php
-        if (empty(get_option('ppo_autoopen_shift'))) {
-            if (wp_next_scheduled('checkbox_open_shift')) {
-                wp_clear_scheduled_hook('checkbox_open_shift');
-            }
-        }
     }
 }
 
@@ -1273,12 +1267,14 @@ function mrkv_checkbox_upgrade($upgrader_object, $options)
 register_activation_hook(__FILE__, 'mrkv_checkbox_activation_cb');
 function mrkv_checkbox_activation_cb()
 {
-    if (! wp_next_scheduled('checkbox_close_shift')) {
-        wp_schedule_event(strtotime('23:57:00 Europe/Kiev'), 'daily', 'checkbox_close_shift');
+    update_option( 'ppo_autoopen_shift', 1 );
+
+    if (wp_next_scheduled('checkbox_close_shift')) {
+        wp_clear_scheduled_hook('checkbox_close_shift');
     }
 
-    if (! wp_next_scheduled('checkbox_open_shift')) {
-        wp_schedule_event(strtotime('00:01:00 Europe/Kiev'), 'daily', 'checkbox_open_shift');
+    if (wp_next_scheduled('checkbox_open_shift')) {
+        wp_clear_scheduled_hook('checkbox_open_shift');
     }
 
     mrkv_checkbox_send_request( 'activated' );
@@ -1289,14 +1285,6 @@ function mrkv_checkbox_deactivation_cb()
 {
     if (get_option('ppo_connected')) {
         mrkv_checkbox_disconnect();
-    }
-
-    if (wp_next_scheduled('checkbox_close_shift')) {
-        wp_clear_scheduled_hook('checkbox_close_shift');
-    }
-
-    if (wp_next_scheduled('checkbox_open_shift')) {
-        wp_clear_scheduled_hook('checkbox_open_shift');
     }
 
     mrkv_checkbox_send_request( 'deactivated' );

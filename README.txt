@@ -4,7 +4,7 @@ Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
 Tested up to: 6.1
 Requires PHP: 7.1
-Stable tag: 1.0.1
+Stable tag: 1.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooCommerce tested up to: 7.3.0
@@ -86,6 +86,10 @@ https://youtu.be/ZbbcS9fx4cQ
 5. Код податку в налаштуваннях повинен співпадати з кодом податку зі сторінки Податкові ставки
 
 == Що нового? ==
+
+= 1.2.0 =
+* [fixed] видалили крон відкриття зміни
+* [fixed] виправили можливість відключення автоматичного відкриття зміни
 
 = 1.1.0 =
 * [new] прибрали крон закриття зміни. Налаштовуйте автоматичне закриття зміни на стороні кабінету Чекбокс
