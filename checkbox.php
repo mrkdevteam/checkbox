@@ -867,11 +867,11 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
         ?>
         <style>
             .table_input {
-                width: 350px
+                width: 100%
             }
 
             .table_textarea {
-                width: 450px;
+                width: 100%;
             }
 
             span.tooltip {
@@ -921,6 +921,248 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
             table.gateway-settings tbody td label:not(:last-child) {
                 margin-right: 7px;
             }
+            .wrap-checkbox-setting{
+                background: #fff;
+                padding: 20px 40px;
+                margin-top: 20px;
+                overflow: hidden;
+            }
+            .checkbox-setting-row{
+                display: flex;
+                align-items: flex-start;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .checkbox-setting-col{
+                width: calc(50% - 40px);
+            }
+            .wrap-checkbox-setting > h2{
+                display: flex;
+                align-items: center;
+            }
+            .wrap-checkbox-setting > h2 img{
+                width: 14px;
+                margin-left: 10px;
+                background: #000;
+                padding: 4px;
+                border-radius: 100%;
+            }
+            .checkbox-setting-data-title{
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+            }
+            .checkbox-setting-data input[type="checkbox"]{
+                display: none;
+            }
+            .checkbox-setting-data-meta{
+                display: inline-block;
+                width: fit-content;
+                padding-right: 15px;
+            }
+            .checkbox-setting-data-meta input{
+                display: none;
+            }
+            .checkbox-setting-data-meta label{
+                position: relative;
+                display: flex;
+                align-items: center;
+            }
+            .checkbox-setting-data-meta label:before{
+                content: '';
+                position: relative;
+                display: inline-block;
+                vertical-align: middle;
+                height: 20px;
+                width: 20px;
+                border-color: #000;
+                border-style: solid;
+                border-width: 2px;
+                box-sizing: border-box;
+                border-radius: 50%;
+                margin-right: 10px;
+                -webkit-transition: all 0.2s;
+                transition: all 0.2s;
+                opacity: .6;
+            }
+            .checkbox-setting-data-meta input:checked + label:before{
+                opacity: 1;
+            }
+            .checkbox-setting-data-meta input:checked + label:after{
+                content: '';
+                width: 10px;
+                height: 10px;
+                background: #000;
+                border-radius: 50%;
+                position: absolute;
+                top: 5px;
+                bottom: 0;
+                left: 5px;
+                right: 0;
+                margin: 0;
+                opacity: 1;
+                -webkit-transition: all 0.2s;
+                transition: all 0.2s;
+            }
+            .checkbox-setting-data:has(input[type="radio"]){
+                margin-bottom: 18px;
+            }
+            .mrkv_table-payment__body__checkbox__input {
+                position: relative;
+                width: 50px;
+                height: 25px;
+                display: inline-block;
+                margin-right: 5px;
+                min-width: 28px;
+            }
+            .mrkv_checkbox_slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+                border-radius: 34px;
+            }
+            .mrkv_checkbox_slider:before{
+                position: absolute;
+                content: "";
+                height: 21px;
+                width: 21px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+                border-radius: 50%;
+            }
+            input[type="checkbox"]:checked + label .mrkv_checkbox_slider:before{
+                -webkit-transform: translateX(24px);
+                -ms-transform: translateX(24px);
+                transform: translateX(24px);
+            }
+            input[type="checkbox"]:checked + label .mrkv_checkbox_slider{
+                background-color: #8f257d;
+            }
+            .checkbox-setting-data input[type="checkbox"]{
+                display: none;
+            }
+            .checkbox-setting-data .chosen-container{
+                width: 100% !important;
+            }
+            .checkbox-setting-data .chosen-choices{
+                box-shadow: unset;
+                border-radius: 4px;
+                border: 1px solid #8c8f94 !important;
+                box-shadow: unset !important;
+                background-image: unset;
+            }
+            .checkbox-setting-col input[type="submit"]{
+                background-color: #8f257d;
+                border-radius: 12px;
+                height: 40px;
+                font-size: 14px;
+                line-height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 152px;
+                color: #fff;
+                border: unset;
+                font-weight: 500;
+            }
+            .checkbox-setting-col input[type="submit"]:hover{
+                background-color: #8f257dab;
+            }
+            .checkbox-setting-col .gateway-settings{
+                border: unset;
+            }
+            .checkbox-setting-col .gateway-settings th,
+            .checkbox-setting-col .gateway-settings td{
+                border: unset;
+                border-bottom: 2px solid #dcdcde;
+                text-align: left;
+            }
+            .checkbox-setting-col .gateway-settings th{
+                background-color: transparent;  
+                font-size: 13px;
+                margin-bottom: 0;
+                font-weight: 500;
+            }
+            .mt-40 {
+                margin-top: 40px;
+            }
+            .plugin-development span {
+                margin-bottom: 6px;
+                font-size: 16px;
+                display: block;
+                font-weight: 500;
+            }
+            .plugin-development img {
+                height: 27px;
+            }
+            .checkbox-setting-col-8{
+                width: calc(75% - 40px);
+            }
+            .checkbox-setting-col-4{
+                    width: calc(30% - 40px);
+            }
+            .checkbox-setting-col .gateway-settings .chosen-choices{
+                box-shadow: unset;
+                border-radius: 4px;
+                border: 1px solid #8c8f94 !important;
+                box-shadow: unset !important;
+                background-image: unset;
+            }
+            .checkbox-setting-col .gateway-settings input[type="radio"] + label:before{
+                content: '';
+                position: relative;
+                display: inline-block;
+                vertical-align: middle;
+                height: 20px;
+                width: 20px;
+                border-color: #000;
+                border-style: solid;
+                border-width: 2px;
+                box-sizing: border-box;
+                border-radius: 50%;
+                margin-right: 10px;
+                -webkit-transition: all 0.2s;
+                transition: all 0.2s;
+                opacity: .6;
+            }
+            .checkbox-setting-col .gateway-settings input[type="radio"]{
+                display: none;
+            }
+            .checkbox-setting-col .gateway-settings input[type="radio"] + label{
+                position: relative;
+                display: flex;
+                align-items: center;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+            .checkbox-setting-col .gateway-settings input[type="radio"]:checked + label:before{
+                opacity: 1;
+            }
+            .checkbox-setting-col .gateway-settings input[type="radio"]:checked + label:after{
+                content: '';
+                width: 10px;
+                height: 10px;
+                background: #000;
+                border-radius: 50%;
+                position: absolute;
+                top: 5px;
+                bottom: 0;
+                left: 5px;
+                right: 0;
+                margin: 0;
+                opacity: 1;
+                -webkit-transition: all 0.2s;
+                transition: all 0.2s;
+            }
 
             @media (max-width: 782px) {
                 table.gateway-settings th, table.gateway-settings td {
@@ -938,61 +1180,72 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                 div.gateway-settings__wrapper {
                     overflow-x: auto;
                 }
+                .checkbox-setting-col, .checkbox-setting-col-8, .checkbox-setting-col-4{
+                    width: 100%;
+                }
+                .wrap-checkbox-setting{
+                    padding: 20px 15px; 
+                }
             }
 
             @media (max-width: 700px) {
                 div.gateway-settings__wrapper {
                     overflow-x: auto;
-                    width: 100vw;
+                    width: 100%;
                 }
             }
         </style>
-        <div class="wrap">
-            <h2><?php echo get_admin_page_title(); ?></h2>
+        <div class="wrap wrap-checkbox-setting">
+            <h2>
+                <?php echo get_admin_page_title(); ?>
+                <img src="<?php echo plugin_dir_url(__FILE__) ?>assets/img/checkbox-icon-setting.jpg" alt="Checkbox">
+                </h2>
+                <hr>
+                <p><?php esc_html_e('Checkbox – програмний РРО, створений для бізнесу будь-якого масштабу. Це сучасний сервіс, який здешевить реєстрацію розрахункових операцій, а також спростить і впорядкує ведення звітності та контроль платежів.', 'checkbox'); ?></p>
 
             <?php settings_errors(); ?>
 
             <form method="post" action="options.php">
                 <?php settings_fields('ppo-settings-group'); ?>
 
-                <table class="form-table">
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Логін касира', 'checkbox'); ?></th>
-                        <td><input class="table_input" type="text" name="ppo_login" value="<?php echo esc_html(get_option('ppo_login')); ?>" /></td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Особистий пароль касира', 'checkbox'); ?></th>
-                        <td><input class="table_input" type="password" name="ppo_password" value="<?php echo esc_html(get_option('ppo_password')); ?>" /></td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Ім\'я касира', 'checkbox'); ?></th>
-                        <td><input class="table_input" type="text" name="ppo_cashier_name" value="<?php echo esc_html(get_option('ppo_cashier_name')); ?>" /></td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Прізвище касира', 'checkbox'); ?></th>
-                        <td><input class="table_input" type="text" name="ppo_cashier_surname" value="<?php echo esc_html(get_option('ppo_cashier_surname')); ?>" /></td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Ліцензійний ключ віртуального касового апарату', 'checkbox'); ?></th>
-                        <td><input class="table_input" type="text" name="ppo_cashbox_key" value="<?php echo esc_html(get_option('ppo_cashbox_key')); ?>" /></td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Код податку', 'checkbox'); ?></th>
-                        <td><input class="table_input" type="text" name="ppo_tax_code" value="<?php echo esc_html(get_option('ppo_tax_code')); ?>" /></td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Спосіб підпису', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
-                        <td>
-                            <?php
-                                $ppo_sign_method = get_option('ppo_sign_method');
-                            ?>
+                <div class="checkbox-setting-row">
+                    <div class="checkbox-setting-col">
+                        <h2><?php esc_html_e('Основна інформація про касира', 'checkbox'); ?></h2>
+                        <hr>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Логін касира', 'checkbox'); ?></p>
+                            <input class="table_input" type="text" name="ppo_login" value="<?php echo esc_html(get_option('ppo_login')); ?>" />
+                        </div>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Особистий пароль касира', 'checkbox'); ?></p>
+                            <input class="table_input" type="password" name="ppo_password" value="<?php echo esc_html(get_option('ppo_password')); ?>" />
+                        </div>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Ім\'я касира', 'checkbox'); ?></p>
+                            <input class="table_input" type="text" name="ppo_cashier_name" value="<?php echo esc_html(get_option('ppo_cashier_name')); ?>" />
+                        </div>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Прізвище касира', 'checkbox'); ?></p>
+                            <input class="table_input" type="text" name="ppo_cashier_surname" value="<?php echo esc_html(get_option('ppo_cashier_surname')); ?>" />
+                        </div>
+                    </div>
+                    <div class="checkbox-setting-col">
+                        <h2><?php esc_html_e('Налаштування каси', 'checkbox'); ?></h2>
+                        <hr>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title"><?php esc_html_e('Ліцензійний ключ віртуального касового апарату', 'checkbox'); ?></p>
+                        <input class="table_input" type="text" name="ppo_cashbox_key" value="<?php echo esc_html(get_option('ppo_cashbox_key')); ?>" />
+                    </div>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Код податку', 'checkbox'); ?></p>
+                            <input class="table_input" type="text" name="ppo_tax_code" value="<?php echo esc_html(get_option('ppo_tax_code')); ?>" />
+                        </div>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title"><?php esc_html_e('Спосіб підпису', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></p>
+                         <?php
+                            $ppo_sign_method = get_option('ppo_sign_method');
+                        ?>
+                        <div class="checkbox-setting-data-meta">
                             <input class="table_input" type="radio" name="ppo_sign_method" id="ppo_sign_method_cloud" value="cloud"
                             <?php
                             if (isset($ppo_sign_method)) {
@@ -1001,7 +1254,8 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                             ?>
                              />
                             <label for="ppo_sign_method_cloud"><?php esc_html_e('Checkbox Cloud', 'checkbox'); ?></label>
-
+                        </div>
+                        <div class="checkbox-setting-data-meta">
                             <input class="table_input" type="radio" name="ppo_sign_method" id="ppo_sign_method_soft" value="soft"
                             <?php
                             if (isset($ppo_sign_method)) {
@@ -1010,26 +1264,41 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                             ?>
                              />
                             <label for="ppo_sign_method_soft"><?php esc_html_e('Checkbox Підпис', 'checkbox'); ?></label>
-                        </td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Автоматичне відкриття зміни', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Зміна відкриватиметься автоматично при створенні чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
-                        <td><input class="table_input" type="checkbox" name="ppo_autoopen_shift" value="1" <?php checked(get_option('ppo_autoopen_shift'), 1); ?> /></td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e("Автоматично створювати чеки", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Чек створюватиметься автоматично при зміні статусу замовлення. При ввімкненому стані в табличці "Налаштування способів оплати" з\'явиться колонка "Ігнорувати чек?", в якій ви можете для кожного способу оплати дозволити або заборонити автоматичне створення чеку при зміні статусу.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
-                        <td>
-                            <input class="table_input" type="checkbox" name="ppo_autocreate" value="1" <?php checked(get_option('ppo_autocreate'), 1); ?> />
-                        </td>
-                    </tr>
-
-                    <tr class="order-statuses" valign="top" style="<?php echo ( 1 == get_option('ppo_autocreate') ) ? '' : 'display: none;'; ?>">
-                        <th class="label" scope="row">
-                            <?php esc_html_e("Статуси замовлення", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span>
-                            <span class="tooltip" aria-label="<?php echo esc_html('Виберіть статуси замовлення, при зміні на які буде створюватися чек.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></th>
-                        <td>
+                        </div>
+                    </div>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title"><?php esc_html_e('Автоматичне відкриття зміни', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Зміна відкриватиметься автоматично при створенні чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></p>
+                        <input class="table_input" type="checkbox" name="ppo_autoopen_shift" id="ppo_autoopen_shift" value="1" <?php checked(get_option('ppo_autoopen_shift'), 1); ?> />
+                        <label for="ppo_autoopen_shift">
+                            <div class="mrkv_table-payment__body__checkbox__input">
+                                <span class="mrkv_checkbox_slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="checkbox-setting-row">
+                <div class="checkbox-setting-col checkbox-setting-col-8">
+                    <h2><?php esc_html_e('Налаштування автоматичного створення чеків', 'checkbox'); ?></h2>
+                    <hr>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title">
+                            <?php esc_html_e("Автоматично створювати чеки", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Чек створюватиметься автоматично при зміні статусу замовлення. При ввімкненому стані в табличці "Налаштування способів оплати" з\'явиться колонка "Ігнорувати чек?", в якій ви можете для кожного способу оплати дозволити або заборонити автоматичне створення чеку при зміні статусу.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+                        </p>
+                        <input class="table_input" type="checkbox" name="ppo_autocreate" id="ppo_autocreate" value="1" <?php checked(get_option('ppo_autocreate'), 1); ?> />
+                        <label for="ppo_autocreate">
+                            <div class="mrkv_table-payment__body__checkbox__input">
+                                <span class="mrkv_checkbox_slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="order-statuses" style="<?php echo ( 1 == get_option('ppo_autocreate') ) ? '' : 'display: none;'; ?>">
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title">
+                                <?php esc_html_e("Статуси замовлення", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span>
+                            <span class="tooltip" aria-label="<?php echo esc_html('Виберіть статуси замовлення, при зміні на які буде створюватися чек.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip">
+                                </span>
+                            </p>
                             <?php
                                 $all_order_statuses = wc_get_order_statuses();
                                 $autocreate_receipt_statuses = (array) get_option('ppo_autocreate_receipt_order_statuses');
@@ -1054,14 +1323,14 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                                 endif;
                                 ?>
                             </select>
-                        </td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e('Правила автоматичного формування чеків', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
-                        </th>
-                        <td>
-                            <?php
+                        </div>
+                    </div>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title">
+                                <?php esc_html_e('Правила автоматичного формування чеків', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+                            </p>
+                        </div>
+                         <?php
                             $enabled_gateways = array_filter(WC()->payment_gateways->payment_gateways(), function ($gateway) {
                                 return 'yes' === $gateway->enabled;
                             });
@@ -1142,36 +1411,50 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                                     </tbody>
                                 </table>
                             </div>
-                        </td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e("Службова інформація", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Значення данного поля буде відображатися в нижній частині електронного чеку.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
-                        <td>
-                            <textarea class="table_textarea" type="text" name="ppo_receipt_footer"/><?php echo get_option('ppo_receipt_footer'); ?></textarea>
-                            <br>
-                            <span style="color: grey;">Доступні шорткоди: [website_title], [order_id], [order_created_date], [order_paid_date].</span>
-                        </td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e("Тестовий режим", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span>
-                        <span class="tooltip" aria-label="<?php echo esc_html('При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
-                        <td>
-                            <input class="table_input" type="checkbox" name="ppo_is_dev_mode" value="1" <?php checked(get_option('ppo_is_dev_mode'), 1); ?> />
+                </div>
+                <div class="checkbox-setting-col checkbox-setting-col-4">
+                    <h2><?php esc_html_e('Додаткові налаштування', 'checkbox'); ?></h2>
+                    <hr>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title">
+                            <?php esc_html_e("Службова інформація", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Значення данного поля буде відображатися в нижній частині електронного чеку.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+                        </p>
+                        <textarea class="table_textarea" type="text" name="ppo_receipt_footer"/><?php echo get_option('ppo_receipt_footer'); ?></textarea>
+                        <br>
+                        <span style="color: grey;">Доступні шорткоди: [website_title], [order_id], [order_created_date], [order_paid_date].</span>
+                    </div>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title">
+                            <?php esc_html_e("Тестовий режим", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span>
+                        <span class="tooltip" aria-label="<?php echo esc_html('При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+                        </p>
+                        <input class="table_input" type="checkbox" name="ppo_is_dev_mode" id="ppo_is_dev_mode" value="1" <?php checked(get_option('ppo_is_dev_mode'), 1); ?> />
+                        <label for="ppo_is_dev_mode">
+                            <div class="mrkv_table-payment__body__checkbox__input">
+                                <span class="mrkv_checkbox_slider"></span>
+                            </div>
+                        </label>
                             <br>
                             <span style="color: grey;">Тестовий режим не використовується, якщо ключ каси починається на "test".</span>
-                        </td>
-                    </tr>
-
-                    <tr valign="top">
-                        <th class="label" scope="row"><?php esc_html_e("Ввімкнути логування", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Використовуйте лише для логування помилок.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></th>
-                        <td><input class="table_input" type="checkbox" name="ppo_logger" value="1" <?php checked(get_option('ppo_logger'), 1); ?> /></td>
-                    </tr>
-                </table>
-
-                <?php echo submit_button(__('Зберегти', 'checkbox')); ?>
-
+                    </div>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title">
+                            <?php esc_html_e("Ввімкнути логування", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Використовуйте лише для логування помилок.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+                        </p>
+                        <input class="table_input" type="checkbox" name="ppo_logger" id="ppo_logger" value="1" <?php checked(get_option('ppo_logger'), 1); ?> />
+                        <label for="ppo_logger">
+                            <div class="mrkv_table-payment__body__checkbox__input">
+                                <span class="mrkv_checkbox_slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                    <?php echo submit_button(__('Зберегти', 'checkbox')); ?>
+                </div>
+            </div>
+            <div class="plugin-development mt-40">
+                <span>Веб студія</span>
+                <a href="https://morkva.co.ua/" target="_blank"><img src="<?php echo plugin_dir_url(__FILE__) ?>assets/img/morkva-logo.svg" alt="Morkva" title="Morkva"></a>
+            </div>
             </form>
         </div>
         <?php

@@ -3,12 +3,12 @@ jQuery(function($) {
         if ($(this).is(":checked")) {
             $('.skip-receipt-creation').show()
             $('.select-order-statuses').show()
-            $('tr.order-statuses').show()
+            $('.order-statuses').show()
             $('select.chosen.order-statuses').chosen({
                 width: '300px',
             })
         } else {
-            $('tr.order-statuses').hide()
+            $('.order-statuses').hide()
             $('.select-order-statuses').hide()
             $('select.chosen.order-statuses').chosen('destroy')
             $('select.chosen.order-statuses').val('')
