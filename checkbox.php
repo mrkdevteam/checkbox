@@ -4,7 +4,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 1.2.0
+ * Version: 2.0.0
  * Tested up to: 6.1
  * Requires at least: 5.2
  * Requires PHP: 7.1
@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CHECKBOX_VERSION', '1.2.0');
+define('CHECKBOX_VERSION', '2.0.0');
 define('CHECKBOX_LICENSE', 'free');
 
 require_once 'vendor/autoload.php';
@@ -67,7 +67,8 @@ if (! function_exists('mrkv_checkbox_register_mysettings')) {
             'ppo_sign_method',
             'ppo_skip_receipt_creation',
             'ppo_is_dev_mode',
-            'ppo_logger'
+            'ppo_logger',
+            'ppo_cashbox_edrpou'
         );
         foreach ($options as $option) {
             register_setting('ppo-settings-group', $option);
@@ -255,11 +256,11 @@ if (! function_exists('mrkv_checkbox_auto_create_receipt')) {
         if (in_array($new_status, $order_statuses) || in_array($new_status, $payment_order_statuses[$order_payment_id])) {
 
             /** Check whether to create receipt or not */
-            $ppo_skip_receipt_creation = get_option('ppo_skip_receipt_creation');
+            /*$ppo_skip_receipt_creation = get_option('ppo_skip_receipt_creation');
             if (isset($ppo_skip_receipt_creation[ $order->get_payment_method() ]) && 'yes' === $ppo_skip_receipt_creation[ $order->get_payment_method() ]) {
                 $order->add_order_note(__('Чек не створено згідно правила', 'checkbox'), $is_customer_note = 0, $added_by_user = false);
                 return;
-            }
+            }*/
 
             /** Check if receipt is already created */
             if (! empty(get_post_meta($order_id, 'receipt_id', true))) {
@@ -885,6 +886,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
             .gateway-settings__wrapper {
                 width: 100%;
                 height: 100%;
+                overflow-x: auto;
             }
 
             table.gateway-settings {
@@ -904,6 +906,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
             table.gateway-settings td {
                 border: 1px solid #555;
                 text-align: center;
+                padding-right: 30px;
             }
 
             table.gateway-settings .gateway-title {
@@ -1104,12 +1107,12 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
             .plugin-development img {
                 height: 27px;
             }
-            .checkbox-setting-col-8{
+            /*.checkbox-setting-col-8{
                 width: calc(75% - 40px);
             }
             .checkbox-setting-col-4{
                     width: calc(30% - 40px);
-            }
+            }*/
             .checkbox-setting-col .gateway-settings .chosen-choices{
                 box-shadow: unset;
                 border-radius: 4px;
@@ -1163,14 +1166,40 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                 -webkit-transition: all 0.2s;
                 transition: all 0.2s;
             }
+            .checkbox-log-pre{
+                margin-top: 20px;
+                border: 1px solid #dcdcde;
+                padding: 20px;
+                background: #fbfbfb;
+                height: 300px;
+                overflow-y: scroll;
+            }
+            .btn-call-clean-log{
+                cursor: pointer;
+                background-color: #00000029;
+                border-radius: 12px;
+                height: 40px;
+                font-size: 14px;
+                line-height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 152px;
+                color: #000;
+                border: unset;
+                font-weight: 500;
+                width: fit-content;
+            }
+            .btn-call-clean-log:hover{
+                opacity: .7;
+            }
 
             @media (max-width: 782px) {
                 table.gateway-settings th, table.gateway-settings td {
-                    display: inline-flex;
+                    display: block;
                     justify-content: center;
                     align-items: center;
-                    width: 33.33%;
-                    min-width: 200px;
+                    width: auto;
                     height: 50px;
                     white-space: normal;
                 }
@@ -1233,12 +1262,31 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                         <h2><?php esc_html_e('Налаштування каси', 'checkbox'); ?></h2>
                         <hr>
                     <div class="checkbox-setting-data">
-                        <p class="checkbox-setting-data-title"><?php esc_html_e('Ліцензійний ключ віртуального касового апарату', 'checkbox'); ?></p>
+                        <p class="checkbox-setting-data-title"><?php esc_html_e('Ключ каси', 'checkbox'); ?></p>
                         <input class="table_input" type="text" name="ppo_cashbox_key" value="<?php echo esc_html(get_option('ppo_cashbox_key')); ?>" />
+                    </div>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title"><?php esc_html_e('ЄДРПОУ', 'checkbox'); ?></p>
+                        <input class="table_input" type="text" name="ppo_cashbox_edrpou" value="<?php echo esc_html(get_option('ppo_cashbox_edrpou')); ?>" />
                     </div>
                         <div class="checkbox-setting-data">
                             <p class="checkbox-setting-data-title"><?php esc_html_e('Код податку', 'checkbox'); ?></p>
-                            <input class="table_input" type="text" name="ppo_tax_code" value="<?php echo esc_html(get_option('ppo_tax_code')); ?>" />
+                            <?php 
+                                $all_payment_code = array('', '8');
+                            ?>
+                            <select name="ppo_tax_code" id="ppo_tax_code">
+                                <?php 
+                                    foreach($all_payment_code as $code){
+                                        $selected = '';
+                                        if($code == get_option('ppo_tax_code')){
+                                            $selected = 'selected';
+                                        }
+                                        ?>
+                                            <option <?php echo $selected; ?> value="<?php echo $code; ?>"><?php echo $code; ?></option>        
+                                        <?php
+                                    }
+                                ?>
+                            </select>
                         </div>
                     <div class="checkbox-setting-data">
                         <p class="checkbox-setting-data-title"><?php esc_html_e('Спосіб підпису', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></p>
@@ -1267,7 +1315,7 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                         </div>
                     </div>
                     <div class="checkbox-setting-data">
-                        <p class="checkbox-setting-data-title"><?php esc_html_e('Автоматичне відкриття зміни', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Зміна відкриватиметься автоматично при створенні чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></p>
+                        <p class="checkbox-setting-data-title"><?php esc_html_e('Відкривати зміну при створенні чека', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Зміна відкриватиметься автоматично при створенні чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></p>
                         <input class="table_input" type="checkbox" name="ppo_autoopen_shift" id="ppo_autoopen_shift" value="1" <?php checked(get_option('ppo_autoopen_shift'), 1); ?> />
                         <label for="ppo_autoopen_shift">
                             <div class="mrkv_table-payment__body__checkbox__input">
@@ -1281,7 +1329,8 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                 <div class="checkbox-setting-col checkbox-setting-col-8">
                     <h2><?php esc_html_e('Налаштування автоматичного створення чеків', 'checkbox'); ?></h2>
                     <hr>
-                    <div class="checkbox-setting-data">
+                    <?php update_option( 'ppo_autoopen_shift', 1 ); ?>
+                    <div class="checkbox-setting-data" style="display: none;">
                         <p class="checkbox-setting-data-title">
                             <?php esc_html_e("Автоматично створювати чеки", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Чек створюватиметься автоматично при зміні статусу замовлення. При ввімкненому стані в табличці "Налаштування способів оплати" з\'явиться колонка "Ігнорувати чек?", в якій ви можете для кожного способу оплати дозволити або заборонити автоматичне створення чеку при зміні статусу.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
                         </p>
@@ -1346,7 +1395,6 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                                         <tr>
                                             <th><?php esc_html_e('Спосіб оплати', 'checkbox'); ?></th>
                                             <th><?php esc_html_e('Тип', 'checkbox'); ?></th>
-                                            <th class="skip-receipt-creation" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Ігнорувати створення чека?', 'checkbox'); ?></th>
                                             <th class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Статуси замовлення', 'checkbox'); ?></th>
                                         </tr>
                                     </thead>
@@ -1372,21 +1420,6 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                                                     }
                                                     ?> value="cashless">
                                                     <label for="ppo_payment_type_cashless[<?php echo esc_html($id); ?>]">CASHLESS</label>
-                                                </td>
-                                                <td class="skip-receipt-creation" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>">
-                                                    <input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html($id); ?>]" id="ppo_skip_receipt_creation_yes[<?php echo esc_html($id); ?>]" value="yes" <?php
-                                                    if (isset($ppo_skip_receipt_creation[$id])) {
-                                                        checked($ppo_skip_receipt_creation[$id], 'yes');
-                                                    }
-                                                    ?>>
-                                                    <label for="ppo_skip_receipt_creation_yes[<?php echo esc_html($id); ?>]"><?php esc_html_e('Так', 'checkbox'); ?></label>
-
-                                                    <input type="radio" name="ppo_skip_receipt_creation[<?php echo esc_html($id); ?>]" id="ppo_skip_receipt_creation_no[<?php echo esc_html($id); ?>]" value="no" <?php
-                                                    if (isset($ppo_skip_receipt_creation[$id])) {
-                                                        checked($ppo_skip_receipt_creation[$id], 'no');
-                                                    }
-                                                    ?>>
-                                                    <label for="ppo_skip_receipt_creation_no[<?php echo esc_html($id); ?>]"><?php esc_html_e('Ні', 'checkbox'); ?></label>
                                                 </td>
                                                 <td class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>">
                                                     <select class="chosen order-statuses" name="ppo_autocreate_payment_order_statuses[<?php echo esc_html($id); ?>][]" data-placeholder="<?php _e('Виберіть статуси замовлення', 'checkbox') ?>" multiple>
@@ -1425,10 +1458,10 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                     </div>
                     <div class="checkbox-setting-data">
                         <p class="checkbox-setting-data-title">
-                            <?php esc_html_e("Тестовий режим", 'checkbox'); ?> <span style="color: red;">(<?php esc_html_e("застаріле", 'checkbox'); ?>)</span>
+                            <?php esc_html_e("Тестовий режим", 'checkbox'); ?>
                         <span class="tooltip" aria-label="<?php echo esc_html('При ввімкненому тестовому режимі, всі запити будуть спрямовані до тестового сервера Checkbox — dev-api.checkbox.in.ua. Для підключення ви повинні ввести "Логін", "Пароль" і "Ліцензійний ключ ВКА" від тестового акаунта. Тестовий акаунт надається за проханням адміністрацією Checkbox.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
                         </p>
-                        <input class="table_input" type="checkbox" name="ppo_is_dev_mode" id="ppo_is_dev_mode" value="1" <?php checked(get_option('ppo_is_dev_mode'), 1); ?> />
+                        <input disabled="" class="table_input" type="checkbox" name="ppo_is_dev_mode" id="ppo_is_dev_mode" value="1" <?php checked(get_option('ppo_is_dev_mode'), 1); ?> />
                         <label for="ppo_is_dev_mode">
                             <div class="mrkv_table-payment__body__checkbox__input">
                                 <span class="mrkv_checkbox_slider"></span>
@@ -1448,6 +1481,16 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
                             </div>
                         </label>
                     </div>
+                    <div class="checkbox-setting-data">
+                        <p class="checkbox-setting-data-title">
+                            <?php esc_html_e("Лог", 'checkbox'); ?>
+                        </p>
+                        <?php 
+                            $log_file = file_get_contents(plugin_dir_url(__FILE__) . "logs/checkbox.log");
+                        ?>
+                        <pre class="checkbox-log-pre"><?php echo $log_file; ?></pre>
+                        <div class="btn-call-clean-log"><?php echo __('Очистити лог', 'checkbox'); ?></div>
+                    </div>
                     <?php echo submit_button(__('Зберегти', 'checkbox')); ?>
                 </div>
             </div>
@@ -1457,8 +1500,31 @@ if (! function_exists('mrkv_checkbox_show_plugin_admin_page')) {
             </div>
             </form>
         </div>
+        <script>
+            jQuery(function($){
+                jQuery('.btn-call-clean-log').click(function(){
+                    jQuery.ajax({
+                        url: '<?php echo admin_url( "admin-ajax.php" ) ?>',
+                        type: 'POST',
+                        data: 'action=checkbox_clean_log', 
+                        success: function( data ) {
+                            jQuery('.checkbox-log-pre').text('');
+                        }
+                    });
+                });
+            });
+        </script>
         <?php
     }
+}
+
+add_action( 'wp_ajax_checkbox_clean_log', 'checkbox_clean_log_func' );
+add_action( 'wp_ajax_nopriv_checkbox_clean_log', 'checkbox_clean_log_func' );
+ 
+function checkbox_clean_log_func(){
+    file_put_contents( plugin_dir_path(__FILE__) . "logs/checkbox.log", '');
+
+    die; 
 }
 
 // -----------------------------------------------------------------------//
