@@ -129,14 +129,14 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            }
 
 	            table.gateway-settings .gateway-title {
-	                max-width: 250px;
+	                max-width: 174px;
 	            }
 
 	            table.gateway-settings .gateway-title p {
 	                text-align: left;
-	                text-overflow: ellipsis;
+	                /*text-overflow: ellipsis;
 	                white-space: nowrap;
-	                overflow: hidden;
+	                overflow: hidden;*/
 	                width: 100%;
 	            }
 
@@ -458,7 +458,6 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                <img src="<?php echo plugin_dir_url($this->file_name) ?>assets/img/checkbox-icon-setting.jpg" alt="Checkbox">
 	                </h2>
 	                <hr>
-	                <p><?php esc_html_e('Checkbox – програмний РРО, створений для бізнесу будь-якого масштабу. Це сучасний сервіс, який здешевить реєстрацію розрахункових операцій, а також спростить і впорядкує ведення звітності та контроль платежів.', 'checkbox'); ?></p>
 
 	            <?php settings_errors(); ?>
 
@@ -686,8 +685,6 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 		                        </label>
 		                        <span class="test-text-checkbox" style="<?php echo ( 1 == get_option('ppo_is_dev_mode') ) ? '' : 'display: none;'; ?>"><?php echo esc_html('Тестовий режим', 'checkbox'); ?></span>
 	                        </div>
-	                            <br>
-	                            <span style="color: grey;">Тестовий режим не використовується, якщо ключ каси починається на "test".</span>
 	                    </div>
 	                    <div class="checkbox-setting-data">
 	                        <p class="checkbox-setting-data-title">
