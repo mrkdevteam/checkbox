@@ -23,4 +23,12 @@ jQuery(function($) {
             width: '300px',
         })
     }
+    jQuery('#ppo_is_dev_mode').change(function(){
+        if(jQuery(this).is(':checked')){
+            jQuery('.test-text-checkbox').show();
+        }
+        else{
+            jQuery('.test-text-checkbox').hide();
+        }
+    });
 })

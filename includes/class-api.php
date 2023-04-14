@@ -1,18 +1,76 @@
 <?php
-
+# Include file to namespace
 namespace Checkbox;
 
+/**
+ * Class connect by api
+ * */
 class API
 {
+    /**
+     * @var string Login
+     * */
     private $login;
 
+    /**
+     * @var string Password
+     * */
     private $password;
 
+    /**
+     * @var string Cashbox key
+     * */
     private $cashbox_key;
 
+    /**
+     * @var boolean Is development
+     * */
     private $is_dev;
 
+    /**
+     * @var string Access token
+     * */
     private $access_token = '';
+
+    /**
+     * @var string Api signin url
+     * */
+    const API_SIGNIN_URL = '/api/v1/cashier/signin';
+
+    /**
+     * @var string Api shifts url
+     * */
+    const API_SHIFTS_URL = '/api/v1/shifts';
+
+    /**
+     * @var string Api shifts close url
+     * */
+    const API_SHIFTS_CLOSE_URL = '/api/v1/shifts/close';
+
+    /**
+     * @var string Api cashier shifts url
+     * */
+    const API_CASHIER_SHIFT = '/api/v1/cashier/shift';
+
+    /**
+     * @var string Api cash register url
+     * */
+    const API_CASH_REGISTER = '/api/v1/cash-registers/info';
+
+    /**
+     * @var string Api receipt sell url
+     * */
+    const API_RECEIPT_SELL = '/api/v1/receipts/sell';
+
+    /**
+     * @var string Api dev checkbox
+     * */
+    const API_DEV_CHECKBOX = 'https://dev-api.checkbox.in.ua';
+
+    /**
+     * @var string Api main checkbox
+     * */
+    const API_MAIN_CHECKBOX = 'https://api.checkbox.in.ua';
 
     /**
      * Class constructor
@@ -24,6 +82,7 @@ class API
      */
     public function __construct(string $login, string $password, string $cashbox_key, bool $is_dev)
     {
+        # Set all variables
         $this->login       = $login;
         $this->password    = $password;
         $this->cashbox_key = $cashbox_key;
@@ -38,12 +97,19 @@ class API
      */
     public function getBearToken(): void
     {
+        # Set params
         $params             = array(
             'login'    => $this->login,
             'password' => $this->password,
         );
+
+        # Set header params
         $header_params      = array( 'X-Client-Name' => 'Morkva' );
-        $response           = $this->makePostRequest('/api/v1/cashier/signin', $params, $header_params);
+
+        # Set response request
+        $response           = $this->makePostRequest(self::API_SIGNIN_URL, $params, $header_params);
+
+        # Set access token
         $this->access_token = $response['access_token'];
     }
 
@@ -54,12 +120,19 @@ class API
      */
     public function connect(): ?array
     {
+        # Set Cashbox key
         $cashbox_key  = $this->cashbox_key;
+
+        # Set Header params
         $header_params = array(
             'cashbox_key'   => $cashbox_key,
             'X-Client-Name' => 'Morkva',
         );
-        $response      = $this->makePostRequest('/api/v1/shifts', [], $header_params);
+
+        # Set response request
+        $response      = $this->makePostRequest(self::API_SHIFTS_URL, [], $header_params);
+
+        # Return response
         return $response;
     }
 
@@ -70,8 +143,13 @@ class API
      */
     public function disconnect(): ?array
     {
+        # Set header params
         $header_params = array( 'X-Client-Name' => 'Morkva' );
-        $response      = $this->makePostRequest('/api/v1/shifts/close', [], $header_params);
+
+        # Set response request
+        $response      = $this->makePostRequest(self::API_SHIFTS_CLOSE_URL, [], $header_params);
+
+        # Return response
         return $response;
     }
 
@@ -82,9 +160,16 @@ class API
      */
     public function getShifts(): ?array
     {
+        # Set header params
         $header_params = array( 'X-Client-Name' => 'Morkva' );
-        $url           = '/api/v1/shifts';
+
+        # Set shift url
+        $url           = self::API_SHIFTS_URL;
+
+        # Set response request
         $response      = $this->makeGetRequest($url, [], $header_params);
+
+        # Return response
         return $response;
     }
 
@@ -95,9 +180,16 @@ class API
      */
     public function getCurrentCashierShift(): ?array
     {
+        # Set header params
         $header_params = array( 'X-Client-Name' => 'Morkva' );
-        $url           = '/api/v1/cashier/shift';
+
+        # Set shift url
+        $url           = self::API_CASHIER_SHIFT;
+
+        # Set response request
         $response      = $this->makeGetRequest($url, [], $header_params);
+
+        # Return response
         return $response;
     }
 
@@ -108,12 +200,19 @@ class API
      */
     public function getCurrentCashboxInfo(): ?array
     {
-        $url           = '/api/v1/cash-registers/info';
+        # Set url
+        $url           = self::API_CASH_REGISTER;
+
+        # Set header params
         $header_params = array(
             'X-Client-Name' => 'Morkva',
             'cashbox_key'   => $this->cashbox_key,
         );
+
+        # Set response request
         $response      = $this->makeGetRequest($url, [], $header_params);
+
+        # Return response
         return $response;
     }
 
@@ -125,9 +224,16 @@ class API
      */
     public function checkConnection(int $shift_id): ?array
     {
+        # Set header params
         $header_params = array( 'X-Client-Name' => 'Morkva' );
-        $url           = '/api/v1/shifts/' . $shift_id;
+
+        # Set url
+        $url           = self::API_SHIFTS_URL . '/' . $shift_id;
+
+        # Set response request
         $response      = $this->makeGetRequest($url, [], $header_params);
+
+        # Return response
         return $response;
     }
 
@@ -139,8 +245,13 @@ class API
      */
     public function createReceipt(array $params): ?array
     {
+        # Set header params
         $header_params = array( 'X-Client-Name' => 'Morkva' );
-        $response       = $this->makePostRequest('/api/v1/receipts/sell', $params, $header_params);
+
+        # Set response request
+        $response       = $this->makePostRequest(self::API_RECEIPT_SELL, $params, $header_params);
+
+        # Return response
         return $response;
     }
 
@@ -154,23 +265,36 @@ class API
      */
     private function makePostRequest(string $route, array $params = [], array $header_params = []): ?array
     {
-        $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
+        # Get url host
+        $url_host = $this->is_dev ? self::API_DEV_CHECKBOX : self::API_MAIN_CHECKBOX;
+        # Get completed url
         $url      = $url_host . $route;
 
+        # Create header
         $header = array( 'Content-type' => 'application/json' );
 
-        if ($this->access_token) {
+        # Check access token
+        if ($this->access_token) 
+        {
+            # Update header
             $header = array_merge($header, array( 'Authorization' => 'Bearer ' . trim($this->access_token) ));
         }
 
-        if (isset($header_params['cashbox_key'])) {
+        # Check cashbox key
+        if (isset($header_params['cashbox_key'])) 
+        {
+            # Update header
             $header = array_merge($header, array( 'X-License-Key' => $header_params['cashbox_key'] ));
         }
 
-        if (isset($header_params['X-Client-Name'])) {
+        # Check client name
+        if (isset($header_params['X-Client-Name'])) 
+        {
+            # Update header
             $header = array_merge($header, array( 'X-Client-Name' => $header_params['X-Client-Name'] ));
         }
 
+        # Send query
         $response = wp_remote_post(
             $url,
             array(
@@ -185,7 +309,10 @@ class API
             )
         );
 
-        if (is_wp_error($response)) {
+        # Check error
+        if (is_wp_error($response)) 
+        {
+            # Return error
             return [
                 'error' => [
                     'code' => $response->get_error_code(),
@@ -194,6 +321,7 @@ class API
             ];
         }
 
+        # Return response
         return isset($response['body']) ? (array) json_decode($response['body']) : null;
     }
 
@@ -207,28 +335,48 @@ class API
      */
     private function makeGetRequest(string $route, array $params = [], array $header_params = []): ?array
     {
-        $url_host = $this->is_dev ? 'https://dev-api.checkbox.in.ua' : 'https://api.checkbox.in.ua';
+        # Get url host
+        $url_host = $this->is_dev ? self::API_DEV_CHECKBOX : self::API_MAIN_CHECKBOX;
+        # Get completed url
         $url      = $url_host . $route;
 
+        # Create header
         $header = array( 'Content-type' => 'application/json' );
-        if ($this->access_token) {
+
+        # Check access token
+        if ($this->access_token) 
+        {
+            # Update header
             $header = array_merge($header, array( 'Authorization' => 'Bearer ' . trim($this->access_token) ));
         }
 
-        if (isset($header_params['cashbox_key'])) {
+        # Check cashbox key
+        if (isset($header_params['cashbox_key'])) 
+        {
+            # Update header
             $header = array_merge($header, array( 'X-License-Key' => $header_params['cashbox_key'] ));
         }
 
-        if (isset($header_params['X-Client-Name'])) {
+        # Check client name
+        if (isset($header_params['X-Client-Name'])) 
+        {
+            # Update header
             $header = array_merge($header, array( 'X-Client-Name' => $header_params['X-Client-Name'] ));
         }
 
-        if ($params) {
+        # Check params
+        if ($params) 
+        {
+            # Create query fields
             $params = http_build_query($params);
-        } else {
+        } 
+        else 
+        {
+            # Empty params
             $params = '';
         }
 
+        # Send query
         $response = wp_remote_get(
             $url,
             array(
@@ -243,7 +391,10 @@ class API
             )
         );
 
-        if (is_wp_error($response)) {
+        # Check error
+        if (is_wp_error($response)) 
+        {
+            # Return error
             return [
                 'error' => [
                     'code' => $response->get_error_code(),
@@ -252,6 +403,7 @@ class API
             ];
         }
 
+        # Return response
         return isset($response['body']) ? (array) json_decode($response['body']) : null;
     }
 }
