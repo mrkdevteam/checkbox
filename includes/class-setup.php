@@ -305,7 +305,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            .checkbox-setting-col .gateway-settings th,
 	            .checkbox-setting-col .gateway-settings td{
 	                border: unset;
-	                border-bottom: 2px solid #dcdcde;
+	                border-bottom: 1px solid #dcdcde;
 	                text-align: left;
 	            }
 	            .checkbox-setting-col .gateway-settings th{
@@ -421,16 +421,51 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            .gateway-settings > tbody > tr:has(.gateway-checkbox-hide:checked){
 	            	opacity: 1;
 	            }
+	            .gateway-settings .chosen-container{
+	            	width: 150px !important;
+	            }
+	            .gateway-settings .mrkv_table-payment__body__checkbox__input{
+            	    width: 25px;
+    				height: 15px;
+	            }
+	            .gateway-settings .mrkv_checkbox_slider:before{
+            	    height: 11px;
+    				width: 11px;
+	            }
+	            .gateway-settings input[type="checkbox"]:checked + label .mrkv_checkbox_slider:before{
+            	    -webkit-transform: translateX(13px);
+				    -ms-transform: translateX(13px);
+				    transform: translateX(13px);
+	            }
+	            table.gateway-settings td {
+	            	padding-top: 15px;
+	            	padding-bottom: 15px;
+	            }
+	            @media(max-width: 1210px){
+	            	.checkbox-setting-col{
+            		    width: calc(50% - 15px);
+	            	}
+	            	.wrap-checkbox-setting{
+	            		padding: 20px;
+	            	}
+	            }
+	            @media(max-width:1130px){
+	            	.checkbox-setting-col, .checkbox-setting-col-8, .checkbox-setting-col-4{
+	                    width: 100%;
+	                }
+	            	.checkbox-setting-row{
 
+	            	}
+	            }
 	            @media (max-width: 782px) {
-	                table.gateway-settings th, table.gateway-settings td {
+	                /*table.gateway-settings th, table.gateway-settings td {
 	                    display: block;
 	                    justify-content: center;
 	                    align-items: center;
 	                    width: auto;
 	                    height: 50px;
 	                    white-space: normal;
-	                }
+	                }*/
 	                table.gateway-settings tbody tr {
 	                    white-space: nowrap;
 	                }
@@ -443,6 +478,9 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                .wrap-checkbox-setting{
 	                    padding: 20px 15px; 
 	                }
+	                table.gateway-settings .gateway-title{
+	                	max-width: 100%;
+	                }
 	            }
 
 	            @media (max-width: 700px) {
@@ -450,6 +488,38 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                    overflow-x: auto;
 	                    width: 100%;
 	                }
+	            }
+	            @media(max-width:590px){
+	            	.checkbox-setting-col .gateway-settings th{
+	            		display: none;
+	            	}
+	            	table.gateway-settings td{
+	            		display: flex;
+	                    justify-content: flex-start;
+	                    align-items: center;
+	                    width: auto;
+	                    white-space: normal;
+	            	}
+	            	table.gateway-settings select{
+	            		width: 100%;
+	            		max-width: 100%;
+	            	}
+	            	table.gateway-settings .select-order-statuses{
+	            		width: 100%;
+	            	}
+	            	.gateway-settings .mrkv_table-payment__body__checkbox__input{
+            		    width: 50px;
+    					height: 25px;
+	            	}
+	            	.gateway-settings input[type="checkbox"]:checked + label .mrkv_checkbox_slider:before{
+	            		-webkit-transform: translateX(24px);
+					    -ms-transform: translateX(24px);
+					    transform: translateX(24px);
+	            	}
+	            	.gateway-settings .mrkv_checkbox_slider:before{
+            		    height: 21px;
+    					width: 21px;				
+	            	}
 	            }
 	        </style>
 	        <div class="wrap wrap-checkbox-setting">
