@@ -23,6 +23,12 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 
 			# Add data to column
 			add_action('manage_shop_order_posts_custom_column', array($this, 'mrkv_checkbox_wc_cogs_add_order_receipt_column_content'));
+
+			# Add metabox to order edit
+			add_action( 'add_meta_boxes', array($this, 'mrkv_checkbox_wc_add_metabox'));
+
+			# Add save metabox to order edit
+			add_action( 'save_post', array($this, 'mrkv_checkbox_wc_do_metabox_action'));
 		}
 
 		/**
@@ -34,7 +40,7 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	    public function mrkv_checkbox_wc_add_order_meta_box_action($actions)
 	    {
 	    	# Add new action
-	        $actions['create_bill_action'] = __('Створити чек', 'checkbox');
+	        $actions['create_bill_action'] = __('Створити чек з Checkbox', 'checkbox');
 
 	        # Return array of actions 
 	        return $actions;
@@ -207,6 +213,86 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	            # Show receipt link
 	            printf('<a href="%s" target="_blank">%s</a>', "https://check.checkbox.ua/{$receipt_id}", $receipt_id);
 	        }
+	    }
+
+	    /**
+	     * Add metabox
+	     * 
+	     * */
+	    public function mrkv_checkbox_wc_add_metabox()
+	    {
+	    	# Add metabox to admin page
+	        add_meta_box( 'morkva_checkbox_metabox', __('Checkbox','woocommerce'), array($this, 'mrkv_checkbox_wc_add_metabox_content'), 'shop_order', 'side', 'core' );
+	    }
+
+	    /**
+	     * Add content to metabox
+	     * 
+	     * */
+	    public function mrkv_checkbox_wc_add_metabox_content()
+	    {
+	    	# Get order data
+	        global $post;
+
+	        # Get Receipt ID
+            $receipt_id = get_post_meta($post->ID, 'receipt_id', true);
+
+            # Check receipt id
+            if($receipt_id)
+            {
+            	# Show receipt link
+            	printf('Чек: ' . '<a href="%s" target="_blank">%s</a>', "https://check.checkbox.ua/{$receipt_id}", $receipt_id);
+            }
+            else
+            {
+        	    $button_text = __( 'Створити чек', 'woocommerce' );
+
+            	echo '<form method="post" action="">
+			        <input type="submit" name="submit_morkva_checkbox_action" class="button button-primary" value="' . $button_text . '"/>
+			        <input type="hidden" name="morkva_checkbox_action_nonce" value="' . wp_create_nonce() . '">
+			    </form>';
+            }
+	    }
+
+	    /**
+	     * Create receipt by button checkbox
+	     * 
+	     * @var Order ID
+	     * */
+	    public function mrkv_checkbox_wc_do_metabox_action($post_id)
+	    {
+	    	// Check type
+	    	if(isset($_POST[ 'post_type' ])){
+	    		// Only for shop order
+			    if ( 'shop_order' != $_POST[ 'post_type' ] )
+			        return $post_id;
+
+			    // Check if our nonce is set (and our cutom field)
+			    if ( ! isset( $_POST[ 'morkva_checkbox_action_nonce' ] ) && isset( $_POST['submit_morkva_checkbox_action'] ) )
+			        return $post_id;
+
+			    $nonce = $_POST[ 'morkva_checkbox_action_nonce' ];
+
+			    // Verify that the nonce is valid.
+			    if ( ! wp_verify_nonce( $nonce ) )
+			        return $post_id;
+
+			    // Checking that is not an autosave
+			    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+			        return $post_id;
+
+			    // Check the user’s permissions (for 'shop_manager' and 'administrator' user roles)
+			    if ( ! current_user_can( 'edit_shop_order', $post_id ) && ! current_user_can( 'edit_shop_orders', $post_id ) )
+			        return $post_id;
+
+			    // Action to make or (saving data)
+			    if( isset( $_POST['submit_morkva_checkbox_action'] ) ) 
+			    {
+			    	$order = wc_get_order( $post_id );
+			        $this->mrkv_checkbox_wc_process_order_meta_box_action($order);
+			    }
+	    	}
+	    	
 	    }
 	}
 }

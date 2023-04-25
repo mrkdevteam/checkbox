@@ -323,8 +323,10 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            # Check tax
 	            if (!empty($tax)) 
 	            {
+	            	$tax_array = explode(',', $tax);
+
 	            	# Set tax
-	                $good['tax'] = array($tax);
+	                $good['tax'] = $tax_array;
 	            }
 
 	            # Create total price

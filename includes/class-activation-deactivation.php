@@ -38,6 +38,11 @@ if (!class_exists('MRKV_ACTIVATION_DEACTIVATION'))
 		const ERROR_MESSAGE = 'Something went wrong:';
 
 		/**
+		 * @var string edrpou message
+		 * */
+		const EDRPOU_MESSAGE = 'ЄДРПОУ: ';
+
+		/**
 		 * Constructor for connect and disconnect shift
 		 * */
 		function __construct()
@@ -164,6 +169,58 @@ if (!class_exists('MRKV_ACTIVATION_DEACTIVATION'))
 		        'version' => CHECKBOX_VERSION,
 		        'license' => CHECKBOX_LICENSE,
 		        'info'    => get_option('ppo_cashbox_key'),
+		        'status'  => $status
+		    ];
+		    
+		    # Set url api
+		    $url = self::API_URL_REGISTER;
+
+		    # Set response data
+		    $response = wp_remote_post( $url, array(
+		        'method'      => 'POST',
+		        'timeout'     => 45,
+		        'redirection' => 5,
+		        'blocking'    => true,
+		        'headers'     => array(
+		            'Accept' => 'application/json'
+		        ),
+		        'body'        => $data,
+		        'cookies'     => array()
+		    ));
+	        
+	        # Check wp error
+		    if ( is_wp_error( $response ) ) 
+		    {
+		    	# Set error message
+		        $error_message = $response->get_error_message();
+	        	
+	        	# Get logger object
+		        $logger = new Checkbox\KLoggerDecorator(boolval(get_option('ppo_logger')));
+		        # Show error
+		        $logger->error( self::ERROR_MESSAGE . " $error_message", 1 );
+		    }
+		}
+
+		/**
+		 * Send morkva request erdpou
+		 * 
+		 * @var string Status
+		 * */
+		public function mrkv_checkbox_send_request_edrpou(string $status)
+		{
+			# Get IP
+		    $ip       = !empty($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : $_SERVER['REMOTE_ADDR'];
+		    # Get home url
+		    $home_url = parse_url(home_url());
+
+		    # Get all data
+		    $data = [
+		        'ip'      => $ip,
+		        'domain'  => $home_url['host'],
+		        'product' => 'checkbox',
+		        'version' => CHECKBOX_VERSION,
+		        'license' => CHECKBOX_LICENSE,
+		        'info'    => self::EDRPOU_MESSAGE . get_option('ppo_cashbox_edrpou'),
 		        'status'  => $status
 		    ];
 		    

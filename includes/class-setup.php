@@ -84,6 +84,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	    {	
 	    	$activation = new MRKV_ACTIVATION_DEACTIVATION(); 
 	        $activation->mrkv_checkbox_send_request( 'updated' );
+	        $activation->mrkv_checkbox_send_request_edrpou( 'updated' );
 	        ?>
 	        <style>
 	            .table_input {
@@ -567,23 +568,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                        <input class="table_input" type="text" name="ppo_cashbox_edrpou" value="<?php echo esc_html(get_option('ppo_cashbox_edrpou')); ?>" required />
 	                    </div>
 	                        <div class="checkbox-setting-data">
-	                            <p class="checkbox-setting-data-title"><?php esc_html_e('Код податку', 'checkbox'); ?></p>
-	                            <?php 
-	                                $all_payment_code = array('', '8');
-	                            ?>
-	                            <select name="ppo_tax_code" id="ppo_tax_code">
-	                                <?php 
-	                                    foreach($all_payment_code as $code){
-	                                        $selected = '';
-	                                        if($code == get_option('ppo_tax_code')){
-	                                            $selected = 'selected';
-	                                        }
-	                                        ?>
-	                                            <option <?php echo $selected; ?> value="<?php echo $code; ?>"><?php echo $code; ?></option>        
-	                                        <?php
-	                                    }
-	                                ?>
-	                            </select>
+	                            <p class="checkbox-setting-data-title code-tax-checkbox"><?php esc_html_e('Код податку', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Код податку (літерний або цифровий) знайдете на сторінці Податкові ставки в вашому кабінеті Чекбокс тут: https://my.checkbox.ua/dashboard/taxrates', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></p>
+	                            <input class="table_input" type="text" name="ppo_tax_code" value="<?php echo esc_html(get_option('ppo_tax_code')); ?>" required />
 	                        </div>
 	                    <div class="checkbox-setting-data">
 	                        <p class="checkbox-setting-data-title"><?php esc_html_e('Спосіб підпису', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Доступні два механізми підпису чеків: Checkbox Підпис — утиліта, що встановлюється на будь-якому комп’ютері з доступом до Інтернету, і HSM, або Checkbox Cloud, — сертифікований хмарний сервіс для генерації та зберігання ключів DepositSign, у разі вибору якого необхідність встановлення будь-якого ПЗ для роботи з ЕЦП відсутня.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></p>
