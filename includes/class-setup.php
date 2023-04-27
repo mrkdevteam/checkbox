@@ -739,7 +739,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 		                                <span class="mrkv_checkbox_slider"></span>
 		                            </div>
 		                        </label>
-		                        <span class="test-text-checkbox" style="<?php echo ( 1 == get_option('ppo_is_dev_mode') ) ? '' : 'display: none;'; ?>"><?php echo esc_html('Тестовий режим', 'checkbox'); ?></span>
+		                        <span class="test-text-checkbox" style="<?php echo ( 1 == get_option('ppo_is_dev_mode') ) ? '' : 'display: none;'; ?>"><?php echo __('В тестовому режимі, обовʼязково замініть ключ каси, логін та пароль касира на тестові дані (Не впевнені що це? ', 'checkbox'); ?> <a href="https://morkva.co.ua/testovyj-rezhym-v-plagini-chekboks/" target="blanc"><?php echo __('Читайте ось цю інструкцію', 'checkbox'); ?></a>). <?php echo __('Після вимкнення тестового режиму - поверніть реальні дані для ключ каси, логін та пароль касира.', 'checkbox'); ?></span>
 	                        </div>
 	                    </div>
 	                    <div class="checkbox-setting-data">

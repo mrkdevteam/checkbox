@@ -266,7 +266,7 @@ class API
     private function makePostRequest(string $route, array $params = [], array $header_params = []): ?array
     {
         # Get url host
-        $url_host = $this->is_dev ? self::API_DEV_CHECKBOX : self::API_MAIN_CHECKBOX;
+        $url_host = self::API_MAIN_CHECKBOX;
         # Get completed url
         $url      = $url_host . $route;
 
@@ -336,7 +336,7 @@ class API
     private function makeGetRequest(string $route, array $params = [], array $header_params = []): ?array
     {
         # Get url host
-        $url_host = $this->is_dev ? self::API_DEV_CHECKBOX : self::API_MAIN_CHECKBOX;
+        $url_host = self::API_MAIN_CHECKBOX;
         # Get completed url
         $url      = $url_host . $route;
 
