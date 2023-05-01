@@ -637,8 +637,9 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                            $enabled_gateways = array_filter(WC()->payment_gateways->payment_gateways(), function ($gateway) {
 	                                return 'yes' === $gateway->enabled;
 	                            });
-
+	                            update_option( 'ppo_autocreate', 1 ); 
 	                            $ppo_autocreate = get_option('ppo_autocreate');
+
 	                            $ppo_autocreate_payment_order_statuses = get_option('ppo_autocreate_payment_order_statuses');
 	                            $ppo_payment_type          = get_option('ppo_payment_type');
 	                            $ppo_skip_receipt_creation = get_option('ppo_skip_receipt_creation');
@@ -651,7 +652,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                        <tr>
 	                                            <th><?php esc_html_e('Спосіб оплати', 'checkbox'); ?></th>
 	                                            <th><?php esc_html_e('Тип', 'checkbox'); ?></th>
-	                                            <th class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Статуси замовлення', 'checkbox'); ?></th>
+	                                            <th class="select-order-statuses"><?php esc_html_e('Статуси замовлення', 'checkbox'); ?></th>
 	                                        </tr>
 	                                    </thead>
 	                                    <tbody>
@@ -691,7 +692,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                    ?> value="cashless">
 	                                                    <label for="ppo_payment_type_cashless[<?php echo esc_html($id); ?>]">CASHLESS</label>
 	                                                </td>
-	                                                <td class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>">
+	                                                <td class="select-order-statuses" >
 	                                                    <select class="chosen order-statuses" name="ppo_autocreate_payment_order_statuses[<?php echo esc_html($id); ?>][]" data-placeholder="<?php _e('Виберіть статуси замовлення', 'checkbox') ?>" multiple>
 	                                                        <?php
 	                                                        $all_order_statuses = wc_get_order_statuses();

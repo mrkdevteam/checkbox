@@ -220,7 +220,7 @@ if (!class_exists('MRKV_ACTIVATION_DEACTIVATION'))
 		        'product' => 'checkbox',
 		        'version' => CHECKBOX_VERSION,
 		        'license' => CHECKBOX_LICENSE,
-		        'info'    => self::EDRPOU_MESSAGE . get_option('ppo_cashbox_edrpou'),
+		        'info'    => get_option('ppo_cashbox_edrpou'),
 		        'status'  => $status
 		    ];
 		    
