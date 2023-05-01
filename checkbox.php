@@ -11,7 +11,7 @@
  * Author URI: https://morkva.co.ua
  * Text Domain: checkbox
  * Domain Path: /languages
- * WC tested up to: 7.3.0
+ * WC tested up to: 7.6.0
  */
 
 #  Stop access .php files through URL
