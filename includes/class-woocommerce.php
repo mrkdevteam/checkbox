@@ -261,38 +261,57 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	     * */
 	    public function mrkv_checkbox_wc_do_metabox_action($post_id)
 	    {
-	    	// Check type
-	    	if(isset($_POST[ 'post_type' ])){
-	    		// Only for shop order
+	    	# Check type
+	    	if(isset($_POST[ 'post_type' ]) && $post_id){
+	    		# Only for shop order
 			    if ( 'shop_order' != $_POST[ 'post_type' ] )
 			        return $post_id;
 
-			    // Check if our nonce is set (and our cutom field)
+			    # Check if our nonce is set (and our cutom field)
 			    if ( ! isset( $_POST[ 'morkva_checkbox_action_nonce' ] ) && isset( $_POST['submit_morkva_checkbox_action'] ) )
 			        return $post_id;
 
 			    $nonce = $_POST[ 'morkva_checkbox_action_nonce' ];
 
-			    // Verify that the nonce is valid.
+			    # Verify that the nonce is valid.
 			    if ( ! wp_verify_nonce( $nonce ) )
 			        return $post_id;
 
-			    // Checking that is not an autosave
+			    # Checking that is not an autosave
 			    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			        return $post_id;
 
-			    // Check the user’s permissions (for 'shop_manager' and 'administrator' user roles)
+			    # Check the user’s permissions (for 'shop_manager' and 'administrator' user roles)
 			    if ( ! current_user_can( 'edit_shop_order', $post_id ) && ! current_user_can( 'edit_shop_orders', $post_id ) )
 			        return $post_id;
 
-			    // Action to make or (saving data)
+			    # Action to make or (saving data)
 			    if( isset( $_POST['submit_morkva_checkbox_action'] ) ) 
 			    {
+			    	# Get order data
 			    	$order = wc_get_order( $post_id );
-			        $this->mrkv_checkbox_wc_process_order_meta_box_action($order);
+
+			    	# Check order data
+			    	if($order){
+			    		# Create receipt
+			    		$this->mrkv_checkbox_wc_process_order_meta_box_action($order);
+			    	}
+			    	else{
+			    		# Get logger mode
+	        			$logger = new Checkbox\KLoggerDecorator(boolval(get_option('ppo_logger')));
+
+	        			# Add message to log
+	            		$logger->info(__('Помилка під час створення чека: Відсутній номер замовлення для обробки.', 'checkbox'));
+			    	}
 			    }
 	    	}
-	    	
+	    	else{
+	    		# Get logger mode
+	        			$logger = new Checkbox\KLoggerDecorator(boolval(get_option('ppo_logger')));
+
+	        			# Add message to log
+	            		$logger->info(__('Помилка під час створення чека: Відсутній post id для обробки.', 'checkbox'));
+	    	}
 	    }
 	}
 }

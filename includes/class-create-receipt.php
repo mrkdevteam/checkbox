@@ -228,14 +228,22 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	                    $result = $this->mrkv_checkbox_create_receipt($api, $order);
 
 	                    # Check result
-	                    if ($result) 
+	                    if ($result && isset($result['receipt_id'])) 
 	                    {
 	                    	# Add message to order
 	                        $order->add_order_note(sprintf('%s. <a href="%s" target="_blank">%s</a>', __(self::RECEIPT_CREATED, 'checkbox'), self::URL_CHECKBOX . "{$result['receipt_id']}", __(self::PRINT_RECEIPT, 'checkbox')), $is_customer_note = 0, $added_by_user = false);
 
 	                        # Save to log
 	                        $logger->info(sprintf(self::ORDER_TEXT . ' №%d. %s.', $order->get_id(), __(self::RECEIPT_CREATED, 'checkbox')));
-	                    } else 
+	                    } 
+	                    elseif(isset($result['success'])){
+	                    	# Add message to order
+	                        $order->add_order_note(__(self::ERROR_CREATE_RECEIPT, 'checkbox'), $is_customer_note = 0, $added_by_user = false);
+
+	                        # Save to log
+		                    $logger->info($result['message']);
+	                    }
+	                    else 
 	                    {
 	                    	# Add message to order
 	                        $order->add_order_note(__(self::ERROR_CREATE_RECEIPT, 'checkbox'), $is_customer_note = 0, $added_by_user = false);
