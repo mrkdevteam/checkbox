@@ -731,10 +731,10 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                    </tbody>
 	                                </table>
 	                            </div>
-                            <h2><?php esc_html_e('Налаштування купонів', 'checkbox'); ?></h2>
+                            <h2><?php esc_html_e('Просунуті налаштування', 'checkbox'); ?></h2>
                         <hr>
                         <div class="checkbox-setting-data">
-                            <p class="checkbox-setting-data-title"><?php esc_html_e('Назва купона (По замовчуванню: Купон)', 'checkbox'); ?></p>
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Налаштування купонів (По замовчуванню: Купон)', 'checkbox'); ?></p>
                             <input class="table_input" type="text" name="ppo_receipt_coupon_text" value="<?php echo esc_html(get_option('ppo_receipt_coupon_text')); ?>" required />
                         </div>
 	                </div>
