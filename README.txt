@@ -4,7 +4,7 @@ Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
 Tested up to: 6.2
 Requires PHP: 7.1
-Stable tag: 2.0.1
+Stable tag: 2.1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooCommerce tested up to: 7.6.0
@@ -90,6 +90,10 @@ https://youtu.be/8cObRdy-Thk
 Робочі години з 10:00 до 19:00 ПН-ПТ. Ми відповімо вам протягом доби в робочий час. Всі звернення опрацьовуються по черзі.
 
 == Що нового? ==
+
+= 2.1.0 =
+* [new] змінили алгоритм додавання знижки до чеку - тепер знижки додаютья індивідуально для кожної позиції в чеку
+* [new] додали можливість зміни назви знижки в налаштуваннях
 
 = 2.0.1 =
 * [fixed] виправили помилку зі зміною

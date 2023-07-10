@@ -59,7 +59,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            'ppo_skip_receipt_creation',
 	            'ppo_is_dev_mode',
 	            'ppo_logger',
-	            'ppo_cashbox_edrpou'
+	            'ppo_cashbox_edrpou',
+	            'ppo_receipt_coupon_text'
 	        );
 
 	        # Loop of option
@@ -730,6 +731,12 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                    </tbody>
 	                                </table>
 	                            </div>
+                            <h2><?php esc_html_e('Налаштування купонів', 'checkbox'); ?></h2>
+                        <hr>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Назва купона (По замовчуванню: Купон)', 'checkbox'); ?></p>
+                            <input class="table_input" type="text" name="ppo_receipt_coupon_text" value="<?php echo esc_html(get_option('ppo_receipt_coupon_text')); ?>" required />
+                        </div>
 	                </div>
 	                <div class="checkbox-setting-col checkbox-setting-col-4">
 	                    <h2><?php esc_html_e('Додаткові налаштування', 'checkbox'); ?></h2>
