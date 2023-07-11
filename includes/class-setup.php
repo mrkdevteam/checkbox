@@ -667,10 +667,14 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                    	<?php 
 	                                                    	if (isset($ppo_skip_receipt_creation[$id])) {
 	                                                    		if($ppo_skip_receipt_creation[$id] == 'no'){
-	                                                    			$ppo_rules_active[$id] = '1';
+	                                                    			if($ppo_rules_active){
+	                                                    				$ppo_rules_active[$id] = '1';
+	                                                    			}
 	                                                    		}
 	                                                    		else{
-	                                                    			unset($ppo_rules_active[$id]);	
+	                                                    			if($ppo_rules_active){
+	                                                    				unset($ppo_rules_active[$id]);	
+	                                                    			}
 	                                                    		}
 	                                                    		unset($ppo_skip_receipt_creation[$id]);
 	                                                    	}
