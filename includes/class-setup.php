@@ -639,6 +639,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                return 'yes' === $gateway->enabled;
 	                            });
 
+	                            update_option('ppo_autocreate', 1);
+
 	                            $ppo_autocreate = get_option('ppo_autocreate');
 	                            $ppo_autocreate_payment_order_statuses = get_option('ppo_autocreate_payment_order_statuses');
 	                            $ppo_payment_type          = get_option('ppo_payment_type');
