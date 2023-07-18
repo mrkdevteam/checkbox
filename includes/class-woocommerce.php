@@ -305,13 +305,6 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 			    	}
 			    }
 	    	}
-	    	else{
-	    		# Get logger mode
-	        			$logger = new Checkbox\KLoggerDecorator(boolval(get_option('ppo_logger')));
-
-	        			# Add message to log
-	            		$logger->info(__('Помилка під час створення чека: Відсутній post id для обробки.', 'checkbox'));
-	    	}
 	    }
 	}
 }
