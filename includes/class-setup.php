@@ -59,7 +59,9 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            'ppo_skip_receipt_creation',
 	            'ppo_is_dev_mode',
 	            'ppo_logger',
-	            'ppo_cashbox_edrpou'
+	            'ppo_cashbox_edrpou',
+	            'ppo_receipt_coupon_text',
+	            'ppo_zero_product_exclude'
 	        );
 
 	        # Loop of option
@@ -638,6 +640,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                return 'yes' === $gateway->enabled;
 	                            });
 
+	                            update_option('ppo_autocreate', 1);
+
 	                            $ppo_autocreate = get_option('ppo_autocreate');
 	                            $ppo_autocreate_payment_order_statuses = get_option('ppo_autocreate_payment_order_statuses');
 	                            $ppo_payment_type          = get_option('ppo_payment_type');
@@ -664,10 +668,14 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                    	<?php 
 	                                                    	if (isset($ppo_skip_receipt_creation[$id])) {
 	                                                    		if($ppo_skip_receipt_creation[$id] == 'no'){
-	                                                    			$ppo_rules_active[$id] = '1';
+	                                                    			if($ppo_rules_active){
+	                                                    				$ppo_rules_active[$id] = '1';
+	                                                    			}
 	                                                    		}
 	                                                    		else{
-	                                                    			unset($ppo_rules_active[$id]);	
+	                                                    			if($ppo_rules_active){
+	                                                    				unset($ppo_rules_active[$id]);	
+	                                                    			}
 	                                                    		}
 	                                                    		unset($ppo_skip_receipt_creation[$id]);
 	                                                    	}
@@ -730,6 +738,23 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                    </tbody>
 	                                </table>
 	                            </div>
+                            <h2><?php esc_html_e('Просунуті налаштування', 'checkbox'); ?></h2>
+                        <hr>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Налаштування купонів (По замовчуванню: Купон)', 'checkbox'); ?></p>
+                            <input class="table_input" type="text" name="ppo_receipt_coupon_text" value="<?php echo esc_html(get_option('ppo_receipt_coupon_text')); ?>" required />
+                        </div>
+                        <div class="checkbox-setting-data">
+	                        <p class="checkbox-setting-data-title">
+	                            <?php esc_html_e("Не додавати товари з нульовою ціною", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Використовуйте, щоб не додавати товари з ціною 0 грн до чеку', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+	                        </p>
+	                        <input class="table_input" type="checkbox" name="ppo_zero_product_exclude" id="ppo_zero_product_exclude" value="1" <?php checked(get_option('ppo_zero_product_exclude'), 1); ?> />
+	                        <label for="ppo_zero_product_exclude">
+	                            <div class="mrkv_table-payment__body__checkbox__input">
+	                                <span class="mrkv_checkbox_slider"></span>
+	                            </div>
+	                        </label>
+	                    </div>
 	                </div>
 	                <div class="checkbox-setting-col checkbox-setting-col-4">
 	                    <h2><?php esc_html_e('Додаткові налаштування', 'checkbox'); ?></h2>

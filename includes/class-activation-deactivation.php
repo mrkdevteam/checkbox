@@ -197,7 +197,7 @@ if (!class_exists('MRKV_ACTIVATION_DEACTIVATION'))
 	        	# Get logger object
 		        $logger = new Checkbox\KLoggerDecorator(boolval(get_option('ppo_logger')));
 		        # Show error
-		        $logger->error( self::ERROR_MESSAGE . " $error_message", 1 );
+		        //$logger->error( self::ERROR_MESSAGE . " $error_message", 1 );
 		    }
 		}
 
@@ -249,7 +249,7 @@ if (!class_exists('MRKV_ACTIVATION_DEACTIVATION'))
 	        	# Get logger object
 		        $logger = new Checkbox\KLoggerDecorator(boolval(get_option('ppo_logger')));
 		        # Show error
-		        $logger->error( self::ERROR_MESSAGE . " $error_message", 1 );
+		        //$logger->error( self::ERROR_MESSAGE . " $error_message", 1 );
 		    }
 		}
 	}

@@ -34,4 +34,5 @@ jQuery(function($) {
     jQuery('.code-tax-checkbox .tooltip').click(function(){
         window.open('https://my.checkbox.ua/dashboard/taxrates', '_blank');
     });
+    jQuery('select.chosen').chosen();
 })

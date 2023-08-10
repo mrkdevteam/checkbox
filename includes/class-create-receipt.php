@@ -228,14 +228,22 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	                    $result = $this->mrkv_checkbox_create_receipt($api, $order);
 
 	                    # Check result
-	                    if ($result) 
+	                    if ($result && isset($result['receipt_id'])) 
 	                    {
 	                    	# Add message to order
 	                        $order->add_order_note(sprintf('%s. <a href="%s" target="_blank">%s</a>', __(self::RECEIPT_CREATED, 'checkbox'), self::URL_CHECKBOX . "{$result['receipt_id']}", __(self::PRINT_RECEIPT, 'checkbox')), $is_customer_note = 0, $added_by_user = false);
 
 	                        # Save to log
 	                        $logger->info(sprintf(self::ORDER_TEXT . ' №%d. %s.', $order->get_id(), __(self::RECEIPT_CREATED, 'checkbox')));
-	                    } else 
+	                    } 
+	                    elseif(isset($result['success'])){
+	                    	# Add message to order
+	                        $order->add_order_note(__(self::ERROR_CREATE_RECEIPT, 'checkbox'), $is_customer_note = 0, $added_by_user = false);
+
+	                        # Save to log
+		                    $logger->info($result['message']);
+	                    }
+	                    else 
 	                    {
 	                    	# Add message to order
 	                        $order->add_order_note(__(self::ERROR_CREATE_RECEIPT, 'checkbox'), $is_customer_note = 0, $added_by_user = false);
@@ -304,11 +312,28 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        # Get tax code
 	        $tax = get_option('ppo_tax_code');
 	        
+	        # Coupon name
+	        $coupon_name = 'Купон';
+
+	        # Check settings
+	        if(get_option('ppo_receipt_coupon_text')){
+	        	# Set coupon name
+	        	$coupon_name = get_option('ppo_receipt_coupon_text');
+	        }
+
+	        # Check zero product price
+	        $zero_product_exclude = get_option('ppo_zero_product_exclude');
+	        
 	        # Loop all items
 	        foreach ($goods_items as $item) 
 	        {
 	        	# Get price 
 	            $price = ($item->get_subtotal() / $item->get_quantity());
+
+	            # Check price
+	            if($zero_product_exclude && $price == 0){
+	            	continue;
+	            }
 
 	            # Set price
 	            $price_checkbox = floatval($price) * 100;
@@ -329,14 +354,27 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	                $good['tax'] = $tax_array;
 	            }
 
-	            # Create total price
-	            $total_price += $price * $item->get_quantity() * 100;
-
-	            # Set product to goods array
-	            $goods[] = array(
+	            $good_data = array(
 	                'good'     => $good,
 	                'quantity' => (int) ($item->get_quantity() * 1000),
 	            );
+
+	            if($item->get_total() != $item->get_subtotal()){
+	            	$discount_item = $item->get_subtotal() - $item->get_total();
+
+            		$good_data['discounts'][] = array(
+		                'type' => 'DISCOUNT',
+		                'mode' => 'VALUE',
+		                'value' => round($discount_item * 100),
+		                'name' => $coupon_name
+		            );
+	            }
+
+	            # Create total price
+            	$total_price += $item->get_total() * 100;
+
+	            # Set product to goods array
+	            $goods[] = $good_data;
 	        }
 
 	        # Set array
@@ -349,29 +387,6 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        {
 	        	# Set email to delivery
 	            $params['delivery'] = array( 'email' => $email );
-	        }
-
-	        # Check coupon code
-	        if( count( $order->get_coupon_codes() ) > 0 ) 
-	        {
-	        	# Set coupons
-	            $discount_type = 'fixed_cart';
-	            $coupon_amount = $order->get_total_discount();
-
-	            # Set coupon value 
-	            $mode = 'VALUE';
-	            $coupon_amount = $coupon_amount * 100;
-
-	            # Add coupon to array
-	            $params['discounts'][] = array(
-	                'type' => 'DISCOUNT',
-	                'mode' => $mode,
-	                'value' => $coupon_amount,
-	                'name' => 'Купон'
-	            );
-
-	            # Set total price
-	            $total_price = $order->get_total() * 100;
 	        }
 
 	        # Set payments
