@@ -320,12 +320,20 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        	# Set coupon name
 	        	$coupon_name = get_option('ppo_receipt_coupon_text');
 	        }
+
+	        # Check zero product price
+	        $zero_product_exclude = get_option('ppo_zero_product_exclude');
 	        
 	        # Loop all items
 	        foreach ($goods_items as $item) 
 	        {
 	        	# Get price 
 	            $price = ($item->get_subtotal() / $item->get_quantity());
+
+	            # Check price
+	            if($zero_product_exclude && $price == 0){
+	            	continue;
+	            }
 
 	            # Set price
 	            $price_checkbox = floatval($price) * 100;

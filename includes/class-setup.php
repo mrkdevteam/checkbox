@@ -60,7 +60,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            'ppo_is_dev_mode',
 	            'ppo_logger',
 	            'ppo_cashbox_edrpou',
-	            'ppo_receipt_coupon_text'
+	            'ppo_receipt_coupon_text',
+	            'ppo_zero_product_exclude'
 	        );
 
 	        # Loop of option
@@ -743,6 +744,17 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
                             <p class="checkbox-setting-data-title"><?php esc_html_e('Налаштування купонів (По замовчуванню: Купон)', 'checkbox'); ?></p>
                             <input class="table_input" type="text" name="ppo_receipt_coupon_text" value="<?php echo esc_html(get_option('ppo_receipt_coupon_text')); ?>" required />
                         </div>
+                        <div class="checkbox-setting-data">
+	                        <p class="checkbox-setting-data-title">
+	                            <?php esc_html_e("Не додавати товари з нульовою ціною", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Використовуйте, щоб не додавати товари з ціною 0 грн до чеку', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+	                        </p>
+	                        <input class="table_input" type="checkbox" name="ppo_zero_product_exclude" id="ppo_zero_product_exclude" value="1" <?php checked(get_option('ppo_zero_product_exclude'), 1); ?> />
+	                        <label for="ppo_zero_product_exclude">
+	                            <div class="mrkv_table-payment__body__checkbox__input">
+	                                <span class="mrkv_checkbox_slider"></span>
+	                            </div>
+	                        </label>
+	                    </div>
 	                </div>
 	                <div class="checkbox-setting-col checkbox-setting-col-4">
 	                    <h2><?php esc_html_e('Додаткові налаштування', 'checkbox'); ?></h2>
