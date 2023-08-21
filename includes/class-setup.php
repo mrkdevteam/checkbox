@@ -61,7 +61,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            'ppo_logger',
 	            'ppo_cashbox_edrpou',
 	            'ppo_receipt_coupon_text',
-	            'ppo_zero_product_exclude'
+	            'ppo_zero_product_exclude',
+	            'ppo_payment_type_label'
 	        );
 
 	        # Loop of option
@@ -444,6 +445,10 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            	padding-top: 15px;
 	            	padding-bottom: 15px;
 	            }
+	            .checkbox-setting-col-12{
+	            	width: 100%;
+	            	margin-bottom: 30px;
+	            }
 	            @media(max-width: 1210px){
 	            	.checkbox-setting-col{
             		    width: calc(50% - 15px);
@@ -611,8 +616,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                </div>
 	            </div>
 	            <div class="checkbox-setting-row">
-	                <div class="checkbox-setting-col checkbox-setting-col-8">
-	                    <h2><?php esc_html_e('Налаштування автоматичного створення чеків', 'checkbox'); ?></h2>
+	            	<div class="checkbox-setting-col checkbox-setting-col-12">
+	            		<h2><?php esc_html_e('Налаштування автоматичного створення чеків', 'checkbox'); ?></h2>
 	                    <hr>
 	                    <?php update_option( 'ppo_autoopen_shift', 1 ); ?>
 	                    <div class="checkbox-setting-data" style="display: none;">
@@ -630,12 +635,12 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                        <div class="checkbox-setting-data">
 	                        </div>
 	                    </div>
-	                        <div class="checkbox-setting-data">
-	                            <p class="checkbox-setting-data-title">
-	                                <?php esc_html_e('Правила автоматичного формування чеків', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
-	                            </p>
-	                        </div>
-	                         <?php
+	                    <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title">
+                                <?php esc_html_e('Правила автоматичного формування чеків', 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Визначення типу для кожного способу оплати необхідне для створення чека.', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+                            </p>
+                        </div>
+                        <?php
 	                            $enabled_gateways = array_filter(WC()->payment_gateways->payment_gateways(), function ($gateway) {
 	                                return 'yes' === $gateway->enabled;
 	                            });
@@ -647,6 +652,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                            $ppo_payment_type          = get_option('ppo_payment_type');
 	                            $ppo_skip_receipt_creation = get_option('ppo_skip_receipt_creation');
 	                            $ppo_rules_active = get_option('ppo_rules_active');
+	                            $ppo_payment_type_label = get_option('ppo_payment_type_label');
 
 	                            ?>
 	                            <div class="gateway-settings__wrapper">
@@ -654,6 +660,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                    <thead>
 	                                        <tr>
 	                                            <th><?php esc_html_e('Спосіб оплати', 'checkbox'); ?></th>
+	                                            <th><?php esc_html_e('Label(Назва)', 'checkbox'); ?></th>
 	                                            <th><?php esc_html_e('Тип', 'checkbox'); ?></th>
 	                                            <th class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Статуси замовлення', 'checkbox'); ?></th>
 	                                        </tr>
@@ -694,6 +701,9 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                    	</span>		
 	                                                    	<?php echo esc_html($gateway->get_title()); ?>
 	                                                    </p>
+	                                                </td>
+	                                                <td class="gateway-label"> 
+	                                                	<input type="text" name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php echo $ppo_payment_type_label[$id]; ?>">
 	                                                </td>
 	                                                <td>
 	                                                    <input type="radio" name="ppo_payment_type[<?php echo esc_html($id); ?>]" id="ppo_payment_type_cash[<?php echo esc_html($id); ?>]" <?php
@@ -738,24 +748,9 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                    </tbody>
 	                                </table>
 	                            </div>
-                            <h2><?php esc_html_e('Просунуті налаштування', 'checkbox'); ?></h2>
-                        <hr>
-                        <div class="checkbox-setting-data">
-                            <p class="checkbox-setting-data-title"><?php esc_html_e('Налаштування купонів (По замовчуванню: Купон)', 'checkbox'); ?></p>
-                            <input class="table_input" type="text" name="ppo_receipt_coupon_text" value="<?php echo esc_html(get_option('ppo_receipt_coupon_text')); ?>" required />
-                        </div>
-                        <div class="checkbox-setting-data">
-	                        <p class="checkbox-setting-data-title">
-	                            <?php esc_html_e("Не додавати товари з нульовою ціною", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Використовуйте, щоб не додавати товари з ціною 0 грн до чеку', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
-	                        </p>
-	                        <input class="table_input" type="checkbox" name="ppo_zero_product_exclude" id="ppo_zero_product_exclude" value="1" <?php checked(get_option('ppo_zero_product_exclude'), 1); ?> />
-	                        <label for="ppo_zero_product_exclude">
-	                            <div class="mrkv_table-payment__body__checkbox__input">
-	                                <span class="mrkv_checkbox_slider"></span>
-	                            </div>
-	                        </label>
-	                    </div>
-	                </div>
+            		</div>
+	            </div>
+	            <div class="checkbox-setting-row">
 	                <div class="checkbox-setting-col checkbox-setting-col-4">
 	                    <h2><?php esc_html_e('Додаткові налаштування', 'checkbox'); ?></h2>
 	                    <hr>
@@ -803,6 +798,25 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                        <div class="btn-call-clean-log"><?php echo __('Очистити лог', 'checkbox'); ?></div>
 	                    </div>
 	                    <?php echo submit_button(__('Зберегти', 'checkbox')); ?>
+	                </div>
+	                <div class="checkbox-setting-col checkbox-setting-col-8">
+	                    <h2><?php esc_html_e('Просунуті налаштування', 'checkbox'); ?></h2>
+                        <hr>
+                        <div class="checkbox-setting-data">
+                            <p class="checkbox-setting-data-title"><?php esc_html_e('Налаштування купонів (По замовчуванню: Купон)', 'checkbox'); ?></p>
+                            <input class="table_input" type="text" name="ppo_receipt_coupon_text" value="<?php echo esc_html(get_option('ppo_receipt_coupon_text')); ?>" required />
+                        </div>
+                        <div class="checkbox-setting-data">
+	                        <p class="checkbox-setting-data-title">
+	                            <?php esc_html_e("Не додавати товари з нульовою ціною", 'checkbox'); ?> <span class="tooltip" aria-label="<?php echo esc_html('Використовуйте, щоб не додавати товари з ціною 0 грн до чеку', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span>
+	                        </p>
+	                        <input class="table_input" type="checkbox" name="ppo_zero_product_exclude" id="ppo_zero_product_exclude" value="1" <?php checked(get_option('ppo_zero_product_exclude'), 1); ?> />
+	                        <label for="ppo_zero_product_exclude">
+	                            <div class="mrkv_table-payment__body__checkbox__input">
+	                                <span class="mrkv_checkbox_slider"></span>
+	                            </div>
+	                        </label>
+	                    </div>
 	                </div>
 	            </div>
 	            <div class="plugin-development mt-40">
