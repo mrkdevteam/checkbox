@@ -321,16 +321,15 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        	$coupon_name = get_option('ppo_receipt_coupon_text');
 	        }
 
-	        # Check zero product price
 	        $zero_product_exclude = get_option('ppo_zero_product_exclude');
 	        
 	        # Loop all items
 	        foreach ($goods_items as $item) 
 	        {
+
 	        	# Get price 
 	            $price = ($item->get_subtotal() / $item->get_quantity());
 
-	            # Check price
 	            if($zero_product_exclude && $price == 0){
 	            	continue;
 	            }
@@ -389,11 +388,26 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            $params['delivery'] = array( 'email' => $email );
 	        }
 
-	        # Set payments
-	        $params['payments'][]   = array(
-	            'type'  => $payment_type,
-	            'value' => ceil($total_price),
-	        );
+	        $ppo_payment_type_label = get_option('ppo_payment_type_label');
+
+	        # Check payment label
+	        if(isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != ''){
+	        	# Set payments
+		        $params['payments'][]   = array(
+		            'type'  => $payment_type,
+		            'value' => ceil($total_price),
+		            'label' => $ppo_payment_type_label[ $payment_method ]
+		        );
+	        }
+	        else{
+	        	# Set payments
+		        $params['payments'][]   = array(
+		            'type'  => $payment_type,
+		            'value' => ceil($total_price),
+		        );
+	        }
+
+	        $order->add_order_note(print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
 
 	        # Set footer
 	        $footer = get_option('ppo_receipt_footer');
@@ -404,6 +418,8 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        	# Set footer data
 	            $params['footer'] = Checkbox\Support::processReceiptFooter($order, $footer);
 	        }
+
+	        //$order->add_order_note(print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
 
 	        # Create result array
 	        $result  = array();
