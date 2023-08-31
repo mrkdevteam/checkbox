@@ -168,7 +168,7 @@ if (!class_exists('MRKV_ACTIVATION_DEACTIVATION'))
 		        'product' => 'checkbox',
 		        'version' => CHECKBOX_VERSION,
 		        'license' => CHECKBOX_LICENSE,
-		        'info'    => get_option('ppo_cashbox_key'),
+		        'info'    => '' . get_option('ppo_cashbox_edrpou') . ' - ' . get_option('ppo_cashbox_key'),
 		        'status'  => $status
 		    ];
 		    
@@ -220,7 +220,7 @@ if (!class_exists('MRKV_ACTIVATION_DEACTIVATION'))
 		        'product' => 'checkbox',
 		        'version' => CHECKBOX_VERSION,
 		        'license' => CHECKBOX_LICENSE,
-		        'info'    => get_option('ppo_cashbox_edrpou'),
+		        'info'    => '' . get_option('ppo_cashbox_edrpou') . ' - ' . get_option('ppo_cashbox_key'),
 		        'status'  => $status
 		    ];
 		    
