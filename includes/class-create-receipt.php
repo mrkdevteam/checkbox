@@ -407,7 +407,7 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 		        );
 	        }
 
-	        $order->add_order_note(print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
+	        // $order->add_order_note(print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
 
 	        # Set footer
 	        $footer = get_option('ppo_receipt_footer');
