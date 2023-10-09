@@ -703,7 +703,11 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                    </p>
 	                                                </td>
 	                                                <td class="gateway-label"> 
-	                                                	<input type="text" name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php echo $ppo_payment_type_label[$id]; ?>">
+	                                                	<input type="text" name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php
+	                                                	if(isset($ppo_payment_type_label[$id])){
+	                                                		echo $ppo_payment_type_label[$id];
+	                                                	}
+	                                                	  ?>">
 	                                                </td>
 	                                                <td>
 	                                                    <input type="radio" name="ppo_payment_type[<?php echo esc_html($id); ?>]" id="ppo_payment_type_cash[<?php echo esc_html($id); ?>]" <?php
