@@ -407,8 +407,6 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 		        );
 	        }
 
-	        // $order->add_order_note(print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
-
 	        # Set footer
 	        $footer = get_option('ppo_receipt_footer');
 
@@ -419,12 +417,20 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            $params['footer'] = Checkbox\Support::processReceiptFooter($order, $footer);
 	        }
 
-	        //$order->add_order_note(print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
+	        if($ppo_logger){
+	        	# Add message to order
+                $order->add_order_note('Query: ' . print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
+	        }
 
 	        # Create result array
 	        $result  = array();
 	        # Create receipt
 	        $receipt = $api->createReceipt($params);
+
+	        if($ppo_logger){
+	        	# Add message to order
+                $order->add_order_note('Answer: ' . print_r($receipt, 1), $is_customer_note = 0, $added_by_user = false);
+	        }
 
 	        # Check receipt error
 	        if (isset($receipt['error'])) 
