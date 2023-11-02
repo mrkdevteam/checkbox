@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 2.2.5
+ * Version: 2.3.0
  * Tested up to: 6.3
  * Requires at least: 5.2
  * Requires PHP: 7.1
@@ -20,8 +20,14 @@ if (! defined('ABSPATH'))
     exit;
 }
 
+add_action( 'before_woocommerce_init', function() {
+    if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+    }
+} );
+
 # Versions number
-define('CHECKBOX_VERSION', '2.2.5');
+define('CHECKBOX_VERSION', '2.3.0');
 define('CHECKBOX_LICENSE', 'free');
 
 # Include autoload
@@ -43,53 +49,57 @@ require_once 'includes/class-activation-deactivation.php';
 # Setup activation and deactivation plugin
 new MRKV_ACTIVATION_DEACTIVATION();
 
-// -----------------------------------------------------------------------//
-// --------------------------------SETUP----------------------------------//
-// -----------------------------------------------------------------------//
+add_action( 'before_woocommerce_init', function() {
+    // -----------------------------------------------------------------------//
+    // --------------------------------SETUP----------------------------------//
+    // -----------------------------------------------------------------------//
 
-# Include all needed classes for setup
-require_once 'includes/class-setup.php'; 
+    # Include all needed classes for setup
+    require_once 'includes/class-setup.php'; 
 
-# Setup plugin
-new MRKV_CHECKBOX_SETUP(__FILE__);
+    # Setup plugin
+    new MRKV_CHECKBOX_SETUP(__FILE__);
 
-// -----------------------------------------------------------------------//
-// -----------------------WOOCOMMERCE CUSTOMISATION-----------------------//
-// -----------------------------------------------------------------------//
+    // -----------------------------------------------------------------------//
+    // -----------------------WOOCOMMERCE CUSTOMISATION-----------------------//
+    // -----------------------------------------------------------------------//
 
-# Include all needed classes for woocommerce
-require_once 'includes/class-woocommerce.php'; 
+    # Include all needed classes for woocommerce
+    require_once 'includes/class-woocommerce.php'; 
 
-# Setup woocommerce settings
-new MRKV_CHECKBOX_WOOCOMMERCE();
+    # Setup woocommerce settings
+    new MRKV_CHECKBOX_WOOCOMMERCE();
 
-// -----------------------------------------------------------------------//
-// -----------------------------CREATE RECEIPT----------------------------//
-// -----------------------------------------------------------------------//
+    // -----------------------------------------------------------------------//
+    // -----------------------------CREATE RECEIPT----------------------------//
+    // -----------------------------------------------------------------------//
 
-# Include all needed classes for create receipt
-require_once 'includes/class-create-receipt.php'; 
+    # Include all needed classes for create receipt
+    require_once 'includes/class-create-receipt.php'; 
 
-# Setup create receipt
-new MRKV_CHECKBOX_RECEIPT();
+    # Setup create receipt
+    new MRKV_CHECKBOX_RECEIPT();
 
-// -----------------------------------------------------------------------//
-// ---------------------------DASHBOARD WIDGET----------------------------//
-// -----------------------------------------------------------------------//
+    // -----------------------------------------------------------------------//
+    // ---------------------------DASHBOARD WIDGET----------------------------//
+    // -----------------------------------------------------------------------//
 
-# Include all needed classes for dashboard settings
-require_once 'includes/class-dashboard-widget.php'; 
+    # Include all needed classes for dashboard settings
+    require_once 'includes/class-dashboard-widget.php'; 
 
-# Setup dashboard settings
-new MRKV_DASHBOARD_WIDGET(__FILE__);
+    # Setup dashboard settings
+    new MRKV_DASHBOARD_WIDGET(__FILE__);
 
-// -----------------------------------------------------------------------//
-// --------------------------CONNECT AND DISCONNECT-----------------------//
-// -----------------------------------------------------------------------//
+    // -----------------------------------------------------------------------//
+    // --------------------------CONNECT AND DISCONNECT-----------------------//
+    // -----------------------------------------------------------------------//
 
-# Include all needed classes for conntect disconnect shift
-require_once 'includes/class-conntect-disconnect.php'; 
+    # Include all needed classes for conntect disconnect shift
+    require_once 'includes/class-conntect-disconnect.php'; 
 
-# Setup conntect disconnect shift
-new MRKV_CONNTECT_DISCONNECT();
+    # Setup conntect disconnect shift
+    new MRKV_CONNTECT_DISCONNECT();
+} );
+
+
 

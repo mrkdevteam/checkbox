@@ -19,3 +19,6 @@ span.tooltip::after {
     height: auto;
     -webkit-font-smoothing: subpixel-antialiased;
 }
+.mrkv_checkbox_action_button svg{
+    display: none;
+}
