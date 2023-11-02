@@ -76,6 +76,9 @@ https://youtu.be/ZbbcS9fx4cQ
 
 == Що нового? ==
 
+= 2.3.0 =
+* [new] додали підтримку High-Performance Order Storage (HPOS)
+
 = 2.2.5 =
 * [new] додали вивід запиту в історії замовлення
 

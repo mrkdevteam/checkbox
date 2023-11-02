@@ -417,6 +417,8 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            $params['footer'] = Checkbox\Support::processReceiptFooter($order, $footer);
 	        }
 
+	       $ppo_logger = get_option('ppo_logger');
+
 	        if($ppo_logger){
 	        	# Add message to order
                 $order->add_order_note('Query: ' . print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
