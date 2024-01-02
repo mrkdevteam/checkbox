@@ -1,4 +1,7 @@
 <?php 
+
+use Automattic\WooCommerce\Utilities\OrderUtil;
+
 # Check if class exist
 if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 {
@@ -148,15 +151,30 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        # Check statuses
 	        if (in_array($new_status, $order_statuses) || in_array($new_status, $payment_order_statuses[$order_payment_id])) 
 	        {
-	            # Check if receipt is already created 
-	            if (! empty(get_post_meta($order_id, 'receipt_id', true))) 
-	            {
-	            	# Add message to order
-	                $order->add_order_note(__(self::RECEIPT_ALREADY_CREATED, 'checkbox'), $is_customer_note = 0, $added_by_user = false);
+	        	if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+        		{
+        			# Check if receipt is already created 
+		            if (! empty($order->get_meta('receipt_id'))) 
+		            {
+		            	# Add message to order
+		                $order->add_order_note(__(self::RECEIPT_ALREADY_CREATED, 'checkbox'), $is_customer_note = 0, $added_by_user = false);
 
-	                # Stop action
-	                return;
-	            }
+		                # Stop action
+		                return;
+		            }
+        		}
+        		else
+        		{
+        			# Check if receipt is already created 
+		            if (! empty(get_post_meta($order_id, 'receipt_id', true))) 
+		            {
+		            	# Add message to order
+		                $order->add_order_note(__(self::RECEIPT_ALREADY_CREATED, 'checkbox'), $is_customer_note = 0, $added_by_user = false);
+
+		                # Stop action
+		                return;
+		            }
+        		}
 
 	            # Check if Autoopen shift feature is activated 
 	            if(is_null(get_option('ppo_autoopen_shift')))
@@ -269,6 +287,37 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	                }
 	            }
 	        }
+	    }
+
+	    /**
+	     * Generate UUID for create receipt
+	     * @return string UUID 
+	     * */
+	    public function mrkv_checkbox_generate_uuid($api)
+	    {
+	    	$has_uuid = true;
+	    	$uuid = '';
+
+	    	while ($has_uuid) 
+	    	{
+    			# Generate UUID
+		    	$uuid = sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+			        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
+			        mt_rand( 0, 0xffff ),
+			        mt_rand( 0, 0x0fff ) | 0x4000,
+			        mt_rand( 0, 0x3fff ) | 0x8000,
+			        mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+			    );
+
+			    $result_answer = $api->getReceipt($uuid);
+
+		    	if(isset($result_answer['message']))
+		    	{
+	            	$has_uuid = false;
+	            }
+	    	}
+
+	    	return $uuid;
 	    }
 
 	    /**
@@ -424,6 +473,13 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
                 $order->add_order_note('Query: ' . print_r($params, 1), $is_customer_note = 0, $added_by_user = false);
 	        }
 
+	        $uuid = $this->mrkv_checkbox_generate_uuid($api);
+
+	        if($uuid)
+	        {
+	        	$params['id'] = $uuid;
+	        }
+
 	        # Create result array
 	        $result  = array();
 	        # Create receipt
@@ -447,10 +503,21 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 
 	        # Save order ID 
 	        if (isset($receipt['id'])) 
-	        {
-	            # Save receipt ID in meta 
-	            update_post_meta($order->get_id(), 'receipt_id', sanitize_text_field($receipt['id']));
-	            update_post_meta($order->get_id(), 'receipt_url', sprintf(self::URL_CHECKBOX . '%s', $receipt['id']));
+	        {	
+	        	if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+        		{
+        			# Save receipt ID in meta 
+        			$order->update_meta_data( 'receipt_id', sanitize_text_field($receipt['id']) );
+		            $order->update_meta_data( 'receipt_url', sprintf(self::URL_CHECKBOX . '%s', $receipt['id']) );
+
+		            $order->save();
+        		}
+        		else
+        		{
+        			# Save receipt ID in meta 
+		            update_post_meta($order->get_id(), 'receipt_id', sanitize_text_field($receipt['id']));
+		            update_post_meta($order->get_id(), 'receipt_url', sprintf(self::URL_CHECKBOX . '%s', $receipt['id']));
+        		}
 
 	            # Set complete message
 	            $result['success'] = true;

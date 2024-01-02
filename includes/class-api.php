@@ -63,6 +63,11 @@ class API
     const API_RECEIPT_SELL = '/api/v1/receipts/sell';
 
     /**
+     * @var string Api receipt get url
+     * */
+    const API_RECEIPT_GET = '/api/v1/receipts/';
+
+    /**
      * @var string Api dev checkbox
      * */
     const API_DEV_CHECKBOX = 'https://dev-api.checkbox.in.ua';
@@ -250,6 +255,27 @@ class API
 
         # Set response request
         $response       = $this->makePostRequest(self::API_RECEIPT_SELL, $params, $header_params);
+
+        # Return response
+        return $response;
+    }
+
+    /**
+     * Get receipt
+     *
+     * @param array $params parameters required for receipt creation
+     * @return array|null
+     */
+    public function getReceipt($uuid)
+    {
+        # Set header params
+        $header_params = array( 'X-Client-Name' => 'Morkva' );
+
+        # Set url
+        $url           = self::API_RECEIPT_GET . $uuid;
+
+        # Set response request
+        $response      = $this->makeGetRequest($url, [], $header_params);
 
         # Return response
         return $response;
