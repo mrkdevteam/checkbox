@@ -109,18 +109,36 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	        # Get api class
 	        $api = new Checkbox\API($login, $password, $cashbox_key, $is_dev);
 
-	        # Check if receipt is already created 
-	        if (! empty(get_post_meta($order->get_id(), 'receipt_id', true))) 
-	        {
-	        	# Show message
-	            $order->add_order_note(__('Чек вже створено', 'checkbox'), $is_customer_note = 0, $added_by_user = false);
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			# Check if receipt is already created 
+		        if (! empty($order->get_meta('receipt_id'))) 
+		        {
+		        	# Show message
+		            $order->add_order_note(__('Чек вже створено', 'checkbox'), $is_customer_note = 0, $added_by_user = false);
 
-	            # Add message to log
-	            $logger->info(sprintf('Замовлення №%d. %s', $order->get_id(), __('Чек вже створено', 'checkbox')));
+		            # Add message to log
+		            $logger->info(sprintf('Замовлення №%d. %s', $order->get_id(), __('Чек вже створено', 'checkbox')));
 
-	            # Stop action
-	            return;
-	        }
+		            # Stop action
+		            return;
+		        }
+    		}
+    		else
+    		{
+    			# Check if receipt is already created 
+		        if (! empty(get_post_meta($order->get_id(), 'receipt_id', true))) 
+		        {
+		        	# Show message
+		            $order->add_order_note(__('Чек вже створено', 'checkbox'), $is_customer_note = 0, $added_by_user = false);
+
+		            # Add message to log
+		            $logger->info(sprintf('Замовлення №%d. %s', $order->get_id(), __('Чек вже створено', 'checkbox')));
+
+		            # Stop action
+		            return;
+		        }
+    		}
 
 	        # Get current shift status 
 	        $current_shift = $api->getCurrentCashierShift();
@@ -219,8 +237,16 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	        # Check column slug
 	        if ('receipt_column' === $column) 
 	        {
-	        	# Get Receipt ID
-	            $receipt_id = get_post_meta($the_order->get_id(), 'receipt_id', true);
+	        	if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    			{
+    				# Get Receipt ID
+	            	$receipt_id = $the_order->get_meta('receipt_id');
+    			}
+    			else
+    			{
+    				# Get Receipt ID
+	            	$receipt_id = get_post_meta($the_order->get_id(), 'receipt_id', true);
+    			}
 
 	            # Show receipt link
 	            printf('<a href="%s" target="_blank">%s</a>', "https://check.checkbox.ua/{$receipt_id}", $receipt_id);
@@ -237,8 +263,16 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	        # Check column slug
 	        if ('receipt_column' === $column) 
 	        {
-	        	# Get Receipt ID
-	            $receipt_id = get_post_meta($the_order->get_id(), 'receipt_id', true);
+	        	if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    			{
+    				# Get Receipt ID
+	            	$receipt_id = $the_order->get_meta('receipt_id');
+    			}
+    			else
+    			{
+    				# Get Receipt ID
+	            	$receipt_id = get_post_meta($the_order->get_id(), 'receipt_id', true);
+    			}
 
 	            # Show receipt link
 	            printf('<a href="%s" target="_blank">%s</a>', "https://check.checkbox.ua/{$receipt_id}", $receipt_id);
@@ -284,8 +318,18 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	                $order_id = $_GET["id"];
 	            }
 
-	            # Get Receipt ID
-	            $receipt_id = get_post_meta($order_id, 'receipt_id', true);
+	            $order = wc_get_order( $order_id );
+
+	            if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    			{
+    				# Get Receipt ID
+	            	$receipt_id = $order->get_meta('receipt_id');
+    			}
+    			else
+    			{
+    				# Get Receipt ID
+	            	$receipt_id = get_post_meta($order_id, 'receipt_id', true);
+    			}
 
 	            # Check receipt id
 	            if($receipt_id)

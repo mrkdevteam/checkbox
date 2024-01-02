@@ -584,24 +584,14 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                            $ppo_sign_method = get_option('ppo_sign_method');
 	                        ?>
 	                        <div class="checkbox-setting-data-meta">
-	                            <input class="table_input" type="radio" name="ppo_sign_method" id="ppo_sign_method_cloud" value="cloud"
-	                            <?php
-	                            if (isset($ppo_sign_method)) {
-	                                checked($ppo_sign_method, 'cloud');
-	                            }
-	                            ?>
+	                            <input class="table_input" type="radio" name="ppo_sign_method" id="ppo_sign_method_cloud" value="cloud" checked 
 	                             />
 	                            <label for="ppo_sign_method_cloud"><?php esc_html_e('Checkbox Cloud', 'checkbox'); ?></label>
 	                        </div>
-	                        <div class="checkbox-setting-data-meta">
-	                            <input class="table_input" type="radio" name="ppo_sign_method" id="ppo_sign_method_soft" value="soft"
-	                            <?php
-	                            if (isset($ppo_sign_method)) {
-	                                checked($ppo_sign_method, 'soft');
-	                            }
-	                            ?>
+	                        <div class="checkbox-setting-data-meta checkbox-data-disabled">
+	                            <input class="table_input" disabled type="radio" name="ppo_sign_method" id="ppo_sign_method_soft" value="soft"
 	                             />
-	                            <label for="ppo_sign_method_soft"><?php esc_html_e('Checkbox Підпис', 'checkbox'); ?></label>
+	                            <label for="ppo_sign_method_soft"><span><?php esc_html_e('Checkbox Підпис', 'checkbox'); ?></span><span class="tooltip" aria-label="<?php echo esc_html('з 1.01.24 плагін підтримує лише хмарний підпис', 'checkbox'); ?>" data-microtip-position="right" role="tooltip"></span></label>
 	                        </div>
 	                    </div>
 	                    <div class="checkbox-setting-data">

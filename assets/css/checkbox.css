@@ -22,3 +22,12 @@ span.tooltip::after {
 .mrkv_checkbox_action_button svg{
     display: none;
 }
+.checkbox-data-disabled input{
+    opacity: .7;
+}
+.checkbox-data-disabled label > span:first-child{
+    opacity: .7;
+}
+.checkbox-data-disabled label:before{
+    opacity: .2 !important;
+}
