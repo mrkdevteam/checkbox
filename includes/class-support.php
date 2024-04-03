@@ -14,7 +14,7 @@ class Support
     public static function processReceiptFooter(\WC_Order $order, string $message): string
     {
         if (stripos($message, '[order_id]') !== false) {
-            $order_id = $order->id;
+            $order_id = $order->get_id();
             if (!empty($order_id)) {
                 $message = str_replace('[order_id]', $order_id, $message);
             } else {
