@@ -439,22 +439,154 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 
 	        $ppo_payment_type_label = get_option('ppo_payment_type_label');
 
+	        $payments_data = array(
+	        	'type'  => $payment_type,
+	            'value' => ceil($total_price),
+	        );
+
 	        # Check payment label
 	        if(isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != ''){
 	        	# Set payments
-		        $params['payments'][]   = array(
-		            'type'  => $payment_type,
-		            'value' => ceil($total_price),
-		            'label' => $ppo_payment_type_label[ $payment_method ]
-		        );
+		        $payments_data['label']   = $ppo_payment_type_label[ $payment_method ];
 	        }
-	        else{
-	        	# Set payments
-		        $params['payments'][]   = array(
-		            'type'  => $payment_type,
-		            'value' => ceil($total_price),
-		        );
+
+	        /* LIQPAY */
+ 
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$order_acq_id = $order->get_meta('_mrkv_liqpay_acq_id');
+    		}
+    		else
+    		{
+    			$order_acq_id = get_post_meta( $order->get_id(), '_mrkv_liqpay_acq_id', true );
+    		}
+
+	        if(isset($order_acq_id) && $order_acq_id != ''){
+	        	$payments_data['acquirer_and_seller']   = $order_acq_id;
 	        }
+
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$order_agent_commission = $order->get_meta('_mrkv_liqpay_agent_commission');
+    		}
+    		else
+    		{
+    			$order_agent_commission = get_post_meta( $order->get_id(), '_mrkv_liqpay_agent_commission', true );
+    		}
+
+	        if(isset($order_agent_commission) && $order_agent_commission != ''){
+	        	$payments_data['commission']   = $order_agent_commission;
+	        }
+
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$order_sender_card_mask = $order->get_meta('_mrkv_liqpay_sender_card_mask2');
+    		}
+    		else
+    		{
+    			$order_sender_card_mask = get_post_meta( $order->get_id(), '_mrkv_liqpay_sender_card_mask2', true );
+    		}
+
+
+	        if(isset($order_sender_card_mask) && $order_sender_card_mask != ''){
+	        	$payments_data['card_mask']   = $order_sender_card_mask;
+	        }
+
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$order_liqpay_order_id = $order->get_meta('_mrkv_liqpay_liqpay_order_id');
+    		}
+    		else
+    		{
+    			$order_liqpay_order_id = get_post_meta( $order->get_id(), '_mrkv_liqpay_liqpay_order_id', true );
+    		}
+
+	        if(isset($order_liqpay_order_id) && $order_liqpay_order_id != ''){
+	        	$payments_data['rrn']   = $order_liqpay_order_id;
+	        }
+
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$payment_system = $order->get_meta('_mrkv_liqpay_sender_card_type');
+    		}
+    		else
+    		{
+    			$payment_system = get_post_meta( $order->get_id(), '_mrkv_liqpay_sender_card_type', true );
+    		}
+
+	        if(isset($order_liqpay_order_id) && $order_liqpay_order_id != ''){
+	        	$payments_data['payment_system']   = $payment_system;
+	        }
+
+	        /* MONO Plata */
+
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$order_acq_id = $order->get_meta('mrkv_mopay_accuiring_tran_id');
+    		}
+    		else
+    		{
+    			$order_acq_id = get_post_meta( $order->get_id(), 'mrkv_mopay_accuiring_tran_id', true );
+    		}
+
+	        if(isset($order_acq_id) && $order_acq_id != ''){
+	        	$payments_data['acquirer_and_seller']   = $order_acq_id;
+	        }
+
+	         if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$order_agent_commission = $order->get_meta('mrkv_mopay_accuiring_fee');
+    		}
+    		else
+    		{
+    			$order_agent_commission = get_post_meta( $order->get_id(), 'mrkv_mopay_accuiring_fee', true );
+    		}
+
+	        if(isset($order_agent_commission) && $order_agent_commission != ''){
+	        	$payments_data['commission']   = $order_agent_commission;
+	        }
+
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$order_sender_card_mask = $order->get_meta('mrkv_mopay_accuiring_masked_pan');
+    		}
+    		else
+    		{
+    			$order_sender_card_mask = get_post_meta( $order->get_id(), 'mrkv_mopay_accuiring_masked_pan', true );
+    		}
+
+
+	        if(isset($order_sender_card_mask) && $order_sender_card_mask != ''){
+	        	$payments_data['card_mask']   = $order_sender_card_mask;
+	        }
+
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$order_liqpay_order_id = $order->get_meta('mrkv_mopay_accuiring_rrn');
+    		}
+    		else
+    		{
+    			$order_liqpay_order_id = get_post_meta( $order->get_id(), 'mrkv_mopay_accuiring_rrn', true );
+    		}
+
+	        if(isset($order_liqpay_order_id) && $order_liqpay_order_id != ''){
+	        	$payments_data['rrn']   = $order_liqpay_order_id;
+	        }
+
+	        if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
+    		{
+    			$payment_system = $order->get_meta('mrkv_mopay_accuiring_payment_system');
+    		}
+    		else
+    		{
+    			$payment_system = get_post_meta( $order->get_id(), 'mrkv_mopay_accuiring_payment_system', true );
+    		}
+
+	        if(isset($order_liqpay_order_id) && $order_liqpay_order_id != ''){
+	        	$payments_data['payment_system']   = $payment_system;
+	        }
+
+	        $params['payments'][] = $payments_data;
 
 	        # Set footer
 	        $footer = get_option('ppo_receipt_footer');

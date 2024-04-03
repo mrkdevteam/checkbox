@@ -114,8 +114,19 @@ class API
         # Set response request
         $response           = $this->makePostRequest(self::API_SIGNIN_URL, $params, $header_params);
 
-        # Set access token
-        $this->access_token = $response['access_token'];
+        if(isset($response['access_token']))
+        {
+             # Set access token
+            $this->access_token = $response['access_token'];
+        }
+        else
+        {
+            $script_start_text = "[" . date('Y-m-d H:i:s') . "] [debug] " . print_r($response, 1) . "\r\n";
+            # Write text to degug.log file
+            file_put_contents( __DIR__ . '/../logs/checkbox.log', $script_start_text, FILE_APPEND );
+
+            $this->access_token = '';
+        }
     }
 
     /**

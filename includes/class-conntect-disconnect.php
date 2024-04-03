@@ -293,8 +293,16 @@ if (!class_exists('MRKV_CONNTECT_DISCONNECT'))
 	                } 
 	                else 
 	                {
-	                	# Set shift message
-	                    $res['message'] = $shift['message'];
+	                	if(isset($shift['error']['message']))
+	                	{
+	                		# Set shift message
+	                    	$res['message'] = $shift['error']['message'];
+	                	}
+	                	else
+	                	{
+	                		# Set shift message
+	                    	$res['message'] = $shift['message'];
+	                	}
 
 	                    # Set log error message
 	                    $logger->error(sprintf('%s %s', __(self::ERROR_OPEN_SHIFT, 'checkbox'), $shift['message']));
