@@ -10,7 +10,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 		/**
 		 * @var string Path to plugin
 		 * */
-		private $filename;
+		private $file_name;
 
 		/**
 		 * Constructor for check plugin

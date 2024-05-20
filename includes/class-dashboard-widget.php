@@ -10,7 +10,7 @@ if (!class_exists('MRKV_DASHBOARD_WIDGET'))
 		/**
 		 * @var string Path to plugin
 		 * */
-		private $filename;
+		private $file_name;
 
 		/**
 	     * @var string closed text
