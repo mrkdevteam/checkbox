@@ -62,7 +62,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	            'ppo_cashbox_edrpou',
 	            'ppo_receipt_coupon_text',
 	            'ppo_zero_product_exclude',
-	            'ppo_payment_type_label'
+	            'ppo_payment_type_label',
+	            'ppo_payment_type_checkbox'
 	        );
 
 	        # Loop of option
@@ -643,6 +644,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                            $ppo_skip_receipt_creation = get_option('ppo_skip_receipt_creation');
 	                            $ppo_rules_active = get_option('ppo_rules_active');
 	                            $ppo_payment_type_label = get_option('ppo_payment_type_label');
+	                            $ppo_payment_type_checkbox = get_option('ppo_payment_type_checkbox');
 
 	                            ?>
 	                            <div class="gateway-settings__wrapper">
@@ -650,6 +652,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                    <thead>
 	                                        <tr>
 	                                            <th><?php esc_html_e('Спосіб оплати', 'checkbox'); ?></th>
+	                                            <th><?php esc_html_e('Тип оплати', 'checkbox'); ?></th>
 	                                            <th><?php esc_html_e('Label(Назва)', 'checkbox'); ?></th>
 	                                            <th><?php esc_html_e('Тип', 'checkbox'); ?></th>
 	                                            <th class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Статуси замовлення', 'checkbox'); ?></th>
@@ -692,8 +695,62 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                    	<?php echo esc_html($gateway->get_title()); ?>
 	                                                    </p>
 	                                                </td>
+	                                                <td class="gateway-type-checkbox">
+	                                                	<?php
+	                                                		$current_ppo_payment_type_checkbox = '';
+	                                                		if(isset($ppo_payment_type_checkbox[$id]['label']))
+	                                                		{
+	                                                			$current_ppo_payment_type_checkbox = $ppo_payment_type_checkbox[$id]['label'];
+	                                                		}
+	                                                		else{
+	                                                			if($id == 'cod')
+	                                                			{
+	                                                				$current_ppo_payment_type_checkbox = 'Готівка';
+	                                                			}
+	                                                			else
+	                                                			{
+                                                					$current_ppo_payment_type_checkbox = 'Електронний платіжний засіб';
+	                                                			}
+	                                                		}
+	                                                	?>
+	                                                	<select name="ppo_payment_type_checkbox[<?php echo esc_html($id); ?>][label]" class="ppo_payment_type_checkbox" id="ppo_payment_type_checkbox[<?php echo esc_html($id); ?>][label]">
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Готівка'){ echo 'selected'; } ?> data-label="yes" data-type="0" value="Готівка">Готівка</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Електронний платіжний засіб'){ echo 'selected'; } ?> data-label="no" data-type="1" value="Електронний платіжний засіб">Електронний платіжний засіб</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Кредитовий трансфер'){ echo 'selected'; } ?> data-label="no" data-type="1" value="Кредитовий трансфер">Кредитовий трансфер</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Прямий дебет'){ echo 'selected'; } ?> data-label="no" data-type="1" value="Прямий дебет">Прямий дебет</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Подарунковий сертифікат'){ echo 'selected'; } ?> data-label="no" data-type="2" value="Подарунковий сертифікат">Подарунковий сертифікат</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Талон'){ echo 'selected'; } ?> data-label="no" data-type="2" value="Талон">Талон</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Жетон'){ echo 'selected'; } ?> data-label="no" data-type="2" value="Жетон">Жетон</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Електронні гроші'){ echo 'selected'; } ?> data-label="yes" data-type="2" value="Електронні гроші">Електронні гроші</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Цифрові гроші'){ echo 'selected'; } ?> data-label="yes" data-type="2" value="Цифрові гроші">Цифрові гроші</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Криптовалюта'){ echo 'selected'; } ?> data-label="yes" data-type="2" value="Криптовалюта">Криптовалюта</option>
+	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Інший тип активу'){ echo 'selected'; } ?> data-label="yes" data-type="2" value="Інший тип активу">Інший тип активу</option>
+	                                                	</select>
+	                                                	<input type="hidden" name="ppo_payment_type_checkbox[<?php echo esc_html($id); ?>][code]" class="ppo_payment_type_checkbox_code" id="ppo_payment_type_checkbox[<?php echo esc_html($id); ?>][code]" value="<?php
+	                                                	if(isset($ppo_payment_type_checkbox[$id]['code'])){
+	                                                		echo $ppo_payment_type_checkbox[$id]['code'];
+	                                                	}
+	                                                	  ?>">
+	                                                	<script>
+	                                                		jQuery('.ppo_payment_type_checkbox').change(function(){
+	                                                			var checkbox_payment_code = jQuery(this).find('option:selected');
+	                                                			jQuery('.ppo_payment_type_checkbox_code').val(jQuery(checkbox_payment_code).attr('data-type'));
+
+	                                                			var gateway_label = jQuery(this).closest('tr').find('.gateway-label-read');
+
+	                                                			if(jQuery(checkbox_payment_code).attr('data-label') == 'yes'){
+	                                                				jQuery(gateway_label).prop('readonly', false);
+	                                                			}
+	                                                			else
+	                                                			{
+	                                                				jQuery(gateway_label).val('');
+	                                                				jQuery(gateway_label).prop('readonly', true);
+	                                                			}
+	                                                		});
+	                                                	</script>
+	                                                </td>
 	                                                <td class="gateway-label"> 
-	                                                	<input type="text" name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php
+	                                                	<input type="text" class="gateway-label-read" name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php
 	                                                	if(isset($ppo_payment_type_label[$id])){
 	                                                		echo $ppo_payment_type_label[$id];
 	                                                	}

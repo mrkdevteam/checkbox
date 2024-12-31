@@ -352,6 +352,12 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        # Get payment type
 	        $payment_type = isset($payment_settings[ $payment_method ]) ? mb_strtoupper($payment_settings[ $payment_method ]) : 'CASHLESS';
 
+	        # Get payment type
+	        $payment_new_settings = get_option('ppo_payment_type_checkbox');
+
+	        $payment_type_checkbox_code = isset($payment_new_settings[ $payment_method ]['code']) ? mb_strtoupper($payment_new_settings[ $payment_method ]['code']) : '';
+	        $payment_type_checkbox_label = isset($payment_new_settings[ $payment_method ]['label']) ? mb_strtoupper($payment_new_settings[ $payment_method ]['label']) : '';
+
 	        # Create good array
 	        $goods       = array();
 
@@ -444,10 +450,42 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            'value' => ceil($total_price),
 	        );
 
+	        if($payment_type_checkbox_code)
+	        {
+	        	$payments_data['code']   = $payment_type_checkbox_code;
+	        }
+	        else
+        	{
+        		if($payment_method == 'cod')
+        		{
+        			$payments_data['code']   = '0';
+        		}
+        		else
+        		{
+        			$payments_data['code']   = '1';
+        		}
+        	}
+
+	        if($payment_type_checkbox_label)
+	        {
+	        	$payments_data['label']   = $payment_type_checkbox_label;
+	        }
+	         else
+        	{
+        		if($payment_method == 'cod')
+        		{
+        			$payments_data['label']   = 'Готівка';
+        		}
+        		else
+        		{
+        			$payments_data['label']   = 'Електронний платіжний засіб';
+        		}
+        	}
+
 	        # Check payment label
-	        if(isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != ''){
+	        if($payment_type_checkbox_label && isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != ''){
 	        	# Set payments
-		        $payments_data['label']   = $ppo_payment_type_label[ $payment_method ];
+		        $payments_data['label']   .= ' ' . $ppo_payment_type_label[ $payment_method ];
 	        }
 
 	        /* LIQPAY */
