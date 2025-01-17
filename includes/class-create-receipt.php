@@ -149,7 +149,7 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        }
 
 	        # Check statuses
-	        if (in_array($new_status, $order_statuses) || in_array($new_status, $payment_order_statuses[$order_payment_id])) 
+	        if ((is_array($order_statuses) && in_array($new_status, $order_statuses)) || (is_array($payment_order_statuses) && isset($payment_order_statuses[$order_payment_id]) && in_array($new_status, $payment_order_statuses[$order_payment_id]))) 
 	        {
 	        	if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
         		{
