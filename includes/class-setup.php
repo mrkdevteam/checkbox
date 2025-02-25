@@ -695,7 +695,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                    	<?php echo esc_html($gateway->get_title()); ?>
 	                                                    </p>
 	                                                </td>
-	                                                <td class="gateway-type-checkbox">
+	                                                 <td class="gateway-type-checkbox">
 	                                                	<?php
 	                                                		$current_ppo_payment_type_checkbox = '';
 	                                                		if(isset($ppo_payment_type_checkbox[$id]['label']))
@@ -712,30 +712,53 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
                                                 					$current_ppo_payment_type_checkbox = 'Електронний платіжний засіб';
 	                                                			}
 	                                                		}
+	                                                		$payment_label_active = 'yes';
 	                                                	?>
 	                                                	<select name="ppo_payment_type_checkbox[<?php echo esc_html($id); ?>][label]" class="ppo_payment_type_checkbox" id="ppo_payment_type_checkbox[<?php echo esc_html($id); ?>][label]">
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Готівка'){ echo 'selected'; } ?> data-label="yes" data-type="0" value="Готівка">Готівка</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Електронний платіжний засіб'){ echo 'selected'; } ?> data-label="no" data-type="1" value="Електронний платіжний засіб">Електронний платіжний засіб</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Кредитовий трансфер'){ echo 'selected'; } ?> data-label="no" data-type="1" value="Кредитовий трансфер">Кредитовий трансфер</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Прямий дебет'){ echo 'selected'; } ?> data-label="no" data-type="1" value="Прямий дебет">Прямий дебет</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Подарунковий сертифікат'){ echo 'selected'; } ?> data-label="no" data-type="2" value="Подарунковий сертифікат">Подарунковий сертифікат</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Талон'){ echo 'selected'; } ?> data-label="no" data-type="2" value="Талон">Талон</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Жетон'){ echo 'selected'; } ?> data-label="no" data-type="2" value="Жетон">Жетон</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Електронні гроші'){ echo 'selected'; } ?> data-label="yes" data-type="2" value="Електронні гроші">Електронні гроші</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Цифрові гроші'){ echo 'selected'; } ?> data-label="yes" data-type="2" value="Цифрові гроші">Цифрові гроші</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Криптовалюта'){ echo 'selected'; } ?> data-label="yes" data-type="2" value="Криптовалюта">Криптовалюта</option>
-	                                                		<option <?php if($current_ppo_payment_type_checkbox == 'Інший тип активу'){ echo 'selected'; } ?> data-label="yes" data-type="2" value="Інший тип активу">Інший тип активу</option>
+	                                                		<?php 
+	                                                			foreach(CHECKBOX_PAYMENT_LABELS as $key_payment_form => $val_payment_form)
+	                                                			{
+	                                                				if(esc_html($id) == 'morkva-monopay')
+	                                                				{
+	                                                					$payment_label_active = 'no';
+	                                                					?>
+		                                                					<option selected data-label="no" value="Платіж plata by mono">Morkva Plata by Mono еквайринг</option>
+		                                                				<?php
+		                                                				break;
+	                                                				}
+	                                                				if(esc_html($id) == 'morkva-liqpay')
+	                                                				{
+	                                                					$payment_label_active = 'no';
+	                                                					?>
+		                                                					<option selected data-label="no" value="Платіж LiqPay">Morkva Liqpay еквайринг</option>
+		                                                				<?php
+		                                                				break;
+	                                                				}
+	                                                				if(esc_html($id) == 'morkva-monopay-prepay')
+	                                                				{
+	                                                					$payment_label_active = 'no';
+	                                                					?>
+		                                                					<option selected data-label="no" value="Післяплата">Morkva Plata by Mono Післяплата</option>
+		                                                				<?php
+		                                                				break;
+	                                                				}
+	                                                				if(esc_html($id) == 'morkva-liqpay-prepay')
+	                                                				{
+	                                                					$payment_label_active = 'no';
+	                                                					?>
+		                                                					<option selected data-label="no" value="Післяплата">Morkva Liqpay Післяплата</option>
+		                                                				<?php
+		                                                				break;
+	                                                				}
+	                                                				?>
+	                                                					<option <?php if($current_ppo_payment_type_checkbox == $key_payment_form){ echo 'selected'; $payment_label_active = $val_payment_form['label']; } ?> data-label="<?php echo $val_payment_form['label']; ?>" value="<?php echo $key_payment_form; ?>"><?php echo $key_payment_form; ?></option>
+	                                                				<?php
+	                                                			}
+	                                                		?>
 	                                                	</select>
-	                                                	<input type="hidden" name="ppo_payment_type_checkbox[<?php echo esc_html($id); ?>][code]" class="ppo_payment_type_checkbox_code" id="ppo_payment_type_checkbox[<?php echo esc_html($id); ?>][code]" value="<?php
-	                                                	if(isset($ppo_payment_type_checkbox[$id]['code'])){
-	                                                		echo $ppo_payment_type_checkbox[$id]['code'];
-	                                                	}
-	                                                	  ?>">
 	                                                	<script>
 	                                                		jQuery('.ppo_payment_type_checkbox').change(function(){
 	                                                			var checkbox_payment_code = jQuery(this).find('option:selected');
-	                                                			jQuery('.ppo_payment_type_checkbox_code').val(jQuery(checkbox_payment_code).attr('data-type'));
-
 	                                                			var gateway_label = jQuery(this).closest('tr').find('.gateway-label-read');
 
 	                                                			if(jQuery(checkbox_payment_code).attr('data-label') == 'yes'){
@@ -750,8 +773,8 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                	</script>
 	                                                </td>
 	                                                <td class="gateway-label"> 
-	                                                	<input type="text" class="gateway-label-read" name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php
-	                                                	if(isset($ppo_payment_type_label[$id])){
+	                                                	<input type="text" class="gateway-label-read" <?php if($payment_label_active == 'no'){ echo 'readonly'; } ?> name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php
+	                                                	if(isset($ppo_payment_type_label[$id]) && $payment_label_active == 'yes'){
 	                                                		echo $ppo_payment_type_label[$id];
 	                                                	}
 	                                                	  ?>">

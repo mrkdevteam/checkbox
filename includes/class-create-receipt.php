@@ -149,7 +149,7 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        }
 
 	        # Check statuses
-	        if (in_array($new_status, $order_statuses) || in_array($new_status, $payment_order_statuses[$order_payment_id])) 
+	        if ((is_array($order_statuses) && in_array($new_status, $order_statuses)) || (is_array($payment_order_statuses) && isset($payment_order_statuses[$order_payment_id]) && in_array($new_status, $payment_order_statuses[$order_payment_id]))) 
 	        {
 	        	if(class_exists( \Automattic\WooCommerce\Utilities\OrderUtil::class ) && OrderUtil::custom_orders_table_usage_is_enabled())
         		{
@@ -354,8 +354,6 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 
 	        # Get payment type
 	        $payment_new_settings = get_option('ppo_payment_type_checkbox');
-
-	        $payment_type_checkbox_code = isset($payment_new_settings[ $payment_method ]['code']) ? mb_strtoupper($payment_new_settings[ $payment_method ]['code']) : '';
 	        $payment_type_checkbox_label = isset($payment_new_settings[ $payment_method ]['label']) ? mb_strtoupper($payment_new_settings[ $payment_method ]['label']) : '';
 
 	        # Create good array
@@ -450,42 +448,56 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            'value' => ceil($total_price),
 	        );
 
-	        if($payment_type_checkbox_code)
+	        if($payment_method == 'morkva-monopay')
 	        {
-	        	$payments_data['code']   = $payment_type_checkbox_code;
+	        	$payments_data['code']   = 1;
+	        	$payments_data['label'] = 'Платіж plata by mono';
+
+	        	if($order->get_meta('mrkv_mopay_payment_method') && $order->get_meta('mrkv_mopay_payment_method') == 'morkva-monopay-checkout')
+	        	{
+	        		$payments_data['label'] = 'Платіж mono checkout';
+	        	}
+	        }
+	        elseif($payment_method == 'morkva-liqpay')
+	        {
+	        	$payments_data['code']   = 1;
+	        	$payments_data['label'] = 'Платіж LiqPay';
+	        }
+	        elseif($payment_method == 'morkva-monopay-prepay' || $payment_method == 'morkva-liqpay-prepay')
+	        {
+	        	$payments_data['code']   = 1;
+	        	$payments_data['label'] = 'Післяплата';
+	        }
+	        elseif(isset($payment_type_checkbox_label) && $payment_type_checkbox_label == 'Післяплата (з контролем оплати)')
+	        {
+	        	$payments_data['code']   = 1;
+	        	$payments_data['label']  = 'Платіж NovaPay';
 	        }
 	        else
-        	{
-        		if($payment_method == 'cod')
-        		{
-        			$payments_data['code']   = '0';
-        		}
-        		else
-        		{
-        			$payments_data['code']   = '1';
-        		}
-        	}
-
-	        if($payment_type_checkbox_label)
 	        {
-	        	$payments_data['label']   = $payment_type_checkbox_label;
-	        }
-	         else
-        	{
-        		if($payment_method == 'cod')
-        		{
-        			$payments_data['label']   = 'Готівка';
-        		}
-        		else
-        		{
-        			$payments_data['label']   = 'Електронний платіжний засіб';
-        		}
-        	}
+	        	if($payment_type_checkbox_label)
+		        {
+		        	$payments_data['code']   = CHECKBOX_PAYMENT_LABELS[$payment_type_checkbox_label]['code'];
+        			$payments_data['label']   = $payment_type_checkbox_label;
 
-	        # Check payment label
-	        if($payment_type_checkbox_label && isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != ''){
-	        	# Set payments
-		        $payments_data['label']   .= ' ' . $ppo_payment_type_label[ $payment_method ];
+        			if(isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != '' && CHECKBOX_PAYMENT_LABELS[$payment_type_checkbox_label]['label'] != 'no')
+        			{
+        				$payments_data['label']   .= ' ' . $ppo_payment_type_label[ $payment_method ];
+        			}
+		        }
+		        else
+		        {
+		        	if($payment_method == 'cod')
+	        		{
+	        			$payments_data['code']   = '0';
+	        			$payments_data['label']   = 'Готівка';
+	        		}
+	        		else
+	        		{
+	        			$payments_data['code']   = '1';
+	        			$payments_data['label']   = 'Електронний платіжний засіб';
+	        		}
+		        }
 	        }
 
 	        /* LIQPAY */
