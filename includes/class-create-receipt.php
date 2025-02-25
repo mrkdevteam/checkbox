@@ -352,6 +352,10 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        # Get payment type
 	        $payment_type = isset($payment_settings[ $payment_method ]) ? mb_strtoupper($payment_settings[ $payment_method ]) : 'CASHLESS';
 
+	        # Get payment type
+	        $payment_new_settings = get_option('ppo_payment_type_checkbox');
+	        $payment_type_checkbox_label = isset($payment_new_settings[ $payment_method ]['label']) ? mb_strtoupper($payment_new_settings[ $payment_method ]['label']) : '';
+
 	        # Create good array
 	        $goods       = array();
 
@@ -444,10 +448,56 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            'value' => ceil($total_price),
 	        );
 
-	        # Check payment label
-	        if(isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != ''){
-	        	# Set payments
-		        $payments_data['label']   = $ppo_payment_type_label[ $payment_method ];
+	        if($payment_method == 'morkva-monopay')
+	        {
+	        	$payments_data['code']   = 1;
+	        	$payments_data['label'] = 'Платіж plata by mono';
+
+	        	if($order->get_meta('mrkv_mopay_payment_method') && $order->get_meta('mrkv_mopay_payment_method') == 'morkva-monopay-checkout')
+	        	{
+	        		$payments_data['label'] = 'Платіж mono checkout';
+	        	}
+	        }
+	        elseif($payment_method == 'morkva-liqpay')
+	        {
+	        	$payments_data['code']   = 1;
+	        	$payments_data['label'] = 'Платіж LiqPay';
+	        }
+	        elseif($payment_method == 'morkva-monopay-prepay' || $payment_method == 'morkva-liqpay-prepay')
+	        {
+	        	$payments_data['code']   = 1;
+	        	$payments_data['label'] = 'Післяплата';
+	        }
+	        elseif(isset($payment_type_checkbox_label) && $payment_type_checkbox_label == 'Післяплата (з контролем оплати)')
+	        {
+	        	$payments_data['code']   = 1;
+	        	$payments_data['label']  = 'Платіж NovaPay';
+	        }
+	        else
+	        {
+	        	if($payment_type_checkbox_label)
+		        {
+		        	$payments_data['code']   = CHECKBOX_PAYMENT_LABELS[$payment_type_checkbox_label]['code'];
+        			$payments_data['label']   = $payment_type_checkbox_label;
+
+        			if(isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != '' && CHECKBOX_PAYMENT_LABELS[$payment_type_checkbox_label]['label'] != 'no')
+        			{
+        				$payments_data['label']   .= ' ' . $ppo_payment_type_label[ $payment_method ];
+        			}
+		        }
+		        else
+		        {
+		        	if($payment_method == 'cod')
+	        		{
+	        			$payments_data['code']   = '0';
+	        			$payments_data['label']   = 'Готівка';
+	        		}
+	        		else
+	        		{
+	        			$payments_data['code']   = '1';
+	        			$payments_data['label']   = 'Електронний платіжний засіб';
+	        		}
+		        }
 	        }
 
 	        /* LIQPAY */
