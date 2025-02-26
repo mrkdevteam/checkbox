@@ -3,7 +3,7 @@
  * Plugin Name: Morkva Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 2.8.0
+ * Version: 2.8.1
  * Tested up to: 6.7
  * Requires at least: 5.2
  * Requires PHP: 7.1
@@ -27,7 +27,7 @@ add_action( 'before_woocommerce_init', function() {
 } );
 
 # Versions number
-define('CHECKBOX_VERSION', '2.8.0');
+define('CHECKBOX_VERSION', '2.8.1');
 define('CHECKBOX_LICENSE', 'free');
 
 define('CHECKBOX_PAYMENT_LABELS', array(
@@ -103,10 +103,9 @@ define('CHECKBOX_PAYMENT_LABELS', array(
         'label' => 'yes',
         'code' => 1
     ),
-    'Післяплата (з контролем оплати)' => array(
-        'label' => 'no',
+    'Післяплата' => array(
+        'label' => 'yes',
         'code' => 1,
-        'label_line' => 'Платіж NovaPay'
     )
 ));
 
