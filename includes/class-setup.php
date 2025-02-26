@@ -652,9 +652,9 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                    <thead>
 	                                        <tr>
 	                                            <th><?php esc_html_e('Спосіб оплати', 'checkbox'); ?></th>
-	                                            <th><?php esc_html_e('Тип оплати', 'checkbox'); ?></th>
+	                                            <th><?php esc_html_e('Засіб оплати', 'checkbox'); ?></th>
 	                                            <th><?php esc_html_e('Label(Назва)', 'checkbox'); ?></th>
-	                                            <th><?php esc_html_e('Тип', 'checkbox'); ?></th>
+	                                            <th><?php esc_html_e('Форма оплати', 'checkbox'); ?></th>
 	                                            <th class="select-order-statuses" style="<?php echo (1 !== (int) $ppo_autocreate) ? 'display:none;' : ''; ?>"><?php esc_html_e('Статуси замовлення', 'checkbox'); ?></th>
 	                                        </tr>
 	                                    </thead>
