@@ -473,21 +473,22 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        	$payments_data['code']   = 1;
 	        	$payments_data['label']  = 'Платіж NovaPay';
 	        }
+
+	        if($payment_type_checkbox_label)
+	        {
+	        	$payments_data['code']   = CHECKBOX_PAYMENT_LABELS[$payment_type_checkbox_label]['code'];
+    			$payments_data['label']   = $payment_type_checkbox_label;
+
+    			if(isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != '')
+    			{
+    				$payments_data['label'] = $ppo_payment_type_label[ $payment_method ];
+    			}
+	        }
 	        else
 	        {
-	        	if($payment_type_checkbox_label)
-		        {
-		        	$payments_data['code']   = CHECKBOX_PAYMENT_LABELS[$payment_type_checkbox_label]['code'];
-        			$payments_data['label']   = $payment_type_checkbox_label;
-
-        			if(isset($ppo_payment_type_label[ $payment_method ]) && $ppo_payment_type_label[ $payment_method ] != '' && CHECKBOX_PAYMENT_LABELS[$payment_type_checkbox_label]['label'] != 'no')
-        			{
-        				$payments_data['label']   .= ' ' . $ppo_payment_type_label[ $payment_method ];
-        			}
-		        }
-		        else
-		        {
-		        	if($payment_method == 'cod')
+	        	if(!isset($payments_data['label']))
+	        	{
+	        		if($payment_method == 'cod')
 	        		{
 	        			$payments_data['code']   = '0';
 	        			$payments_data['label']   = 'Готівка';
@@ -497,7 +498,7 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	        			$payments_data['code']   = '1';
 	        			$payments_data['label']   = 'Електронний платіжний засіб';
 	        		}
-		        }
+	        	}
 	        }
 
 	        /* LIQPAY */

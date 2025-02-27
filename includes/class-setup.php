@@ -756,25 +756,10 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 	                                                			}
 	                                                		?>
 	                                                	</select>
-	                                                	<script>
-	                                                		jQuery('.ppo_payment_type_checkbox').change(function(){
-	                                                			var checkbox_payment_code = jQuery(this).find('option:selected');
-	                                                			var gateway_label = jQuery(this).closest('tr').find('.gateway-label-read');
-
-	                                                			if(jQuery(checkbox_payment_code).attr('data-label') == 'yes'){
-	                                                				jQuery(gateway_label).prop('readonly', false);
-	                                                			}
-	                                                			else
-	                                                			{
-	                                                				jQuery(gateway_label).val('');
-	                                                				jQuery(gateway_label).prop('readonly', true);
-	                                                			}
-	                                                		});
-	                                                	</script>
 	                                                </td>
 	                                                <td class="gateway-label"> 
-	                                                	<input type="text" class="gateway-label-read" <?php if($payment_label_active == 'no'){ echo 'readonly'; } ?> name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php
-	                                                	if(isset($ppo_payment_type_label[$id]) && $payment_label_active == 'yes'){
+	                                                	<input type="text" class="gateway-label-read" name="ppo_payment_type_label[<?php echo esc_html($id); ?>]" value="<?php
+	                                                	if(isset($ppo_payment_type_label[$id])){
 	                                                		echo $ppo_payment_type_label[$id];
 	                                                	}
 	                                                	  ?>">
