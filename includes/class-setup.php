@@ -751,7 +751,7 @@ if (!class_exists('MRKV_CHECKBOX_SETUP'))
 		                                                				break;
 	                                                				}
 	                                                				?>
-	                                                					<option <?php if($current_ppo_payment_type_checkbox == $key_payment_form){ echo 'selected'; $payment_label_active = $val_payment_form['label']; } ?> data-label="<?php echo $val_payment_form['label']; ?>" value="<?php echo $key_payment_form; ?>"><?php echo $key_payment_form; ?></option>
+	                                                					<option <?php if($current_ppo_payment_type_checkbox == $key_payment_form){ echo 'selected'; } ?> data-label="<?php echo $key_payment_form; ?>" value="<?php echo $key_payment_form; ?>"><?php echo $key_payment_form; ?></option>
 	                                                				<?php
 	                                                			}
 	                                                		?>
