@@ -3,7 +3,7 @@
  * Plugin Name: Morkva Checkbox Integration
  * Plugin URI: https://morkva.co.ua/shop/checkbox-woocommerce?utm_source=checkbox-plugin
  * Description: Інтеграція WooCommerce з пРРО Checkbox
- * Version: 2.8.1
+ * Version: 2.8.2
  * Tested up to: 6.7
  * Requires at least: 5.2
  * Requires PHP: 7.1
@@ -27,84 +27,71 @@ add_action( 'before_woocommerce_init', function() {
 } );
 
 # Versions number
-define('CHECKBOX_VERSION', '2.8.1');
+define('CHECKBOX_VERSION', '2.8.2');
 define('CHECKBOX_LICENSE', 'free');
 
 define('CHECKBOX_PAYMENT_LABELS', array(
     'Готівка' => array(
-        'label' => 'yes',
         'code' => 0
     ),
     'Подарунковий сертифікат' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Талон' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Жетон' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Картка' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Платіж через інтегратора' => array(
-        'label' => 'yes',
         'code' => 1
     ),
     'Переказ через ННПП' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Переказ через ПТКС ННПП' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Інтернет еквайринг' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Інтернет банкінг' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'З поточного рахунку' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Переказ через ПТКС банку' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Фішка' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Електронний грошовий замінник' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Ігровий замінник гривні' => array(
-        'label' => 'no',
         'code' => 1
     ),
     'Електронні гроші' => array(
-        'label' => 'yes',
         'code' => 1
     ),
     'Цифрові гроші' => array(
-        'label' => 'yes',
         'code' => 1
     ),
     'Криптовалюта' => array(
-        'label' => 'yes',
         'code' => 1
     ),
     'Післяплата' => array(
-        'label' => 'yes',
+        'code' => 1,
+    ),
+    'Переказ з картки' => array(
+        'code' => 1,
+    ),
+    'Переказ з поточного рахунку' => array(
         'code' => 1,
     )
 ));
