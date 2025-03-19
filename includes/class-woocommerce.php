@@ -342,7 +342,7 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	        	    $button_text = __( 'Створити чек', 'woocommerce' );
 
 	            	echo '<div class="mrkv_checkbox_action_button">
-	            	<div type="submit" class="button button-primary submit_morkva_checkbox_action">' . $button_text . '</div>
+	            	<div type="submit" class="button button-primary submit_morkva_checkbox_action" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">' . $button_text . '</div>
 	            	<svg style="display: none;" version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" x="0px" y="0px"
 					  viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
 					    <path fill="#000" d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
@@ -359,7 +359,10 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 	            	</div>';
 
 	            	echo "<script>
+	            		let CheckboxisProcessing = false;
 	            		 jQuery('.submit_morkva_checkbox_action').click(function(){
+	            		 	if (CheckboxisProcessing) return;
+    						CheckboxisProcessing = true;
 					        jQuery.ajax({
 					            url: '" .  admin_url( "admin-ajax.php" ) . "',
 					            type: 'POST',
@@ -368,6 +371,7 @@ if (!class_exists('MRKV_CHECKBOX_WOOCOMMERCE'))
 					                jQuery('.mrkv_checkbox_action_button svg').show();
 					            },
 					            success: function( data ) {
+					            	CheckboxisProcessing = false;
 					                location.reload();
 					            }
 					        });

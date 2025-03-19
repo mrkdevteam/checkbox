@@ -354,7 +354,7 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 
 	        # Get payment type
 	        $payment_new_settings = get_option('ppo_payment_type_checkbox');
-	        $payment_type_checkbox_label = isset($payment_new_settings[ $payment_method ]['label']) ? mb_strtoupper($payment_new_settings[ $payment_method ]['label']) : '';
+	        $payment_type_checkbox_label = isset($payment_new_settings[ $payment_method ]['label']) ? $payment_new_settings[ $payment_method ]['label'] : '';
 
 	        # Create good array
 	        $goods       = array();
