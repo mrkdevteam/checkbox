@@ -387,6 +387,10 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            	continue;
 	            }
 
+	            if ( wc_get_price_decimals() == 1 && $item->get_quantity() == 1) {
+				    $price = round( $price, 1 );
+				}
+
 	            # Set price
 	            $price_checkbox = floatval($price) * 100;
 
