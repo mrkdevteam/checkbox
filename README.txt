@@ -2,12 +2,12 @@
 Contributors: bandido, shtirliz, dpmine
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.1
-Stable tag: 2.8.5
+Stable tag: 2.8.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-WooCommerce tested up to: 9.4.0
+WooCommerce tested up to: 9.8.0
 
 Плагін інтеграції WooCommerce з Checkbox.ua, сервісом програмної реєстрації розрахункових операцій (пРРО).
 
@@ -90,6 +90,10 @@ https://youtu.be/bKNy9Hpe2NI
 Робочі години з 10:00 до 19:00 ПН-ПТ. Ми відповімо вам протягом доби в робочий час. Всі звернення опрацьовуються по черзі.
 
 == Що нового? ==
+
+= 2.8.6 =
+* WP 6.8 - сумісний
+* WooCommerce 9.8 - сумісний
 
 = 2.8.5 =
 * [new] додали підтримку одного знаку після коми у сумах
