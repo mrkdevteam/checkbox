@@ -4,7 +4,7 @@ Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
 Tested up to: 6.8
 Requires PHP: 7.1
-Stable tag: 2.8.6
+Stable tag: 2.8.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooCommerce tested up to: 9.8.0
@@ -103,6 +103,9 @@ https://youtu.be/bKNy9Hpe2NI
 Робочі години з 10:00 до 19:00 ПН-ПТ. Ми відповімо вам протягом доби в робочий час. Всі звернення опрацьовуються по черзі.
 
 == Що нового? ==
+
+= 2.8.7 =
+* [fix] виправили помилку решти
 
 = 2.8.6 =
 * WP 6.8 - сумісний
