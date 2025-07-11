@@ -427,7 +427,7 @@ if (!class_exists('MRKV_CHECKBOX_RECEIPT'))
 	            }
 
 	            # Create total price
-            	$total_price += $item->get_total() * 100;
+            	$total_price += round( $item->get_total() * 100 );
 
 	            # Set product to goods array
 	            $goods[] = $good_data;
