@@ -1,10 +1,10 @@
-=== Checkbox ===
+=== morkva Checkbox Integration ===
 Contributors: bandido, dpmine
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
 Tested up to: 6.9
 Requires PHP: 7.1
-Stable tag: 2.8.14
+Stable tag: 3.0.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooCommerce tested up to: 9.8.0
@@ -104,6 +104,9 @@ https://youtu.be/bKNy9Hpe2NI
 
 == Що нового? ==
 
+= 3.0.0 =
+* [new] оновили UI
+
 = 2.8.14 =
 * [new] додали фільтр аргументів створення чеку mrkv_checkbox_create_receipt_args
 
@@ -174,7 +177,7 @@ https://youtu.be/bKNy9Hpe2NI
 * WP 6.5 - сумісний
 
 = 2.5.0 =
-* [new] додаємо параметри ЕПЗ до чеку (актуально лише для плагінів Morkva LiqPay i Morkva Plata by mono)
+* [new] додаємо параметри ЕПЗ до чеку (актуально лише для плагінів morkva LiqPay i morkva Plata by mono)
 
 = 2.4.0 =
 * [new] змінили назву плагіна

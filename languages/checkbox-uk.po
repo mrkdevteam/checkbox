@@ -1,0 +1,1072 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Morkva Checkbox Integration Pro\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-08 11:34+0000\n"
+"PO-Revision-Date: 2026-04-24 08:41+0000\n"
+"Last-Translator: \n"
+"Language-Team: Українська\n"
+"Language: uk\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.8.0; wp-6.9.4; php-8.4.19\n"
+"X-Domain: checkbox-pro"
+
+#: classes/settings/admin/mrkv-checkbox-menu.php:95
+msgid "Add as a separate item"
+msgstr "Додати, як окремий товар"
+
+#: classes/settings/admin/mrkv-checkbox-menu.php:96
+msgid "Add as a supplement"
+msgstr "Додати, як надбавку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:128
+msgid ""
+"Add cash registers based on whose data the order receipts will be generated"
+msgstr "Додайте каси, на основі даних яких будуть формуватися чеки замовлень"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:242
+msgid "Add new cash register"
+msgstr "Додати нову касу"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:658
+msgid "Added a phone when creating a receipt"
+msgstr "Додавати номер телефону під час створення чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:647
+msgid "Added a product barcode when creating a receipt"
+msgstr "Додавати Barcode під час створення чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:564
+msgid "Added an email when creating a receipt"
+msgstr "Додавати Email під час створення чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:491
+msgid "Added delivery when creating a receipt"
+msgstr "Додавати доставку під час створення чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:630
+msgid "Added Fields"
+msgstr "Додаткові дані"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:583
+msgid "Added HS Code when creating a receipt"
+msgstr "Додавати Код УКТ ЗЕД під час створення чеку"
+
+#: classes/settings/admin/mrkv-checkbox-menu.php:86
+msgid "Advanced"
+msgstr "Розширені"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:475
+msgid "Advanced Settings"
+msgstr "Розширені налаштування"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:417
+msgid ""
+"All receipts that need to be generated during auto-creation will be stored "
+"in a table and processed one by one using a cron job."
+msgstr ""
+"Усі чеки, які потрібно сформувати під час автоматичного створення, будуть "
+"збережені в таблиці та оброблені по черзі за допомогою завдання cron."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:980
+msgid "and more"
+msgstr "та більше..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:403
+msgid "Auto-creation type Settings"
+msgstr "Налаштування типу автоматичного створення"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:391
+msgid "Autocreate statuses"
+msgstr "Статуси автостворення"
+
+#: classes/settings/admin/mrkv-checkbox-menu.php:85
+msgid "Automation"
+msgstr "Автоматизація"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:249
+msgid "Automation Settings"
+msgstr "Налаштування Автоматизації"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:970
+msgid "Bulk deletion of receipts"
+msgstr "Масове видалення чеків"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:966
+msgid "Bulk printing of receipts"
+msgstr "Масовий друк чеків"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:983
+msgid "Buy Pro-version"
+msgstr "Купити Pro-версію"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:374
+msgid "CASH"
+msgstr "CASH"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:141
+msgid "Cash register"
+msgstr "Каса"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:146
+msgid "Cash register data"
+msgstr "Дані каси"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:185
+#: templates/settings/template-mrkv-checkbox-settings.php:822
+msgid "Cash Register key"
+msgstr "Ключ каси"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:163
+#: templates/settings/template-mrkv-checkbox-settings.php:800
+msgid "Cash Register name (optional)"
+msgstr "Назва каси (не обов'язково)"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:127
+msgid "Cash register Settings"
+msgstr "Налаштування каси"
+
+#. %s: Cashbox slug
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:111
+#, php-format
+msgid "Cashbox %s"
+msgstr "Каса %s"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:145
+msgid "Cashier data"
+msgstr "Дані касиру"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:219
+#: templates/settings/template-mrkv-checkbox-settings.php:856
+msgid "Cashier lastname"
+msgstr "Прізвище касира"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:153
+#: templates/settings/template-mrkv-checkbox-settings.php:790
+msgid "Cashier login"
+msgstr "Логін касира"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:197
+#: templates/settings/template-mrkv-checkbox-settings.php:834
+msgid "Cashier name"
+msgstr "Ім'я касира"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:175
+#: templates/settings/template-mrkv-checkbox-settings.php:812
+msgid "Cashier password"
+msgstr "Пароль касира"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:54
+msgid "Cashier Settings"
+msgstr "Налаштування касира"
+
+#: classes/settings/admin/mrkv-checkbox-menu.php:84
+msgid "Cashiers"
+msgstr "Касири"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:375
+msgid "CASHLESS"
+msgstr "CASHLESS"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:610
+msgid "Change product title in receipt"
+msgstr "Змінити назву товару в чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:950
+msgid "Check out pro-version"
+msgstr "Pro-версія"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:58
+msgid "Check the status of the shifts and close or open them as needed "
+msgstr "Перевіряйте статус змін та закривайте або відкривайте їх за потреби "
+
+#: templates/settings/template-mrkv-checkbox-settings.php:747
+msgid ""
+"Check this box if you need to download the receipt in PDF format. The "
+"generated receipts will be saved in the /wp-content/plugins/checkbox-"
+"pro/receipts-pdf folder."
+msgstr ""
+"Поставте галочку в цьому полі, якщо вам потрібно завантажити квитанцію у "
+"форматі PDF. Створені квитанції будуть збережені в папці /wp-"
+"content/plugins/checkbox-pro/receipts-pdf."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:613
+msgid "Check this box to change the source of the product name on the receipt"
+msgstr "Поставте галочку в цьому полі, щоб змінити джерело назви товару в чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:676
+msgid ""
+"Check this box to prevent items priced at 0 UAH from being added to the "
+"receipt"
+msgstr ""
+"Поставте галочку в цьому полі, щоб товари з ціною 0 грн не додавалися до чека"
+
+#: classes/woocommerce/mrkv-checkbox-woo-orders.php:39
+msgid "Checkbox"
+msgstr "Checkbox"
+
+#. 1: Type of receipt (e.g. Simple), 2: Receipt ID from Checkbox.ua
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:180
+#, php-format
+msgid "Checkbox %1$s receipt created! ID: %2$s"
+msgstr "Checkbox %1$s чек створено! ID: %2$s"
+
+#. 1: HTTP status code or N/A, 2: Error message from Checkbox API.
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:191
+#, php-format
+msgid "Checkbox API Error (%1$s): %2$s"
+msgstr "Checkbox API Помилка (%1$s): %2$s"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:338
+msgid "Checkbox Payment method"
+msgstr "Методи оплати Checkbox"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:307
+msgid "Choose a label"
+msgstr "Оберіть назву"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:686
+msgid "Choose a source"
+msgstr "Оберіть ресурс"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:501
+msgid "Choose a type"
+msgstr "Оберіть тип"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:593
+#: templates/settings/template-mrkv-checkbox-settings.php:623
+msgid "Choose an attribute"
+msgstr "Оберіть атрибут"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:460
+msgid "Choose an interval"
+msgstr "Оберіть інтервал"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:89
+#: templates/settings/template-mrkv-checkbox-settings.php:97
+#: templates/settings/template-mrkv-checkbox-settings.php:97
+msgid "Close Shift"
+msgstr "Закрити зміну"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:78
+#: templates/settings/template-mrkv-checkbox-settings.php:80
+msgid "Closed"
+msgstr "Закрита"
+
+#: classes/controller/mrkv-checkbox-ajax.php:66
+msgid "Configuration not found."
+msgstr "Конфігурацію не знайдено."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:710
+msgid "Configure discounts data you want to add to the receipt"
+msgstr "Налаштуйте дані про знижки, які ви хочете додати до чека"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:601
+msgid "Configure product title you want to add to the receipt"
+msgstr "Вкажіть назву товару, яку ви хочете додати до чека"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:631
+msgid "Configure the additional fields you want to add to the receipt"
+msgstr "Налаштуйте додаткові поля, які ви хочете додати до чека"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:571
+msgid "Configure the HS Code you want to add to the receipt"
+msgstr "Вкажіть код УКТ ЗЕД, який потрібно додати до чека"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:458
+msgid "Configure the interval for automatic receipt generation in WP CRON"
+msgstr "Налаштуйте інтервал автоматичного створення квитанцій у WP CRON"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:878
+msgid "Configure the plugin's log to view query results and error causes"
+msgstr ""
+"Налаштуйте журнал плагіна, щоб переглядати результати запитів та причини "
+"помилок"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:274
+msgid "Configure the settings for each payment method separately "
+msgstr "Налаштуйте параметри для кожного способу оплати окремо "
+
+#: templates/settings/template-mrkv-checkbox-settings.php:760
+msgid ""
+"Configure the test data and enable test mode when you need to verify the "
+"receipt creation request"
+msgstr ""
+"Налаштуйте тестові дані та увімкніть тестовий режим, коли потрібно "
+"перевірити запит на створення чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:935
+msgid "Contact us via the widget on our website, or check out"
+msgstr "Напишіть нам через віджет на сайті, або перегляньте"
+
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:204
+msgid "Coupon"
+msgstr "Купон"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:724
+msgid "Coupon name on the receipt"
+msgstr "Назва купона у чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:470
+msgid ""
+"Create a cron on the server to this link and set it to execute at your "
+"discretion. Recommended for every 2 minutes"
+msgstr ""
+"Створіть на сервері завдання cron за цим посиланням і налаштуйте його "
+"виконання на свій розсуд. Рекомендується виконувати кожні 2 хвилини"
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:122
+msgid "Create Receipt"
+msgstr "Створити чек"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:422
+msgid "Cron type"
+msgstr "Тип крону"
+
+#: classes/controller/mrkv-checkbox-ajax.php:108
+msgid "Custom receipt ID saved manually."
+msgstr "Кастомний чек збережений вручну."
+
+#: classes/controller/mrkv-checkbox-ajax.php:112
+msgid "Custom receipt saved successfully"
+msgstr "Кастомний чек успішно збережено"
+
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:160
+msgid "Data validation error Checkbox: "
+msgstr "Помилка перевірки даних Checkbox: "
+
+#: templates/settings/template-mrkv-checkbox-settings.php:877
+msgid "Debug settings"
+msgstr "Налаштування Debug"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:478
+msgid "Delivery Settings"
+msgstr "Налаштування доставки"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:709
+msgid "Discounts"
+msgstr "Знижки"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:943
+msgid "Documantation"
+msgstr "Документація"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:936
+msgid "documantation"
+msgstr "документацію"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:546
+msgid "Email for notifications"
+msgstr "Email для отримання повідомлень"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:535
+msgid "Email notification failure to generate a receipt"
+msgstr "Надсилання електронного повідомлення під час помилки формування чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:525
+msgid "Email Settings"
+msgstr "Налаштування Email"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:886
+msgid "Enable debug log"
+msgstr "Увімкнути debug логу"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:895
+msgid "Enable debug query"
+msgstr "Увімкнути debug запитів"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:488
+msgid "Enable delivery in receipt"
+msgstr "Увімкнути доставку в чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:561
+msgid "Enable email in receipt"
+msgstr "Увімкнути email в чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:580
+msgid "Enable HS Code in receipt"
+msgstr "Увімкнути код УКТ ЗЕД в чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:655
+msgid "Enable phone"
+msgstr "Увімкнути номер телефону"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:645
+msgid "Enable product barcode"
+msgstr "Увімкнути barcode товару"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:888
+msgid "Enable to receive request error logs"
+msgstr "Увімкнути запис до журналу помилок "
+
+#: templates/settings/template-mrkv-checkbox-settings.php:897
+msgid "Enable to receive request logs in order notes and log file"
+msgstr "Увімкнути запис запитів до журналу помилок "
+
+#: templates/settings/template-mrkv-checkbox-settings.php:231
+#: templates/settings/template-mrkv-checkbox-settings.php:868
+msgid "Enter the code..."
+msgstr "Введіть код..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:515
+msgid ""
+"Enter the delivery name to be included on the receipt. Default: Shipping"
+msgstr ""
+"Введіть назву доставки, яка буде вказана в чеку. За замовчуванням: «Доставка»"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:209
+#: templates/settings/template-mrkv-checkbox-settings.php:846
+msgid "Enter the edrpou..."
+msgstr "Введіть ЄДРПОУ..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:547
+msgid ""
+"Enter the email address where you'll receive a notification if the receipt "
+"cannot be generated"
+msgstr ""
+"Введіть адресу електронної пошти, на яку ви отримаєте повідомлення, якщо не "
+"вдасться сформувати чек"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:548
+msgid "Enter the email..."
+msgstr "Введіть email..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:187
+#: templates/settings/template-mrkv-checkbox-settings.php:824
+msgid "Enter the key..."
+msgstr "Введіть ключ..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:221
+#: templates/settings/template-mrkv-checkbox-settings.php:858
+msgid "Enter the lastname..."
+msgstr "Введіть прізвище..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:155
+#: templates/settings/template-mrkv-checkbox-settings.php:792
+msgid "Enter the login..."
+msgstr "Введіть логін..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:725
+msgid ""
+"Enter the name that will appear on all coupons in the receipt. Default: "
+"Coupon"
+msgstr ""
+"Введіть назву, яка буде відображатися на всіх купонах у чеку. За "
+"замовчуванням: «Купон»"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:165
+#: templates/settings/template-mrkv-checkbox-settings.php:199
+#: templates/settings/template-mrkv-checkbox-settings.php:726
+#: templates/settings/template-mrkv-checkbox-settings.php:802
+#: templates/settings/template-mrkv-checkbox-settings.php:836
+msgid "Enter the name..."
+msgstr "Введіть ім'я..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:177
+#: templates/settings/template-mrkv-checkbox-settings.php:814
+msgid "Enter the password..."
+msgstr "Введіть пароль..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:356
+#: templates/settings/template-mrkv-checkbox-settings.php:516
+#: templates/settings/template-mrkv-checkbox-settings.php:704
+msgid "Enter the text..."
+msgstr "Введіть текст..."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:207
+#: templates/settings/template-mrkv-checkbox-settings.php:844
+msgid "EPRPOU"
+msgstr "ЄДРПОУ"
+
+#: classes/controller/mrkv-checkbox-ajax.php:115
+msgid "Error saving custom receipt: missing data."
+msgstr "Помилка під час збереження власного чеку: відсутні дані."
+
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:142
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:148
+msgid "Error:"
+msgstr "Помилка:"
+
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:75
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:114
+msgid "Error: Authorization issue."
+msgstr "Помилка: Проблема з авторизацією."
+
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:47
+msgid "Error: Cashbox data empty"
+msgstr "Помилка: Дані каси порожні"
+
+#: classes/settings/admin/mrkv-checkbox-menu.php:109
+msgid "Every 10 minutes"
+msgstr "Кожні 10 хвилин"
+
+#: classes/settings/admin/mrkv-checkbox-menu.php:107
+msgid "Every 2 minutes"
+msgstr "Кожні 2 хвилини"
+
+#: classes/settings/admin/mrkv-checkbox-menu.php:108
+msgid "Every 5 minutes"
+msgstr "Кожні 5 хвилин"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:674
+msgid "Exclude items with a zero price"
+msgstr "Виключити товари з ціною, що дорівнює нулю"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:593
+#: templates/settings/template-mrkv-checkbox-settings.php:623
+msgid "Global product attributes"
+msgstr "Загальні атрибути товарів"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:940
+msgid "Go to the website"
+msgstr "Перейти на сайт"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:570
+msgid "HS Code"
+msgstr "Код УКТ ЗЕД"
+
+#. Author URI of the plugin
+msgid "https://morkva.co.ua"
+msgstr "https://morkva.co.ua"
+
+#. URI of the plugin
+msgid ""
+"https://morkva.co.ua/shop/woocommerce-checkbox-pro?utm_source=checkbox-plugin"
+msgstr ""
+"https://morkva.co.ua/shop/woocommerce-checkbox-pro?utm_source=checkbox-plugin"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:538
+msgid ""
+"If you enable this, you will receive an email notification that the receipt "
+"could not be generated"
+msgstr ""
+"Якщо ви увімкнете цю опцію, ви отримаєте повідомлення електронною поштою про "
+"те, що не вдалося створити чек"
+
+#: classes/controller/mrkv-checkbox-ajax.php:133
+msgid "Invalid Order ID."
+msgstr "Неправильний ідентифікатор замовлення."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:933
+msgid "Isn’t good enough for a 5"
+msgstr "Не “тягне” на 5"
+
+#. 1: Product name, 2: The invalid price value.
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:440
+#, php-format
+msgid ""
+"Item \"%1$s\" has an invalid price (%2$d). Price must be greater than 0."
+msgstr "Ціна товару «%1$s» є недійсною (%2$d). Ціна повинна бути більшою за 0."
+
+#. 1: Product name, 2: The invalid quantity value.
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:446
+#, php-format
+msgid "Item \"%1$s\" has an invalid quantity (%2$d)."
+msgstr "Для товару «%1$s» вказано неправильну кількість (%2$d)."
+
+#. %d: The index number of the item in the list.
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:434
+#, php-format
+msgid "Item #%1$d is missing a name."
+msgstr "У товара № %1$d відсутня назва."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:925
+msgid "Leave"
+msgstr "Залишити"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:913
+msgid "Like this plugin?"
+msgstr "Корисний плагін?"
+
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:192
+msgid "Log"
+msgstr "Лог"
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:85
+msgid "Manual Receipt Ref"
+msgstr "Змінити чек вручну"
+
+#. Author of the plugin
+#| msgid "MORKVA"
+msgid "morkva"
+msgstr "morkva"
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:26
+#: classes/settings/admin/mrkv-checkbox-menu.php:70
+#: classes/settings/admin/mrkv-checkbox-menu.php:71
+#| msgid "MRKV Checkbox"
+msgid "morkva Checkbox"
+msgstr "morkva Checkbox"
+
+#. Name of the plugin
+#| msgid "Morkva Checkbox Integration"
+msgid "morkva Checkbox Integration"
+msgstr "morkva Checkbox Integration"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:327
+#| msgid "Morkva Liqpay Acquiring"
+msgid "morkva Liqpay Acquiring"
+msgstr "morkva Liqpay еквайринг"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:329
+#| msgid "Morkva Liqpay Postpaid"
+msgid "morkva Liqpay Postpaid"
+msgstr "morkva Liqpay Післяплата"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:326
+#| msgid "Morkva Plata by Mono Acquiring"
+msgid "morkva Plata by Mono Acquiring"
+msgstr "morkva Plata by Mono еквайринг"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:328
+#| msgid "Morkva Plata by Mono Postpaid"
+msgid "morkva Plata by Mono Postpaid"
+msgstr "morkva Plata by Mono Післяплата"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:445
+msgid "Number of checks per iteration"
+msgstr "Кількість чеків за ітерацію"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:704
+msgid "Official information"
+msgstr "Службова інформація"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:239
+#: templates/settings/template-mrkv-checkbox-settings.php:416
+#: templates/settings/template-mrkv-checkbox-settings.php:423
+#: templates/settings/template-mrkv-checkbox-settings.php:447
+#: templates/settings/template-mrkv-checkbox-settings.php:462
+#: templates/settings/template-mrkv-checkbox-settings.php:469
+#: templates/settings/template-mrkv-checkbox-settings.php:490
+#: templates/settings/template-mrkv-checkbox-settings.php:503
+#: templates/settings/template-mrkv-checkbox-settings.php:518
+#: templates/settings/template-mrkv-checkbox-settings.php:537
+#: templates/settings/template-mrkv-checkbox-settings.php:550
+#: templates/settings/template-mrkv-checkbox-settings.php:563
+#: templates/settings/template-mrkv-checkbox-settings.php:582
+#: templates/settings/template-mrkv-checkbox-settings.php:595
+#: templates/settings/template-mrkv-checkbox-settings.php:612
+#: templates/settings/template-mrkv-checkbox-settings.php:625
+#: templates/settings/template-mrkv-checkbox-settings.php:657
+#: templates/settings/template-mrkv-checkbox-settings.php:688
+#: templates/settings/template-mrkv-checkbox-settings.php:746
+msgid "Only in the Pro version"
+msgstr "Тільки у Pro-версії"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:264
+msgid "Open a shift when creating a receipt"
+msgstr "Відкрити зміну під час створення чеку"
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:77
+msgid "Open receipt"
+msgstr "Відкрити чек"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:89
+#: templates/settings/template-mrkv-checkbox-settings.php:97
+msgid "Open Shift"
+msgstr "Відкрити Зміну"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:78
+#: templates/settings/template-mrkv-checkbox-settings.php:80
+msgid "Opened"
+msgstr "Відкрито"
+
+#: classes/controller/mrkv-checkbox-ajax.php:224
+msgid "Order not found"
+msgstr "Замовлення не знайдено"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:989
+msgid "Other free plugins"
+msgstr "Інші безкоштовні плагіни"
+
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:464
+msgid "Payment data is missing."
+msgstr "Відсутні дані про оплату."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:364
+msgid "Payment Form"
+msgstr "Форма оплати"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:354
+msgid "Payment Label (Title)"
+msgstr "Назва платежу (заголовок)"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:327
+msgid "Payment LiqPay"
+msgstr "Оплата LiqPay"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:326
+msgid "Payment plata by mono"
+msgstr "Оплата plata by mono"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:273
+msgid "Payment Settings"
+msgstr "Налаштування оплати"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:734
+msgid "PDF Settings"
+msgstr "Налаштування PDF"
+
+#: classes/controller/mrkv-checkbox-ajax.php:46
+msgid "Permissions check failed."
+msgstr "Перевірка прав доступу завершилася невдало."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:702
+msgid "Plain text, no html."
+msgstr "Простий текст, без HTML."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:328
+#: templates/settings/template-mrkv-checkbox-settings.php:329
+msgid "Postpaid"
+msgstr "Передплата"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:600
+msgid "Product title"
+msgstr "Назва товару "
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:60
+msgid "Receipt"
+msgstr "Чек"
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:69
+msgid "Receipt action"
+msgstr "Дії з чеком"
+
+#: classes/controller/mrkv-checkbox-autocreate.php:79
+msgid "Receipt already created."
+msgstr "Чек уже створено."
+
+#: classes/controller/mrkv-checkbox-ajax.php:222
+msgid "Receipt created"
+msgstr "Чек створено"
+
+#: classes/controller/mrkv-checkbox-ajax.php:130
+msgid "Receipt reference removed."
+msgstr "Посилання на чек видалено."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:449
+msgid ""
+"Recommended 3. If you have a powerful hosting plan and a high volume of "
+"orders, you can try increasing the number"
+msgstr ""
+"Рекомендовано 3. Якщо у вас потужний хостинг і багато замовлень, можете "
+"експериментально збільшувати кількість"
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:73
+msgid "Remove receipt"
+msgstr "Видалити чек"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:921
+msgid "review at"
+msgstr "відгуком на"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:744
+msgid "Safe PDF receipts"
+msgstr "Збережено PDF чеки"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:905
+msgid "Save"
+msgstr "Зберегти"
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:102
+msgid "Select Cashbox"
+msgstr "Оберіть касу"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:499
+msgid "Select how you want to add shipping to the receipt"
+msgstr "Виберіть спосіб додавання вартості доставки до чека"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:591
+msgid ""
+"Select the global product attribute that will add the HS code when creating "
+"a receipt."
+msgstr ""
+"Виберіть загальний атрибут товару, який додаватиме код УКТ ЗЕД під час "
+"створення чеку."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:621
+#: templates/settings/template-mrkv-checkbox-settings.php:684
+msgid ""
+"Select the global product attribute that will change product title when "
+"creating a receipt."
+msgstr ""
+"Виберіть загальний атрибут товару, який змінюватиме назву товару під час "
+"створення чеку."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:433
+msgid ""
+"Select the type of crown that you will use to create receipt auto-create "
+"queue"
+msgstr ""
+"Виберіть тип крону, яку ви будете використовувати для створення черги "
+"автоматичного формування чеків"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:479
+msgid "Select your delivery settings when creating a receipt"
+msgstr "Виберіть параметри доставки під час створення чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:526
+msgid "Select your email settings when creating a receipt"
+msgstr "Виберіть параметри email під час створення чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:429
+msgid "Server Cron"
+msgstr "Server Cron"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:467
+msgid "Server Cron URL"
+msgstr "Server Cron URL"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:404
+msgid "Set the auto-create type that works best for you"
+msgstr "Виберіть тип автоматичного створення, який вам найбільше підходить"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:735
+msgid "Set up the functionality for working with PDF receipts"
+msgstr "Налаштувати функцію роботи з PDF-чеками"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:12
+#: templates/settings/template-mrkv-checkbox-settings.php:29
+msgid "Settings"
+msgstr "Налаштування"
+
+#: classes/controller/mrkv-checkbox-ajax.php:202
+msgid "Shift action failed"
+msgstr "Помилка під час перемикання зміни"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:57
+msgid "Shift status"
+msgstr "Статус змін"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:514
+msgid "Shipping name on the receipt"
+msgstr "Назва доставки у чеку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:974
+msgid "Shortcodes for service information"
+msgstr "Шорткоди для службової інформації"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:902
+msgid "Show Log files"
+msgstr "Подивитись журнал"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:686
+msgid "Source product code"
+msgstr ""
+"Джерело product code\n"
+"\n"
+
+#. 1: Total sum of all goods, 2: Total sum of all payments.
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:474
+#, php-format
+msgid "Sum mismatch detected! Goods Total: %1$.2f. Payments Total: %2$.2f."
+msgstr ""
+"Вияволено розбіжність у сумах! Загальна вартість товарів: %1$.2f. Загальна "
+"сума платежів: %2$.2f."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:915
+msgid "Support our efforts with a"
+msgstr "Підтримайте наші зусилля"
+
+#: classes/woocommerce/mrkv-checkbox-woo-order.php:88
+msgid "Sync Receipt ID"
+msgstr "Зберегти чек"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:229
+#: templates/settings/template-mrkv-checkbox-settings.php:866
+msgid "Tax code"
+msgstr "Код податку"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:783
+msgid "Test cash register data"
+msgstr "Дані тестової каси"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:782
+msgid "Test cashier data"
+msgstr "Дані тестового касира"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:759
+#: templates/settings/template-mrkv-checkbox-settings.php:778
+msgid "Test mode"
+msgstr "Тестовий режим"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:756
+#: classes/settings/admin/mrkv-checkbox-menu.php:87
+msgid "Test/Debug"
+msgstr "Test/Debug"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:266
+msgid ""
+"The change will be opened automatically when the receipt is strated create."
+msgstr "Зміна відкриється автоматично, коли почнеться створення чека."
+
+#: classes/controller/receipt/mrkv-checkbox-receipt-creator.php:421
+msgid "The goods list is empty."
+msgstr "Перелік товарів порожній."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:706
+msgid ""
+"The value of this field will appear at the bottom of the electronic receipt. "
+"Available shortcodes: [website_title], [order_id], [order_created_date], "
+"[order_paid_date], [novapost_pro_ttn]."
+msgstr ""
+"Значення цього поля буде відображатися внизу електронного чека. Доступні "
+"короткі коди: [website_title], [order_id], [order_created_date], "
+"[order_paid_date], [novapost_pro_ttn]."
+
+#: templates/settings/template-mrkv-checkbox-settings.php:117
+msgid ""
+"There are no cash registers. Add new cash register and cashier details to "
+"track shift statuses. "
+msgstr ""
+"Касових апаратів немає. Додайте дані про нові касові апарати та касирів, щоб "
+"відстежувати стан змін. "
+
+#: templates/settings/template-mrkv-checkbox-settings.php:414
+msgid "Turn on auto-create queue"
+msgstr "Ввімкнути чергу автостворення"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:501
+msgid "Type of delivery added"
+msgstr "Тип додадавання доставки до чеку"
+
+#: classes/controller/shift/mrkv-checkbox-disconnect.php:27
+msgid "Unknown error closing shift"
+msgstr "Невідома помилка під час закриття зміни"
+
+#: classes/controller/shift/mrkv-checkbox-connect.php:29
+msgid "Unknown error opening shift"
+msgstr "Невідома помилка під час відкриття зміни"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:958
+msgid "Use of HS codes"
+msgstr "Використання кодів УКТЗЕД"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:954
+msgid "Using multiple cash registers"
+msgstr "Використання кількох кас"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:978
+msgid "Using the name from the attribute for multilingual websites"
+msgstr "Використання назви з атрибута для багатомовних сайтів"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:962
+msgid "Using the product code"
+msgstr "Використання product code"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:391
+msgid ""
+"When selected, only orders with related order statuses will be processed"
+msgstr ""
+"У разі вибору будуть оброблятися лише замовлення з відповідним статусом"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:428
+msgid "WP Cron"
+msgstr "WP Cron"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:460
+msgid "WP CRON interval"
+msgstr "Інтервал WP CRON"
+
+#: templates/settings/template-mrkv-checkbox-settings.php:230
+#: templates/settings/template-mrkv-checkbox-settings.php:867
+msgid ""
+"You can find the tax code (letter or number) on the Tax Rates page in your "
+"Checkbox account here: https://my.checkbox.ua/dashboard/taxrates"
+msgstr ""
+"Податковий код (літера або цифра) можна знайти на сторінці «Податкові "
+"ставки» у вашому обліковому записі Checkbox за посиланням: https://my."
+"checkbox.ua/dashboard/taxrates"
+
+#: static/constant-payments.php:36
+msgid "Ігровий замінник гривні"
+msgstr "Ігровий замінник гривні"
+
+#. Description of the plugin
+msgid "Інтеграція WooCommerce з пРРО Checkbox"
+msgstr "Інтеграція WooCommerce з пРРО Checkbox"
+
+#: static/constant-payments.php:31
+msgid "Інтернет банкінг"
+msgstr "Інтернет банкінг"
+
+#: static/constant-payments.php:30
+msgid "Інтернет еквайринг"
+msgstr "Інтернет еквайринг"
+
+#: static/constant-payments.php:22
+msgid "Готівка"
+msgstr "Готівка"
+
+#: static/constant-payments.php:35
+msgid "Електронний грошовий замінник"
+msgstr "Електронний грошовий замінник"
+
+#: static/constant-payments.php:37
+msgid "Електронні гроші"
+msgstr "Електронні гроші"
+
+#: static/constant-payments.php:25
+msgid "Жетон"
+msgstr "Жетон"
+
+#: static/constant-payments.php:32
+msgid "З поточного рахунку"
+msgstr "З поточного рахунку"
+
+#: static/constant-payments.php:26
+msgid "Картка"
+msgstr "Картка"
+
+#: static/constant-payments.php:39
+msgid "Криптовалюта"
+msgstr "Криптовалюта"
+
+#: static/constant-payments.php:41
+msgid "Переказ з картки"
+msgstr "Переказ з картки"
+
+#: static/constant-payments.php:42
+msgid "Переказ з поточного рахунку"
+msgstr "Переказ з поточного рахунку"
+
+#: static/constant-payments.php:28
+msgid "Переказ через ННПП"
+msgstr "Переказ через ННПП"
+
+#: static/constant-payments.php:29
+msgid "Переказ через ПТКС ННПП"
+msgstr "Переказ через ПТКС ННПП"
+
+#: static/constant-payments.php:33
+msgid "Переказ через ПТКС банку"
+msgstr "Переказ через ПТКС банку"
+
+#: static/constant-payments.php:27
+msgid "Платіж через інтегратора"
+msgstr "Платіж через інтегратора"
+
+#: static/constant-payments.php:23
+msgid "Подарунковий сертифікат"
+msgstr "Подарунковий сертифікат"
+
+#: static/constant-payments.php:40
+msgid "Післяплата"
+msgstr "Післяплата"
+
+#: static/constant-payments.php:24
+msgid "Талон"
+msgstr "Талон"
+
+#: static/constant-payments.php:34
+msgid "Фішка"
+msgstr "Фішка"
+
+#: static/constant-payments.php:38
+msgid "Цифрові гроші"
+msgstr "Цифрові гроші"
