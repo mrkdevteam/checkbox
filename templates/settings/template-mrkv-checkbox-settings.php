@@ -323,15 +323,14 @@
 															}
 
 															$mrkv_checkbox_special_labels = [
-																'morkva-monopay'        => [__('Payment plata by mono', 'checkbox') => __('morkva Plata by Mono Acquiring', 'checkbox')],
-																'morkva-liqpay'         => [__('Payment LiqPay', 'checkbox') => __('morkva Liqpay Acquiring', 'checkbox')],
-																'morkva-monopay-prepay' => [__('Postpaid', 'checkbox') => __('morkva Plata by Mono Postpaid', 'checkbox')],
-																'morkva-liqpay-prepay'  => [__('Postpaid', 'checkbox') => __('morkva Liqpay Postpaid', 'checkbox')],
+																'morkva-monopay'        => [__('Payment plata by mono', 'checkbox') => __('morkva Plata by Mono Acquiring', 'checkbox') . ' ' . __('(recommended)', 'checkbox')],
+																'morkva-liqpay'         => [__('Payment LiqPay', 'checkbox') => __('morkva Liqpay Acquiring', 'checkbox') . ' ' . __('(recommended)', 'checkbox')],
+																'morkva-monopay-prepay' => [__('Postpaid', 'checkbox') => __('morkva Plata by Mono Postpaid', 'checkbox') . ' ' . __('(recommended)', 'checkbox')],
+																'morkva-liqpay-prepay'  => [__('Postpaid', 'checkbox') => __('morkva Liqpay Postpaid', 'checkbox') . ' ' . __('(recommended)', 'checkbox')],
 															];
 
 															if (isset($mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id])) {
-																$mrkv_checkbox_labels_time = $mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id];
-																$mrkv_checkbox_placeholders = '';
+																$mrkv_checkbox_labels_time[array_key_first($mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id])] = array_first($mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id]);
 															}
 
 															$mrkv_checkbox_description = '';
@@ -418,7 +417,7 @@
 									</div>
 								</div>
 								<div class="col-mrkv-5">
-									<div class="admin_ua_ship_morkva_settings_line mrkv-field-disabled">
+									<div class="admin_ua_ship_morkva_settings_line mrkv-field-disabled mrkv-checkbox-hidden-cron-block">
 										<h4 style="margin-top: 0;"><?php esc_html_e('Cron type', 'checkbox'); ?></h4>
 										<p class="mrkv-ua-ship-only-pro"><?php esc_html_e('Only in the Pro version', 'checkbox'); ?></p>
 										<div class="admin_ua_ship_morkva_settings_row">
@@ -436,7 +435,7 @@
 								</div>
 							</div>
 							<?php do_action('mrkv_checkbox_settings_page_row', 'automation_settings', 'row_6'); ?>
-							<div class="admin_ua_ship_morkva_settings_row">
+							<div class="admin_ua_ship_morkva_settings_row mrkv-checkbox-hidden-cron-block">
 								<div class="col-mrkv-5">
 									<div class="admin_ua_ship_morkva_settings_line mrkv-field-disabled">
 										<?php 
@@ -463,7 +462,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="admin_ua_ship_morkva_settings_line mrkv-field-disabled">
+							<div class="admin_ua_ship_morkva_settings_line mrkv-field-disabled mrkv-checkbox-hidden-cron-block">
 								<label for="nova-poshta_m_ua_settings_api_key"><?php esc_html_e('Server Cron URL', 'checkbox'); ?></label>
 								<input style="width: 100%; max-width: 100%;" type="text" value="<?php echo esc_url(rest_url('mrkv-checkbox/v1/autocreate-receipt')); ?>" readonly="">
 								<p class="mrkv-ua-ship-only-pro"><?php esc_html_e('Only in the Pro version', 'checkbox'); ?></p>

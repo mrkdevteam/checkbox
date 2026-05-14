@@ -16,25 +16,18 @@ if ( ! class_exists( 'MRKV_CHECKBOX_ACTIVATION_DEACTIVATION' ) ) {
         const REQUEST_STATUS_ACTIVE   = 'activated';
         const REQUEST_STATUS_DEACTIVE = 'deactivated';
         const REQUEST_PLUGIN_TYPE     = 'plugin';
-        const API_URL_REGISTER        = 'https://api.morkva.co.ua/v1/register';
+        const API_URL_REGISTER        = 'https://api2.morkva.co.ua/api/customers/register';
         
         private $plugin_path;
 
         public function __construct() {
             $this->plugin_path = plugin_dir_path( __FILE__ );
-            add_filter( 'pre_update_option_ppo_cashbox_key', [ $this, 'mrkv_checkbox_update_data_main' ], 10, 3 );
             add_action( 'upgrader_process_complete', [ $this, 'mrkv_checkbox_upgrade' ], 10, 2 );
-        }
 
-        /**
-         * Triggered when the main API key option is updated.
-         */
-        public function mrkv_checkbox_update_data_main( $value, $old_value, $option ) {
-            if ( $value !== $old_value ) {
-                $status = apply_filters( 'mrkv_checkbox_active_deactive_update_status', self::REQUEST_STATUS_UPDATE );
-                $this->mrkv_checkbox_send_request( $status );
-            }
-            return $value;
+            # Add function by activation
+			register_activation_hook(__FILE__, array($this, 'mrkv_checkbox_activation_cb'));
+			# Add function by deactivation
+			register_deactivation_hook(__FILE__, array($this, 'mrkv_checkbox_deactivation_cb'));
         }
 
         /**
@@ -141,13 +134,22 @@ if ( ! class_exists( 'MRKV_CHECKBOX_ACTIVATION_DEACTIVATION' ) ) {
 
             $ip = ! empty( $server_addr ) ? $server_addr : ( ! empty( $remote_addr ) ? $remote_addr : '127.0.0.1' );
 
+            $main_plugin_file = dirname( plugin_dir_path( __FILE__ ), 3 ) . '/checkbox.php';
+
+            if ( ! function_exists( 'get_plugin_data' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            }
+
+            $plugin_data = get_plugin_data( $main_plugin_file, false, false );
+            $version = ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '1.0.0';
+
             $body = apply_filters( 'mrkv_checkbox_active_deactive_request_body', [
                 'ip'      => $ip,
                 'domain'  => wp_parse_url( home_url(), PHP_URL_HOST ),
                 'product' => 'checkbox',
-                'version' => defined( 'MRKV_CHECKBOX_PLUGIN_VERSION' ) ? MRKV_CHECKBOX_PLUGIN_VERSION : '1.0.0',
-                'license' => 'pro',
-                'info'    => sprintf( '%s - %s', $default['register_edrpou'] ?? 'N/A', $default['register_key'] ?? 'N/A' ),
+                'version' => $version,
+                'license' => 'free',
+                'info'    => $default['register_key'] ?? 'N/A',
                 'status'  => $status
             ] );
 

@@ -1,4 +1,7 @@
 /** ADMIN STYLES **/
+.mrkv-checkbox-hidden-cron-block{
+    display: none !important;
+}
 .mrkv-btn-sidebar-main.button.button-primary{
     background-color: #ed6230;
     border: 1px solid #ed6230;

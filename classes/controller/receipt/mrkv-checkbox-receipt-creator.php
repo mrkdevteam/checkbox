@@ -166,6 +166,10 @@ if ( ! class_exists( 'MRKV_CHECKBOX_RECEIPT_CREATOR' ) ) {
 
             if (isset($request_result['error']) && isset($request_result['status_code']) && $request_result['status_code'] == 400 && $this->get_setting('automation', 'open_shift', 'ppo_autoopen_shift')) 
             {
+                require_once MRKV_CHECKBOX_PLUGIN_PATH . 'classes/controller/shift/mrkv-checkbox-disconnect.php';
+                $disconnector = new MRKV_CHECKBOX_DISCONNECT($api);
+                $result = $disconnector->connect();
+                sleep(4);
                 require_once MRKV_CHECKBOX_PLUGIN_PATH . 'classes/controller/shift/mrkv-checkbox-connect.php';
                 $connector = new MRKV_CHECKBOX_CONNECT($api);
                 $result = $connector->connect();
@@ -202,6 +206,9 @@ if ( ! class_exists( 'MRKV_CHECKBOX_RECEIPT_CREATOR' ) ) {
                     $has_settings_change = true;
 
                     $api = new MRKV_CHECKBOX_API($this->cashbox_data['register_key'] ?? '', $this->cashbox_data['signin'], $this->is_dev);
+                    $disconnector = new MRKV_CHECKBOX_DISCONNECT($api);
+                    $result = $disconnector->connect();
+                    sleep(4);
                     $connector = new MRKV_CHECKBOX_CONNECT($api);
                     $result = $connector->connect();
                     
@@ -404,18 +411,18 @@ if ( ! class_exists( 'MRKV_CHECKBOX_RECEIPT_CREATOR' ) ) {
             switch ($method) {
                 case 'morkva-monopay':
                     $payment_code = 1;
-                    $payment_label = 'Платіж plata by mono';
+                    $payment_label = $custom_label ?? 'Платіж через інтегратора plata by mono';
                     break;
 
                 case 'morkva-liqpay':
                     $payment_code = 1;
-                    $payment_label = 'Платіж LiqPay';
+                    $payment_label = $custom_label ?? 'Платіж LiqPay';
                     break;
 
                 case 'morkva-monopay-prepay':
                 case 'morkva-liqpay-prepay':
                     $payment_code = 1;
-                    $payment_label = 'Післяплата';
+                    $payment_label = $custom_label ?? 'Післяплата';
                     break;
 
                 default:

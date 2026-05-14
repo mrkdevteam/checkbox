@@ -96,6 +96,21 @@ jQuery(window).on('load', function()
         }
     });
 
+    jQuery('select[name^="mrkv_checkbox[automation][payments]"][name$="[label]"]').on('change', function() {
+        var $select = jQuery(this);
+        var selectedValue = $select.val();
+        var nameAttr = $select.attr('name');
+        var methodSlug = nameAttr.match(/\[payments\]\[(.*?)\]/)[1];
+        
+        var $customLabel = jQuery('input[name="mrkv_checkbox[automation][payments][' + methodSlug + '][custom_label]"]');
+
+        if (methodSlug.includes('monopay')) {
+            $customLabel.val('Платіж через інтегратора plata by mono');
+        } else if (methodSlug.includes('liqpay')) {
+            $customLabel.val('Платіж через інтегратора Лікпей');
+        }
+    });
+
     jQuery('.mrkv_checkbox__change_shift_status').click(function() {
         let $btn = jQuery(this);
         let new_status = $btn.attr('data-status');
