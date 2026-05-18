@@ -103,10 +103,10 @@ jQuery(window).on('load', function()
         var methodSlug = nameAttr.match(/\[payments\]\[(.*?)\]/)[1];
         
         var $customLabel = jQuery('input[name="mrkv_checkbox[automation][payments][' + methodSlug + '][custom_label]"]');
-
-        if (methodSlug.includes('monopay')) {
+        
+        if (methodSlug.includes('monopay') && selectedValue.includes('plata')) {
             $customLabel.val('Платіж через інтегратора plata by mono');
-        } else if (methodSlug.includes('liqpay')) {
+        } else if (methodSlug.includes('liqpay') && selectedValue.includes('LiqPay')) {
             $customLabel.val('Платіж через інтегратора Лікпей');
         }
     });

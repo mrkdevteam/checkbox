@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Morkva Checkbox Integration Pro\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-08 11:34+0000\n"
-"PO-Revision-Date: 2026-05-13 11:46+0000\n"
+"PO-Revision-Date: 2026-05-15 08:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: Українська\n"
 "Language: uk\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.0; wp-6.9.4; php-8.4.19\n"
+"X-Loco-Version: 2.8.0; wp-6.9.4; php-8.4.21\n"
 "X-Domain: checkbox-pro"
 
 #: templates/settings/template-mrkv-checkbox-settings.php:326
@@ -618,7 +618,7 @@ msgstr "morkva Liqpay еквайринг"
 #: templates/settings/template-mrkv-checkbox-settings.php:329
 #| msgid "Morkva Liqpay Postpaid"
 msgid "morkva Liqpay Postpaid"
-msgstr "morkva Liqpay Післяплата"
+msgstr "morkva Liqpay Передплата"
 
 #: templates/settings/template-mrkv-checkbox-settings.php:326
 #| msgid "Morkva Plata by Mono Acquiring"
@@ -628,7 +628,7 @@ msgstr "morkva Plata by Mono еквайринг"
 #: templates/settings/template-mrkv-checkbox-settings.php:328
 #| msgid "Morkva Plata by Mono Postpaid"
 msgid "morkva Plata by Mono Postpaid"
-msgstr "morkva Plata by Mono Післяплата"
+msgstr "morkva Plata by Mono Передплата"
 
 #: templates/settings/template-mrkv-checkbox-settings.php:444
 msgid "Number of checks per iteration"

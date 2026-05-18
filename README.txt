@@ -4,7 +4,7 @@ Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
 Tested up to: 6.9
 Requires PHP: 7.1
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooCommerce tested up to: 9.8.0
@@ -14,6 +14,8 @@ WooCommerce tested up to: 9.8.0
 == Description ==
 
 Плагін предає дані з замовлень WooCommerce в сервіс ПРРО Checkbox: створення чека та автоматична фіскалізація.
+
+Сумісний з плагінами: [morkva Plata by Mono Extended](https://wordpress.org/plugins/mrkv-monobank-extended/) та [morkva LiqPay Extended](https://wordpress.org/plugins/mrkv-liqpay-extended/).
 
 **Функціонал плагіна:**
 * Відкриття зміни автоматично згідно правила (але не закриття зміни. Налаштовуйте на стороні кабінета Чекбокс!)
@@ -103,6 +105,9 @@ https://youtu.be/bKNy9Hpe2NI
 Робочі години з 10:00 до 19:00 ПН-ПТ. Ми відповімо вам протягом доби в робочий час. Всі звернення опрацьовуються по черзі.
 
 == Що нового? ==
+
+= 3.0.2 =
+* [new] змінили вивід UI/UX платіжних методів morkva
 
 = 3.0.1 =
 * [fix] виправили дрібні помилки в UI/UX

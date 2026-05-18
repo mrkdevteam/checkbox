@@ -330,7 +330,9 @@
 															];
 
 															if (isset($mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id])) {
-																$mrkv_checkbox_labels_time[array_key_first($mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id])] = array_first($mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id]);
+																$new_element_key = array_key_first($mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id]);
+																$new_element_val = array_first($mrkv_checkbox_special_labels[$mrkv_checkbox_gateway_id]);
+																$mrkv_checkbox_labels_time = [$new_element_key => $new_element_val] + $mrkv_checkbox_labels_time;
 															}
 
 															$mrkv_checkbox_description = '';
