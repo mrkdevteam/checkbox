@@ -12,7 +12,6 @@ if ( ! class_exists( 'MRKV_CHECKBOX_API' ) ) {
      */
     class MRKV_CHECKBOX_API {
         private const API_URL     = 'https://api.checkbox.in.ua';
-        private const DEV_API_URL = 'https://dev-api.checkbox.in.ua';
         private const CLIENT_NAME = 'Morkva';
 
         private $is_dev;
@@ -35,7 +34,7 @@ if ( ! class_exists( 'MRKV_CHECKBOX_API' ) ) {
          * Perform a request to the Checkbox API.
          */
         public function mrkv_checkbox_make_request( string $method, string $route, array $params = [], string $type = '' ) {
-            $base_url = $this->is_dev ? self::DEV_API_URL : self::API_URL;
+            $base_url = self::API_URL;
             $url      = $base_url . $route;
             $method   = strtoupper( $method );
 

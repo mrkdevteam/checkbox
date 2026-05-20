@@ -80,6 +80,8 @@ if ( ! class_exists( 'MRKV_CHECKBOX_AUTOCREATE' ) ) {
                 return;
             }
 
+            do_action( 'mrkv_checkbox_before_autocreate_receipt', $order, $settings );
+
             $cashbox_id = 'default';
 
             if(!$cashbox_id && !empty($settings) && (!isset($settings['cashiers']) || empty($settings['cashiers'])))

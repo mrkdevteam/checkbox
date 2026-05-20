@@ -767,7 +767,7 @@
 									echo wp_kses( $field_generator->get_input_hidden($mrkv_checkbox_settings_name . '[test_mode][shift_status]', $mrkv_checkbox_data, $mrkv_checkbox_settings_name . '_test_mode_shift_status'), $allowed_tags);
 
 									$mrkv_checkbox_data = isset($mrkv_checkbox_settings['test_mode']['signin']) ? $mrkv_checkbox_settings['test_mode']['signin'] : '';
-									echo wp_kses( $field_generator->get_input_hidden($mrkv_checkbox_settings_name . '[test_mode[signin]', $mrkv_checkbox_data, $mrkv_checkbox_settings_name . '_test_mode_signin'), $allowed_tags);
+									echo wp_kses( $field_generator->get_input_hidden($mrkv_checkbox_settings_name . '[test_mode][signin]', $mrkv_checkbox_data, $mrkv_checkbox_settings_name . '_test_mode_signin'), $allowed_tags);
 
 									$mrkv_checkbox_data = isset($mrkv_checkbox_settings['test_mode']['enabled']) ? $mrkv_checkbox_settings['test_mode']['enabled'] : '';
 
