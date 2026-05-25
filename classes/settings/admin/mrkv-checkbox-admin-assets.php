@@ -23,6 +23,7 @@ if ( ! class_exists( 'MRKV_CHECKBOX_ADMIN_ASSETS' ) ) {
             global $pagenow, $typenow;
             
             $screen = get_current_screen();
+            $screen_id = ( $screen instanceof \WP_Screen ) ? $screen->id : '';
             $nonce  = wp_create_nonce( 'mrkv_checkbox_sent_nonce' );
             
             $localization_data = apply_filters( 'mrkv_checkbox_assets_localization', [
@@ -35,7 +36,7 @@ if ( ! class_exists( 'MRKV_CHECKBOX_ADMIN_ASSETS' ) ) {
              */
             $is_order_page = (
                 in_array( $pagenow, [ 'edit.php', 'admin.php', 'post.php' ], true ) && 
-                ( 'shop_order' === $typenow || ( $screen && in_array( $screen->id, [ 'woocommerce_page_wc-orders', 'woocommerce_page_shop_order' ], true ) ) )
+                ( 'shop_order' === $typenow || in_array( $screen_id, [ 'woocommerce_page_wc-orders', 'woocommerce_page_shop_order' ], true ) )
             );
 
             if ( apply_filters( 'mrkv_checkbox_assets_load_global', $is_order_page, $hook ) ) {

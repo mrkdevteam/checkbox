@@ -31,8 +31,24 @@ if (!class_exists('MRKV_CHECKBOX_WOO_ORDER')) {
             );
         }
 
-        public function mrkv_checkbox_render_meta_box($post_or_order) {
-            $order = ($post_or_order instanceof \WC_Order) ? $post_or_order : wc_get_order($post_or_order->ID);
+        public function mrkv_checkbox_render_meta_box($post_or_order) 
+        {
+            $order_id = null;
+
+            switch (true) {
+                case $post_or_order instanceof \WC_Order:
+                    $order_id = $post_or_order->get_id();
+                    break;
+                case $post_or_order instanceof \WP_Post:
+                    $order_id = $post_or_order->ID;
+                    break;
+                case is_numeric($post_or_order):
+                    $order_id = (int) $post_or_order;
+                    break;
+            }
+
+            $order = $order_id ? wc_get_order($order_id) : null;
+        
             if (!$order) return;
 
             $order_id = $order->get_id();

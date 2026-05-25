@@ -25,9 +25,9 @@ if ( ! class_exists( 'MRKV_CHECKBOX_ACTIVATION_DEACTIVATION' ) ) {
             add_action( 'upgrader_process_complete', [ $this, 'mrkv_checkbox_upgrade' ], 10, 2 );
 
             # Add function by activation
-			register_activation_hook(__FILE__, array($this, 'mrkv_checkbox_activation_cb'));
+			register_activation_hook(dirname( plugin_dir_path( __FILE__ ), 3 ) . '/checkbox.php', array($this, 'mrkv_checkbox_activation_cb'));
 			# Add function by deactivation
-			register_deactivation_hook(__FILE__, array($this, 'mrkv_checkbox_deactivation_cb'));
+			register_deactivation_hook(dirname( plugin_dir_path( __FILE__ ), 3 ) . '/checkbox.php', array($this, 'mrkv_checkbox_deactivation_cb'));
         }
 
         /**
@@ -125,7 +125,8 @@ if ( ! class_exists( 'MRKV_CHECKBOX_ACTIVATION_DEACTIVATION' ) ) {
         /**
          * Unified method to send status reports to remote API.
          */
-        public function mrkv_checkbox_send_request( string $status ) {
+        public function mrkv_checkbox_send_request( $status ) {
+            $status   = is_string( $status ) ? $status : 'unknown';
             $settings = get_option( 'mrkv_checkbox' );
             $default  = $settings['cashiers']['default'] ?? [];
 

@@ -13,7 +13,7 @@ if (!class_exists('MRKV_CHECKBOX_OPTION_FILEDS'))
 		/**
 		 * Constructor for plugin global options fields
 		 * */
-		function __construct()
+		public function __construct()
 		{
 			
 		}

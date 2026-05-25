@@ -21,7 +21,7 @@ if ( ! class_exists( 'MRKV_CHECKBOX_RECEIPT_CREATOR' ) ) {
             $this->settings_data        = $settings_data;
             $this->old_checker          = $old_checker;
             $this->has_saved_settings   = !empty($settings_data) && is_array($settings_data);
-            $this->is_dev               = ($this->get_setting('test_mode', 'enabled') === true);
+            $this->is_dev               = !empty($this->get_setting('test_mode', 'enabled'));
             $this->cashbox_data         = apply_filters( 'mrkv_checkbox_credential_cashbox_data', $this->get_current_cashbox(), $this->order, $this->settings_data);
             $this->order_products_total = 0;
         }
@@ -380,8 +380,10 @@ if ( ! class_exists( 'MRKV_CHECKBOX_RECEIPT_CREATOR' ) ) {
                     'value' => $diff,
                     'name'  => $discount_label
                 ];
+
+                $this->order_products_total = $order_total_cents;
             }
-            $this->order_products_total = $order_total_cents;
+            
             return $params;
         }
 

@@ -51,8 +51,6 @@ if ( ! class_exists( 'MRKV_CHECKBOX_WOO_ORDERS' ) ) {
             do_action( 'mrkv_checkbox_orders_column_before_content', $order );
 
             $receipt_id  = $order->get_meta( 'receipt_id' );
-            $prepay_id   = $order->get_meta( 'receipt_id_prepay' );
-            $afterpay_id = $order->get_meta( 'receipt_id_afterpay' );
 
             if ( $receipt_id ) {
                 $this->render_receipt_link( $receipt_id, '', $order );

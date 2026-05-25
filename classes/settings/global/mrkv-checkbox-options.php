@@ -101,11 +101,11 @@ if ( ! class_exists( 'MRKV_CHECKBOX_OPTIONS' ) ) {
             require_once MRKV_CHECKBOX_PLUGIN_PATH . 'classes/settings/admin/mrkv-checkbox-activation-deactivation.php';
             $activation = new MRKV_CHECKBOX_ACTIVATION_DEACTIVATION();
             
-            do_action( 'mrkv_checkbox_before_sync_request', $new_value, $old_value );
+            do_action( 'mrkv_checkbox_before_sync_request', $cashier, $old_cashier );
             
             $activation->mrkv_checkbox_send_request( 'updated' );
             
-            do_action( 'mrkv_checkbox_after_sync_request', $new_value );
+            do_action( 'mrkv_checkbox_after_sync_request', $cashier );
 
             return $cashier;
         }

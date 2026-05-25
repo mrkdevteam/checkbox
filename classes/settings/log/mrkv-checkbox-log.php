@@ -26,7 +26,7 @@ if ( ! class_exists( 'MRKV_CHECKBOX_LOG' ) ) {
          * Constructor
          */
         public function __construct() {
-			$settings_data = get_option( 'mrkv_checkbox', [] );
+			$settings_data = (array) get_option( 'mrkv_checkbox', [] );
             $this->active_log         = $settings_data['debug']['log'] ?? false;
             $this->active_log_request = $settings_data['debug']['log'] ?? false;
         }
@@ -64,9 +64,14 @@ if ( ! class_exists( 'MRKV_CHECKBOX_LOG' ) ) {
         /**
          * Internal helper to format and write the log entry.
          */
-        private function write_to_log( $level, $data ) {
+        private function write_to_log( $level, $data ) 
+        {
+            if ( ! function_exists( 'wc_get_logger' ) ) {
+                return;
+            }
+
             $logger = wc_get_logger();
-            $context = array( 'source' => 'mrkv-checkbox' );
+            $context = [ 'source' => 'mrkv-checkbox' ];
             $timestamp = gmdate( "Y-m-d H:i:s" );
 
             if ( ! is_scalar( $data ) ) {
@@ -77,8 +82,12 @@ if ( ! class_exists( 'MRKV_CHECKBOX_LOG' ) ) {
                 case 'error':
                     $logger->error( $data, $context );
                     break;
+                case 'request':
+                    $logger->info( '[API Request/Response]: ' . $data, $context );
+                    break;
+                case 'action':
                 default:
-                    $logger->info( $data, $context );
+                    $logger->notice( '[Action Message]: ' . $data, $context );
                     break;
             }
             

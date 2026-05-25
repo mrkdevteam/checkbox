@@ -126,21 +126,25 @@ if ( ! class_exists( 'MRKV_CHECKBOX_MENU' ) ) {
             }
 
             $cash_register_list = array_map( function( $item ) {
-                return $item['register_name'] ?? '';
+                return ( is_array( $item ) && isset( $item['register_name'] ) ) ? $item['register_name'] : '';
             }, $mrkv_checkbox_cashier_list );
             require_once MRKV_CHECKBOX_PLUGIN_PATH . 'static/constant-payments.php';
             $mrkv_checkbox_labels = [];
-            foreach(MRKV_CHECKBOX_PAYMENT_LABELS as $mrkv_label => $mrlv_code)
-            {
-                $mrkv_checkbox_labels[$mrkv_label] = $mrkv_label;
+            if ( defined( 'MRKV_CHECKBOX_PAYMENT_LABELS' ) && is_array( MRKV_CHECKBOX_PAYMENT_LABELS ) ) {
+                foreach ( MRKV_CHECKBOX_PAYMENT_LABELS as $mrkv_label => $mrlv_code ) {
+                    $mrkv_checkbox_labels[ $mrkv_label ] = $mrkv_label;
+                }
             }
 
             require_once MRKV_CHECKBOX_PLUGIN_PATH . 'classes/settings/global/mrkv-checkbox-option-fields.php';
             $field_generator = new MRKV_CHECKBOX_OPTION_FILEDS();
 
-            $enabled_gateways = array_filter(WC()->payment_gateways->payment_gateways(), function ($gateway) {
-	            return 'yes' === $gateway->enabled;
-	        });
+            $enabled_gateways = [];
+            if ( function_exists( 'WC' ) && isset( WC()->payment_gateways ) ) {
+                $enabled_gateways = array_filter( WC()->payment_gateways->payment_gateways(), function ( $gateway ) {
+                    return 'yes' === $gateway->enabled;
+                });
+            }
 
             do_action( 'mrkv_checkbox_admin_page_before_settings_form' );
             include MRKV_CHECKBOX_PLUGIN_PATH_TEMP . '/settings/template-mrkv-checkbox-settings.php';

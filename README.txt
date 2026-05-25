@@ -2,9 +2,9 @@
 Contributors: bandido, dpmine
 Tags: woocommerce, Checkbox, РРО
 Requires at least: 5.2
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.1
-Stable tag: 3.0.3
+Stable tag: 3.1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WooCommerce tested up to: 9.8.0
@@ -105,6 +105,10 @@ https://youtu.be/bKNy9Hpe2NI
 Робочі години з 10:00 до 19:00 ПН-ПТ. Ми відповімо вам протягом доби в робочий час. Всі звернення опрацьовуються по черзі.
 
 == Що нового? ==
+
+= 3.1.0 =
+* [new] додали відкладення створення при закритій зміні
+* WP 7.0 - сумісний
 
 = 3.0.3 =
 * [fix] виправили тестовий режим
