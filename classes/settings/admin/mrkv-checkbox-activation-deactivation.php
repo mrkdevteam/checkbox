@@ -21,7 +21,7 @@ if ( ! class_exists( 'MRKV_CHECKBOX_ACTIVATION_DEACTIVATION' ) ) {
         private $plugin_path;
 
         public function __construct() {
-            $this->plugin_path = plugin_dir_path( __FILE__ );
+            $this->plugin_path = plugin_dir_path( MRKV_CHECKBOX_PLUGIN_FILE );
             add_action( 'upgrader_process_complete', [ $this, 'mrkv_checkbox_upgrade' ], 10, 2 );
 
             # Add function by activation
