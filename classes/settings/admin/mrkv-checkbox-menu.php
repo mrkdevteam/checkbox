@@ -140,11 +140,29 @@ if ( ! class_exists( 'MRKV_CHECKBOX_MENU' ) ) {
             $field_generator = new MRKV_CHECKBOX_OPTION_FILEDS();
 
             $enabled_gateways = [];
-            if ( function_exists( 'WC' ) && isset( WC()->payment_gateways ) ) {
+            if ( function_exists( 'WC' ) && method_exists( WC(), 'payment_gateways' ) && WC()->payment_gateways() ) {
                 $enabled_gateways = array_filter( WC()->payment_gateways->payment_gateways(), function ( $gateway ) {
                     return 'yes' === $gateway->enabled;
                 });
             }
+
+            require_once MRKV_CHECKBOX_PLUGIN_PATH . 'classes/controller/shift/mrkv-checkbox-shift-status.php';
+            require_once MRKV_CHECKBOX_PLUGIN_PATH . 'classes/controller/api/mrkv-checkbox-api.php';
+
+            foreach ( $mrkv_checkbox_cashier_list as $key => $cashier ) {
+                if ( isset( $cashier['register_key'] ) && isset( $cashier['signin'] ) ) {
+                    $mrkv_checkbox_api = new MRKV_CHECKBOX_API( $cashier['register_key'] ?? '', $cashier['signin'] ?? '' );
+                    $mrkv_checkbox_shift_status_controller = new MRKV_CHECKBOX_SHIFT_STATUS( $mrkv_checkbox_api );
+                    $mrkv_checkbox_actual_shift_status = $mrkv_checkbox_shift_status_controller->check_shift_status();
+
+                    $mrkv_checkbox_status_str = is_array( $mrkv_checkbox_actual_shift_status ) ? ( $mrkv_checkbox_actual_shift_status['status'] ?? 'closed' ) : 'closed';
+
+                    $mrkv_checkbox_cashier_list[ $key ]['shift_status'] = $mrkv_checkbox_status_str;
+                    $mrkv_checkbox_settings['cashiers'][ $key ]['shift_status'] = $mrkv_checkbox_status_str;
+                }
+            }
+
+            update_option( 'mrkv_checkbox', $mrkv_checkbox_settings );
 
             do_action( 'mrkv_checkbox_admin_page_before_settings_form' );
             include MRKV_CHECKBOX_PLUGIN_PATH_TEMP . '/settings/template-mrkv-checkbox-settings.php';

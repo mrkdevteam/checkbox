@@ -413,18 +413,18 @@ if ( ! class_exists( 'MRKV_CHECKBOX_RECEIPT_CREATOR' ) ) {
             switch ($method) {
                 case 'morkva-monopay':
                     $payment_code = 1;
-                    $payment_label = $custom_label ?? 'Платіж через інтегратора plata by mono';
+                    $payment_label = !empty($custom_label) ? $custom_label : 'Платіж через інтегратора plata by mono';
                     break;
 
                 case 'morkva-liqpay':
                     $payment_code = 1;
-                    $payment_label = $custom_label ?? 'Платіж LiqPay';
+                    $payment_label = !empty($custom_label) ? $custom_label : 'Платіж LiqPay';
                     break;
 
                 case 'morkva-monopay-prepay':
                 case 'morkva-liqpay-prepay':
                     $payment_code = 1;
-                    $payment_label = $custom_label ?? 'Післяплата';
+                    $payment_label = !empty($custom_label) ? $custom_label : 'Післяплата';
                     break;
 
                 default:
